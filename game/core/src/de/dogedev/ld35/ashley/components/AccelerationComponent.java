@@ -7,12 +7,13 @@ import com.badlogic.gdx.utils.Pool;
 /**
  * Created by meisterfuu on 16.04.2016.
  */
-public class VelocityComponent extends  Vector2 implements Component, Pool.Poolable {
+public class AccelerationComponent extends  Vector2 implements Component, Pool.Poolable {
 
-
+    public float maxVelocityX = -1;
 
     @Override
     public void reset() {
+        maxVelocityX = -1;
         x = 0;
         y = 0;
     }
