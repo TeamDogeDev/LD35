@@ -48,7 +48,7 @@ public class GameScreen implements Screen {
         Statics.ashley.addSystem(new EntityRenderSystem(camera));
         Statics.ashley.addSystem(new ControllSystem());
         Statics.ashley.addSystem(new AccelerationSystem());
-        Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get(0)));
+        Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get("collision")));
 
         demoEntity();
 

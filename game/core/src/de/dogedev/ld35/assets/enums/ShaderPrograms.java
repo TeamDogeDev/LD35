@@ -9,7 +9,8 @@ package de.dogedev.ld35.assets.enums;
  */
 public enum ShaderPrograms {
 
-    TMP("", "");
+    SHADOWMAP("shader/passthrough.vsh", "shader/shadowmap.fsh"),
+    SHADOWRENDER("shader/passthrough.vsh", "shader/shadowrender.fsh");
 
     public String fragmentShader;
     public String vertexShader;
