@@ -43,8 +43,8 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         overlays = new Array<>();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = 0.5f;
-        camera.translate(320, 180);
+        camera.zoom = 1f;
+        camera.translate(1280>>1, 720>>1);
 
         demoMap = new TmxMapLoader().load("level/basic.tmx");
         demoMap.getLayers().add(new DebugTileLayer(16,16,"debug"));
@@ -103,7 +103,7 @@ public class GameScreen implements Screen {
     private void demoEntity() {
         Entity entity = Statics.ashley.createEntity();
         PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
-        pc.set(160, 160);
+        pc.set(320, 160);
         entity.add(pc);
         VelocityComponent vc = Statics.ashley.createComponent(VelocityComponent.class);
         vc.set(0, 0);
@@ -136,6 +136,7 @@ public class GameScreen implements Screen {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         batch.draw(Statics.asset.getTexture(Textures.SKY), 0, 0);
+        batch.draw(Statics.asset.getTexture(Textures.CLOUD), 100, 100);
         batch.end();
 
         mapRenderer.setView(camera);
