@@ -73,24 +73,27 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             PositionComponent position = ComponentMappers.position.get(e);
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
 
+            velocity.y -= deltaTime * 9.81f*16;
+
             int xTile = (int)((position.x+velocity.x))/16;
             int yTile = (int)((position.y+velocity.y)-1)/16;
             if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
                 position.isStanding = true;
-                velocity.y = 0;
+                velocity.y = -1*(position.y-((yTile+1)*16));
             } else {
                 position.isStanding = false;
-                velocity.y -= deltaTime * 9.81f*16;
             }
 
             yTile = (int)(position.y+velocity.y)/16;
             if(velocity.x < 0){
                 if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
-                    velocity.x = position.x-(xTile*16+16);
+//                    velocity.x = position.x-(xTile*16+16);
+                    velocity.x = -1*(position.x-((xTile+1)*16));
                 }
             } else if(velocity.x > 0){
                 if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
-                    velocity.x = position.x-(xTile*16);
+//                    velocity.x = position.x-(xTile*16);
+                    velocity.x = -1*(position.x-((xTile)*16));
                 }
             }
             position.add(velocity);
