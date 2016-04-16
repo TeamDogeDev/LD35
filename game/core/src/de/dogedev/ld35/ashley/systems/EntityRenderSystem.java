@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import de.dogedev.ld35.ashley.ComponentMappers;
-import de.dogedev.ld35.ashley.components.AnimationComponent;
-import de.dogedev.ld35.ashley.components.NameComponent;
-import de.dogedev.ld35.ashley.components.PositionComponent;
-import de.dogedev.ld35.ashley.components.SpriteComponent;
+import de.dogedev.ld35.ashley.components.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +16,7 @@ import java.util.Comparator;
 /**
  * Created by Furuha on 28.01.2016.
  */
-public class RenderSystem extends EntitySystem implements EntityListener {
+public class EntityRenderSystem extends EntitySystem implements EntityListener {
 
 
     private final SpriteBatch batch;
@@ -29,7 +26,7 @@ public class RenderSystem extends EntitySystem implements EntityListener {
     private YComparator comparator = new YComparator();
     private BitmapFont font;
 
-    public RenderSystem(OrthographicCamera camera) {
+    public EntityRenderSystem(OrthographicCamera camera) {
         this.camera = camera;
         batch = new SpriteBatch();
         sortedEntities = new ArrayList<>();
@@ -38,8 +35,8 @@ public class RenderSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void addedToEngine (Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class).get());
-        engine.addEntityListener(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class).get(), this);
+        entities = engine.getEntitiesFor(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class).exclude(BackgroundComponent.class).get());
+        engine.addEntityListener(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class).exclude(BackgroundComponent.class).get(), this);
         for(Entity e: entities){
             sortedEntities.add(e);
         }

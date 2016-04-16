@@ -1,14 +1,21 @@
 package de.dogedev.ld35.overlays;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.Align;
 import com.strongjoshua.console.CommandExecutor;
 import com.strongjoshua.console.Console;
+import de.dogedev.ld35.Statics;
+import de.dogedev.ld35.ashley.components.BackgroundComponent;
+import de.dogedev.ld35.ashley.components.PositionComponent;
+import de.dogedev.ld35.ashley.components.SpriteComponent;
+import de.dogedev.ld35.assets.enums.Textures;
 
 import java.text.DecimalFormat;
 
@@ -84,6 +91,20 @@ public class DebugOverlay extends AbstractOverlay {
 
         public void spawnEnemy(String type, float x, float y, float z) {
             console.log("spawning enemy " + type, Console.LogLevel.SUCCESS);
+        }
+
+        public void cloud(int x, int y) {
+            Entity entity = Statics.ashley.createEntity();
+            SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
+            sc.textureRegion = new TextureRegion(Statics.asset.getTexture(Textures.CLOUD));
+            entity.add(sc);
+            PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
+            pc.x = x;
+            pc.y = y;
+            pc.z = 1;
+            entity.add(pc);
+            entity.add(Statics.ashley.createComponent(BackgroundComponent.class));
+            Statics.ashley.addEntity(entity);
         }
 
         public void clear() {
