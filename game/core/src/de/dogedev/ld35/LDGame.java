@@ -1,17 +1,21 @@
 package de.dogedev.ld35;
 
 import com.badlogic.gdx.Game;
-import de.dogedev.ld35.screens.GameScreen;
+import com.badlogic.gdx.Screen;
+import de.dogedev.ld35.screens.LoadingScreen;
 
 public class LDGame extends Game {
 
+    public static LDGame game;
+
     @Override
     public void create() {
-        Statics.initCat();
-        while(!Statics.asset.load()) {
-            System.out.println("Loading " + Statics.asset.progress());
-        }
-        this.setScreen(new GameScreen());
+        game = this;
+        setScreen(new LoadingScreen());
+    }
+
+    public void setCurrentScreen(Screen screen) {
+        this.setScreen(screen);
     }
 
     @Override

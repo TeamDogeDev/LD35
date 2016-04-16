@@ -1,0 +1,92 @@
+package de.dogedev.ld35.screens;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import de.dogedev.ld35.LDGame;
+import de.dogedev.ld35.Statics;
+
+/**
+ * Project: game
+ * Package: de.dogedev.ld35.screens
+ * Date: 16.04.2016
+ *
+ * @author elektropapst
+ */
+public class LoadingScreen implements Screen {
+
+    private ShapeRenderer shapeRenderer;
+
+    public LoadingScreen() {
+        init();
+        Statics.initCat();
+    }
+
+    private void update(float delta) {
+        if (Statics.asset.load()) {
+            LDGame.game.setScreen(new GameScreen());
+        }
+    }
+
+    private void init() {
+        shapeRenderer = new ShapeRenderer();
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+        update(delta);
+        float progress = Statics.asset.progress();
+        float val = 191 * progress;
+        Gdx.gl.glClearColor(val / 255f, val / 255f, val / 255f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0.25f, 0.25f, 0.25f, 1);
+        float width = 300;
+        float height = 20;
+        float x = (Gdx.graphics.getWidth() - width) / 2;
+        float y = (Gdx.graphics.getHeight() - height) / 2;
+        shapeRenderer.rect(x, y, width * progress, height);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(0, 0, 0, 1);
+        shapeRenderer.rect(x, y, width, height);
+        shapeRenderer.end();
+
+    }
+
+    private void load() {
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+}
