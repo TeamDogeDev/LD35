@@ -9,6 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
@@ -26,6 +28,9 @@ public class BackgroundRenderSystem extends EntitySystem {
     private OrthographicCamera camera;
     private Batch batch;
     private ImmutableArray<Entity> clouds;
+    private float cloudDarkness = 0;
+    
+    private static final int MAXCLOUDS = 30;
 
     public BackgroundRenderSystem(OrthographicCamera camera) {
         batch = new SpriteBatch();
@@ -37,6 +42,10 @@ public class BackgroundRenderSystem extends EntitySystem {
         clouds = engine.getEntitiesFor(
                 Family.all(PositionComponent.class, BackgroundComponent.class, VelocityComponent.class)
                         .one(SpriteComponent.class, AnimationComponent.class).get());
+        // initial clouds
+        do {
+            spawnRandomCloud();
+        } while(clouds.size() < MAXCLOUDS);
     }
 
 
@@ -44,24 +53,51 @@ public class BackgroundRenderSystem extends EntitySystem {
     public void update(float deltaTime) {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
+        batch.setColor(1, 1, 1, 1);
         batch.draw(Statics.asset.getTexture(Textures.SKY), 0, 0);
         PositionComponent pc;
         SpriteComponent sc;
         VelocityComponent vc;
+
         for (Entity cloud : clouds) {
             pc = ComponentMappers.position.get(cloud);
             sc = ComponentMappers.sprite.get(cloud);
             vc = ComponentMappers.velocity.get(cloud);
-            System.out.println(vc.x);
             pc.mulAdd(vc, deltaTime);
-
-            batch.draw(sc.textureRegion, pc.x, pc.y);
+            batch.setColor(1-cloudDarkness, 1-cloudDarkness, 1-cloudDarkness, MathUtils.clamp(pc.z-0.6f, 0.05f, 0.6f));
+            batch.draw(sc.textureRegion, pc.x, pc.y, sc.textureRegion.getRegionWidth()*pc.z,sc.textureRegion.getRegionHeight()*pc.z);
             if (!isCloudInBounds(pc, sc)) {
-                Statics.ashley.removeEntity(cloud);
+                Statics.ashley.removeEntity(cloud); // TODO RECYCLE
+                spawnNewCloud();
             }
         }
         batch.end();
-        System.out.println(clouds.size());
+    }
+
+    private void spawnNewCloud() {
+        spawnCloud(Gdx.graphics.getWidth(), MathUtils.random(Gdx.graphics.getBackBufferHeight()>>1, Gdx.graphics.getHeight()), MathUtils.random(0.2f, 1f));
+    }
+    private void spawnRandomCloud() {
+        spawnCloud(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(Gdx.graphics.getBackBufferHeight()>>1, Gdx.graphics.getHeight()), MathUtils.random(0.2f, 1f));
+    }
+
+    private void spawnCloud(int x, int y, float z) {
+        Entity entity = Statics.ashley.createEntity();
+        SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
+        sc.textureRegion = new TextureRegion(Statics.asset.getTexture(Textures.CLOUD));
+        entity.add(sc);
+        PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
+        // pc.x = Gdx.graphics.getWidth();
+        pc.x = x;
+        pc.y = y;
+        pc.z = z;
+        entity.add(pc);
+        VelocityComponent vc = Statics.ashley.createComponent(VelocityComponent.class);
+        vc.x = -z*16;
+        vc.y = 0;
+        entity.add(vc);
+        entity.add(Statics.ashley.createComponent(BackgroundComponent.class));
+        Statics.ashley.addEntity(entity);
     }
 
     private boolean isCloudInBounds(PositionComponent pc, SpriteComponent sc) {
