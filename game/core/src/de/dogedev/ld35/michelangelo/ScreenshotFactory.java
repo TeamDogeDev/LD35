@@ -15,7 +15,7 @@ public class ScreenshotFactory {
         try{
             FileHandle fh;
             do{
-                fh = Gdx.files.external("inn/screenshot" + counter++ + ".png");
+                fh = Gdx.files.external("doge/screenshot" + counter++ + ".png");
             }while (fh.exists());
             Pixmap pixmap = getScreenshot();
             PixmapIO.writePNG(fh, pixmap);
