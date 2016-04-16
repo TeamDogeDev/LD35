@@ -29,7 +29,7 @@ public class BackgroundRenderSystem extends EntitySystem {
     private Batch batch;
     private ImmutableArray<Entity> clouds;
     private float cloudDarkness = 0;
-    
+
     private static final int MAXCLOUDS = 30;
 
     public BackgroundRenderSystem(OrthographicCamera camera) {
