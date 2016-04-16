@@ -74,15 +74,26 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
 
 
-            int xTile = (int)((position.x+velocity.x))/16;
+            int xTile = (int)((position.x))/16;
             int yTile = (int)((position.y+velocity.y)-1)/16;
-            if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
-                position.isStanding = true;
-                velocity.y = -1*(position.y-((yTile+1)*16));
-            } else {
-                position.isStanding = false;
+            if(velocity.y <0){
+                if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
+                    position.isStanding = true;
+                    velocity.y = -1*(position.y-((yTile+1)*16));
+                } else {
+                    position.isStanding = false;
+                }
+            } else if(velocity.y > 0) {
+                if(collisionlayer != null && collisionlayer.getCell(xTile, yTile+2) != null){
+                    position.isStanding = false;
+                    velocity.y = 0;
+                } else {
+                    position.isStanding = false;
+                }
             }
 
+
+            xTile = (int)((position.x+velocity.x))/16;
             yTile = (int)(position.y+velocity.y)/16;
             if(velocity.x < 0){
                 if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
@@ -90,11 +101,25 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                     velocity.x = -1*(position.x-((xTile+1)*16));
                 }
             } else if(velocity.x > 0){
-                if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
+                if(collisionlayer != null && collisionlayer.getCell(xTile+1, yTile) != null){
 //                    velocity.x = position.x-(xTile*16);
                     velocity.x = -1*(position.x-((xTile)*16));
                 }
             }
+
+            yTile += 1;
+            if(velocity.x < 0){
+                if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
+//                    velocity.x = position.x-(xTile*16+16);
+                    velocity.x = -1*(position.x-((xTile+1)*16));
+                }
+            } else if(velocity.x > 0){
+                if(collisionlayer != null && collisionlayer.getCell(xTile+1, yTile) != null){
+//                    velocity.x = position.x-(xTile*16);
+                    velocity.x = -1*(position.x-((xTile)*16));
+                }
+            }
+
             position.add(velocity);
 
         }
