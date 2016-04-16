@@ -13,14 +13,14 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class LightComponent implements Component, Pool.Poolable {
 
-    public float x;
-    public float y;
     public Color color;
+    public float lightSize;
+    public boolean softShadows;
 
     @Override
     public void reset() {
-        x = 0;
-        y = 0;
         color = Color.WHITE;
+        lightSize = 16;
+        softShadows = true;
     }
 }

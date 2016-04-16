@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -45,11 +46,38 @@ public class GameScreen implements Screen {
         // demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
 
         Statics.ashley.addSystem(new BackgroundRenderSystem(camera));
+        Statics.ashley.addSystem(new LightRenderSystem(demoMap, camera));
         Statics.ashley.addSystem(new MapRenderSystem(demoMap, camera));
         Statics.ashley.addSystem(new EntityRenderSystem(camera));
         Statics.ashley.addSystem(new ControllSystem());
         Statics.ashley.addSystem(new AccelerationSystem());
         Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get("collision")));
+
+        Entity e = Statics.ashley.createEntity();
+        LightComponent lc = Statics.ashley.createComponent(LightComponent.class);
+        lc.color = Color.YELLOW;
+        lc.lightSize = 512;
+        lc.softShadows = true;
+        PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
+        pc.x = 300;
+        pc.y = 300;
+
+        e.add(pc);
+        e.add(lc);
+        Statics.ashley.addEntity(e);
+
+        e = Statics.ashley.createEntity();
+        lc = Statics.ashley.createComponent(LightComponent.class);
+        lc.color = Color.GREEN;
+        lc.lightSize = 512;
+        lc.softShadows = true;
+        pc = Statics.ashley.createComponent(PositionComponent.class);
+        pc.x = 800;
+        pc.y = 160;
+
+        e.add(pc);
+        e.add(lc);
+        Statics.ashley.addEntity(e);
 
         demoEntity();
 

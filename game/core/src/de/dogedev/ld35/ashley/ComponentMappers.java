@@ -15,4 +15,5 @@ public class ComponentMappers {
     public static final ComponentMapper<AccelerationComponent> acceleration = ComponentMapper.getFor(AccelerationComponent.class);
     public static final ComponentMapper<NameComponent> name = ComponentMapper.getFor(NameComponent.class);
 
+    public static final ComponentMapper<LightComponent> light = ComponentMapper.getFor(LightComponent.class);
 }
