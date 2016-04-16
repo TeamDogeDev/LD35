@@ -11,9 +11,11 @@ public class AnimationComponent implements Component, Pool.Poolable {
 
     public Animation currentAnimation;
     public float currentAnimationTime;
+    public boolean center;
 
     @Override
     public void reset() {
+        center = false;
         currentAnimation = null;
         currentAnimationTime = 0;
     }

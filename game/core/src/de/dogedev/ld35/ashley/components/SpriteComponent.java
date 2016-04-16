@@ -10,9 +10,11 @@ import com.badlogic.gdx.utils.Pool;
 public class SpriteComponent implements Component, Pool.Poolable {
 
     public TextureRegion textureRegion;
+    public boolean center;
 
     @Override
     public void reset() {
+        center = false;
         textureRegion = null;
     }
 }

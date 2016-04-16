@@ -11,6 +11,7 @@ import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.AccelerationComponent;
 import de.dogedev.ld35.ashley.components.PlayerComponent;
 import de.dogedev.ld35.ashley.components.PositionComponent;
+import de.dogedev.ld35.ashley.components.VelocityComponent;
 
 /**
  * Created by Furuha on 28.01.2016.
@@ -25,7 +26,7 @@ public class ControllSystem extends EntitySystem {
 
     @Override
     public void addedToEngine (Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PlayerComponent.class, AccelerationComponent.class).get());
+        entities = engine.getEntitiesFor(Family.all(PlayerComponent.class, AccelerationComponent.class, VelocityComponent.class, PositionComponent.class).get());
     }
 
     @Override
@@ -37,6 +38,8 @@ public class ControllSystem extends EntitySystem {
         for (int i = 0; i < entities.size(); ++i) {
             Entity e = entities.get(i);
             AccelerationComponent acceleration = ComponentMappers.acceleration.get(e);
+            VelocityComponent velocity = ComponentMappers.velocity.get(e);
+            PositionComponent pc = ComponentMappers.position.get(e);
 
             acceleration.x = 0;
             acceleration.y = 0;
@@ -57,9 +60,13 @@ public class ControllSystem extends EntitySystem {
             if (Gdx.input.isKeyPressed(Input.Keys.D)) {
                 acceleration.x = 5;
             }
-            PositionComponent pc = ComponentMappers.position.get(e);
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && pc.isStanding) {
                 acceleration.y = 200;
+            }
+            //Don't slide
+            if(!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D) && pc.isStanding){
+                acceleration.x = 0;
+                velocity.x *= 0.9;
             }
 
         }
