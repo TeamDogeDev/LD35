@@ -112,7 +112,7 @@ public class GameScreen implements Screen {
         PlayerComponent plc = Statics.ashley.createComponent(PlayerComponent.class);
         entity.add(plc);
         SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
-        sc.textureRegion = new TextureRegion(new Texture("playerDemo.png"));
+        sc.textureRegion = new TextureRegion(new Texture("entities/playerDemo.png"));
         entity.add(sc);
         Statics.ashley.addEntity(entity);
     }
