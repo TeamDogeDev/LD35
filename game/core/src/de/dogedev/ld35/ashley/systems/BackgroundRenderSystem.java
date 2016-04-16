@@ -5,15 +5,13 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
-import de.dogedev.ld35.ashley.components.AnimationComponent;
-import de.dogedev.ld35.ashley.components.BackgroundComponent;
-import de.dogedev.ld35.ashley.components.PositionComponent;
-import de.dogedev.ld35.ashley.components.SpriteComponent;
+import de.dogedev.ld35.ashley.components.*;
 import de.dogedev.ld35.assets.enums.Textures;
 
 /**
@@ -35,10 +33,10 @@ public class BackgroundRenderSystem extends EntitySystem {
     }
 
     @Override
-    public void addedToEngine (Engine engine) {
+    public void addedToEngine(Engine engine) {
         clouds = engine.getEntitiesFor(
-            Family.all(PositionComponent.class, BackgroundComponent.class)
-                .one(SpriteComponent.class, AnimationComponent.class).get());
+                Family.all(PositionComponent.class, BackgroundComponent.class, VelocityComponent.class)
+                        .one(SpriteComponent.class, AnimationComponent.class).get());
     }
 
 
@@ -49,12 +47,27 @@ public class BackgroundRenderSystem extends EntitySystem {
         batch.draw(Statics.asset.getTexture(Textures.SKY), 0, 0);
         PositionComponent pc;
         SpriteComponent sc;
-        for(Entity cloud : clouds) {
+        VelocityComponent vc;
+        for (Entity cloud : clouds) {
             pc = ComponentMappers.position.get(cloud);
             sc = ComponentMappers.sprite.get(cloud);
+            vc = ComponentMappers.velocity.get(cloud);
+            System.out.println(vc.x);
+            pc.mulAdd(vc, deltaTime);
+
             batch.draw(sc.textureRegion, pc.x, pc.y);
+            if (!isCloudInBounds(pc, sc)) {
+                Statics.ashley.removeEntity(cloud);
+            }
         }
         batch.end();
+        System.out.println(clouds.size());
+    }
 
+    private boolean isCloudInBounds(PositionComponent pc, SpriteComponent sc) {
+        return  pc.x <= Gdx.graphics.getWidth() &&
+                pc.y <= Gdx.graphics.getHeight() &&
+                pc.x + sc.textureRegion.getRegionWidth() >= 0 &&
+                pc.y + sc.textureRegion.getRegionHeight() >= 0;
     }
 }

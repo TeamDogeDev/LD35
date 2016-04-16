@@ -15,6 +15,7 @@ import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.components.BackgroundComponent;
 import de.dogedev.ld35.ashley.components.PositionComponent;
 import de.dogedev.ld35.ashley.components.SpriteComponent;
+import de.dogedev.ld35.ashley.components.VelocityComponent;
 import de.dogedev.ld35.assets.enums.Textures;
 
 import java.text.DecimalFormat;
@@ -93,22 +94,30 @@ public class DebugOverlay extends AbstractOverlay {
             console.log("spawning enemy " + type, Console.LogLevel.SUCCESS);
         }
 
-        public void cloud(int x, int y) {
+        public void cloud(int y, int velocity) {
             Entity entity = Statics.ashley.createEntity();
             SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
             sc.textureRegion = new TextureRegion(Statics.asset.getTexture(Textures.CLOUD));
             entity.add(sc);
             PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
-            pc.x = x;
+            pc.x = Gdx.graphics.getWidth();
             pc.y = y;
             pc.z = 1;
             entity.add(pc);
+            VelocityComponent vc = Statics.ashley.createComponent(VelocityComponent.class);
+            vc.x = velocity;
+            vc.y = 0;
+            entity.add(vc);
             entity.add(Statics.ashley.createComponent(BackgroundComponent.class));
             Statics.ashley.addEntity(entity);
         }
 
         public void clear() {
             console.clear();
+        }
+
+        public void wallhack() {
+            console.log("NOPE!");
         }
     }
 }
