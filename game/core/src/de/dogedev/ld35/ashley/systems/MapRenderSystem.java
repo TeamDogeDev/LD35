@@ -65,9 +65,9 @@ public class MapRenderSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         renderLight();
-        // mapRenderer.render();
+        mapRenderer.render();
         batch.begin();
-        batch.draw(occludersTexture, 100, 100);
+        // batch.draw(occludersTexture, 100, 100);
         // batch.setShader(null);
         // mapRenderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("deco"));
         // batch.draw(Statics.asset.getTexture(Textures.JOHN), 200, 400);
@@ -107,7 +107,14 @@ public class MapRenderSystem extends EntitySystem {
         batch.setProjectionMatrix(camera.combined);
         batch.setShader(null);
         batch.begin();
-        shadowMapRenderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("deco"));
+        TiledMapTileLayer collision = (TiledMapTileLayer) map.getLayers().get("collision");
+        for (int x = 0; x < collision.getWidth(); x++) {
+            for (int y = 0; y < collision.getHeight(); y++) {
+                if (collision.getCell(x, y) != null && collision.getCell(x, y).getTile() != null)
+                    batch.draw(collision.getCell(x, y).getTile().getTextureRegion(), x * 16, y * 16);
+            }
+        }
+        // shadowMapRenderer.renderTileLayer();
         batch.draw(Statics.asset.getTexture(Textures.JOHN), 200, 400);
         batch.end();
         occludersFBO.end();
