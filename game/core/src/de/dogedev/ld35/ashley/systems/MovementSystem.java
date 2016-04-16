@@ -75,8 +75,10 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
 
 
-            int xTile = (int)((position.x))/16;
-            int yTile = (int)((position.y+velocity.y)-1)/16;
+            int yTile = (int)(position.y+velocity.y)/16;
+            int xTile = (int)(position.x)/16;
+            int xTile2 = (int)(position.x+16)/16;
+            
             if(velocity.y <0){
                 if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
                     position.isStanding = true;
@@ -94,30 +96,31 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             }
 
 
-            xTile = (int)((position.x+velocity.x))/16;
+
+
+            xTile = (int)(position.x+velocity.x)/16;
             yTile = (int)(position.y+velocity.y)/16;
             if(velocity.x < 0){
                 if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
-//                    velocity.x = position.x-(xTile*16+16);
-                    velocity.x = -1*(position.x-((xTile+1)*16));
+                    velocity.x = 0;
                 }
             } else if(velocity.x > 0){
                 if(collisionlayer != null && collisionlayer.getCell(xTile+1, yTile) != null){
-//                    velocity.x = position.x-(xTile*16);
-                    velocity.x = -1*(position.x-((xTile)*16));
+                    velocity.x = 0;
+
                 }
             }
 
             yTile += 1;
             if(velocity.x < 0){
                 if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
-//                    velocity.x = position.x-(xTile*16+16);
-                    velocity.x = -1*(position.x-((xTile+1)*16));
+                    velocity.x = 0;
+
                 }
             } else if(velocity.x > 0){
                 if(collisionlayer != null && collisionlayer.getCell(xTile+1, yTile) != null){
-//                    velocity.x = position.x-(xTile*16);
-                    velocity.x = -1*(position.x-((xTile)*16));
+                    velocity.x = 0;
+
                 }
             }
 
@@ -125,5 +128,21 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
         }
 
+    }
+
+    private boolean rectCollides(float x1, float y1, float x2, float y2, float size){
+//        checks++;
+        if((x1-size) < x2 && x2 < (x1+size) && Math.abs(y2-y1) < size){
+            return true;
+        }
+        if((y1-size) < y2 && y2 < (y1+size) && Math.abs(x2-x1) < size){
+            return true;
+        }
+        return false;
+    }
+
+
+    private float distance(float i, float y) {
+        return Math.abs(i-y);
     }
 }
