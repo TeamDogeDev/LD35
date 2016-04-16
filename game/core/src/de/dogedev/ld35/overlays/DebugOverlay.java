@@ -86,6 +86,10 @@ public class DebugOverlay extends AbstractOverlay {
             console.log("spawning enemy " + type, Console.LogLevel.SUCCESS);
         }
 
+        public void jp() {
+            console.log("NORDSEE!!!");
+        }
+
         public void clear() {
             console.clear();
         }
