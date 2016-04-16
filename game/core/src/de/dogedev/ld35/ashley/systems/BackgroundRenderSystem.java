@@ -28,7 +28,8 @@ public class BackgroundRenderSystem extends EntitySystem {
     private OrthographicCamera camera;
     private Batch batch;
     private ImmutableArray<Entity> clouds;
-
+    private float cloudDarkness = 0;
+    
     private static final int MAXCLOUDS = 30;
 
     public BackgroundRenderSystem(OrthographicCamera camera) {
@@ -52,6 +53,7 @@ public class BackgroundRenderSystem extends EntitySystem {
     public void update(float deltaTime) {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
+        batch.setColor(1, 1, 1, 1);
         batch.draw(Statics.asset.getTexture(Textures.SKY), 0, 0);
         PositionComponent pc;
         SpriteComponent sc;
@@ -62,7 +64,7 @@ public class BackgroundRenderSystem extends EntitySystem {
             sc = ComponentMappers.sprite.get(cloud);
             vc = ComponentMappers.velocity.get(cloud);
             pc.mulAdd(vc, deltaTime);
-
+            batch.setColor(1-cloudDarkness, 1-cloudDarkness, 1-cloudDarkness, MathUtils.clamp(pc.z-0.6f, 0.05f, 0.6f));
             batch.draw(sc.textureRegion, pc.x, pc.y, sc.textureRegion.getRegionWidth()*pc.z,sc.textureRegion.getRegionHeight()*pc.z);
             if (!isCloudInBounds(pc, sc)) {
                 Statics.ashley.removeEntity(cloud); // TODO RECYCLE
@@ -73,10 +75,10 @@ public class BackgroundRenderSystem extends EntitySystem {
     }
 
     private void spawnNewCloud() {
-        spawnCloud(Gdx.graphics.getWidth(), MathUtils.random(0, Gdx.graphics.getHeight()), MathUtils.random(0.2f, 1f));
+        spawnCloud(Gdx.graphics.getWidth(), MathUtils.random(Gdx.graphics.getBackBufferHeight()>>1, Gdx.graphics.getHeight()), MathUtils.random(0.2f, 1f));
     }
     private void spawnRandomCloud() {
-        spawnCloud(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(0, Gdx.graphics.getHeight()), MathUtils.random(0.2f, 1f));
+        spawnCloud(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(Gdx.graphics.getBackBufferHeight()>>1, Gdx.graphics.getHeight()), MathUtils.random(0.2f, 1f));
     }
 
     private void spawnCloud(int x, int y, float z) {

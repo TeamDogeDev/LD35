@@ -18,7 +18,6 @@ import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.components.*;
 import de.dogedev.ld35.ashley.systems.*;
-import de.dogedev.ld35.michelangelo.DebugTileLayer;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
 import de.dogedev.ld35.overlays.DebugOverlay;
@@ -42,7 +41,7 @@ public class GameScreen implements Screen {
         camera.update();
 
         demoMap = new TmxMapLoader().load("level/basic.tmx");
-        demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
+        // demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
 
         Statics.ashley.addSystem(new BackgroundRenderSystem(camera));
         Statics.ashley.addSystem(new MapRenderSystem(demoMap, camera));
