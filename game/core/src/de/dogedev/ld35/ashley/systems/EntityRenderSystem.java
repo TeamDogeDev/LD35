@@ -84,14 +84,14 @@ public class EntityRenderSystem extends EntitySystem implements EntityListener {
                 if(ac.center){
                     xOffset = ac.currentAnimation.getKeyFrame(ac.currentAnimationTime).getRegionWidth()/2;
                 }
-                batch.draw(ac.currentAnimation.getKeyFrame(ac.currentAnimationTime), position.x+xOffset, position.y+position.z);
+                batch.draw(ac.currentAnimation.getKeyFrame(ac.currentAnimationTime), position.x-xOffset, position.y+position.z);
                 ac.currentAnimationTime += deltaTime;
             } else {
                 SpriteComponent visual = ComponentMappers.sprite.get(e);
                 if(visual.center){
                     xOffset = visual.textureRegion.getRegionWidth()/2;
                 }
-                batch.draw(visual.textureRegion, position.x+xOffset, position.y+position.z);
+                batch.draw(visual.textureRegion, position.x-xOffset, position.y+position.z);
             }
 
             NameComponent nc = ComponentMappers.name.get(e);

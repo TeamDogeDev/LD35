@@ -139,8 +139,7 @@ public class GameScreen implements Screen {
 //        sc.textureRegion = new TextureRegion(new Texture("entities/playerDemo.png"));
 //        entity.add(sc);
         AnimationComponent anc = Statics.ashley.createComponent(AnimationComponent.class);
-        anc.center = false;
-        TextureRegion[][] split = TextureRegion.split(Statics.asset.getTexture(Textures.JOHN), 32, 64);
+        TextureRegion[][] split = TextureRegion.split(Statics.asset.getTexture(Textures.JOHN), 16, 32);
 
         anc.idleAnimation = new Animation(2f, new Array<>(new TextureRegion[]{split[0][0]}), Animation.PlayMode.LOOP);
         anc.walkRightAnimation = new Animation(0.1f, new Array<>(split[0]), Animation.PlayMode.LOOP);
