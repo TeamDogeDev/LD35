@@ -61,7 +61,6 @@ public class AccelerationSystem extends EntitySystem  {
             PositionComponent position = ComponentMappers.position.get(e);
             if(position != null && position.isStanding && velocity.x != 0){
                 acceleration.x *= 0.2f;
-                velocity.x *= 0.9*deltaTime;
             }
 
         }
