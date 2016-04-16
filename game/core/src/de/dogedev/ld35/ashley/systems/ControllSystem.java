@@ -8,10 +8,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import de.dogedev.ld35.ashley.ComponentMappers;
-import de.dogedev.ld35.ashley.components.AccelerationComponent;
-import de.dogedev.ld35.ashley.components.PlayerComponent;
-import de.dogedev.ld35.ashley.components.PositionComponent;
-import de.dogedev.ld35.ashley.components.VelocityComponent;
+import de.dogedev.ld35.ashley.components.*;
 
 /**
  * Created by Furuha on 28.01.2016.
@@ -40,12 +37,19 @@ public class ControllSystem extends EntitySystem {
             AccelerationComponent acceleration = ComponentMappers.acceleration.get(e);
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
             PositionComponent pc = ComponentMappers.position.get(e);
+            AnimationComponent ac = ComponentMappers.animation.get(e);
+
+            if(pc.isStanding){
+                ac.currentAnimation = ac.idleAnimation;
+            }
 
             acceleration.x = 0;
             acceleration.y = 0;
 
             if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 acceleration.x = -5;
+                ac.currentAnimation = ac.walkAnimation;
+
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 //                velocity.speed = 10;
@@ -54,10 +58,14 @@ public class ControllSystem extends EntitySystem {
             }
             if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 acceleration.x = 5;
+                ac.currentAnimation = ac.walkAnimation;
             }
             if (pc.isStanding && (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                acceleration.y = 200;
+                ac.currentAnimationTime = 0;
+                ac.currentAnimation = ac.jumpAnimation;
+                acceleration.y = 250;
             }
+
             //Don't slide
             if(pc.isStanding && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.D) && ! Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
                 acceleration.x = 0;

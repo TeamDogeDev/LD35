@@ -65,7 +65,6 @@ public class MovementSystem extends EntitySystem implements EntityListener {
     @Override
     public void update (float deltaTime) {
 
-
         Collections.sort(sortedEntities, comparator);
 
         for (int i = 0; i < sortedEntities.size(); ++i) {
@@ -73,7 +72,6 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
             PositionComponent position = ComponentMappers.position.get(e);
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
-
 
             int yTile = (int)(position.y+velocity.y)/16;
             int xTile = (int)(position.x)/16;
