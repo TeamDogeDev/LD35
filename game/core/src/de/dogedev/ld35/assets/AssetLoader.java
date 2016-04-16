@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Disposable;
+import com.strongjoshua.console.Console;
 import de.dogedev.ld35.assets.enums.*;
 import de.dogedev.ld35.overlays.DebugOverlay;
 
@@ -98,7 +99,8 @@ public class AssetLoader implements Disposable {
         ShaderProgram.pedantic = false;
         ShaderProgram retVal = new ShaderProgram(Gdx.files.internal(shaderProgram.vertexShader),
                 Gdx.files.internal(shaderProgram.fragmentShader));
-        DebugOverlay.console.log(retVal.isCompiled() ? shaderProgram.name() + " compiled." : retVal.getLog());
+        DebugOverlay.console.log(retVal.isCompiled() ? shaderProgram.name() + " compiled." : retVal.getLog(),
+                                 retVal.isCompiled() ? Console.LogLevel.SUCCESS : Console.LogLevel.ERROR);
         return retVal;
     }
 
