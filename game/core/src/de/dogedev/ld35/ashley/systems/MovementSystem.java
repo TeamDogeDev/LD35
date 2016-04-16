@@ -5,6 +5,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import de.dogedev.ld35.ashley.ComponentMappers;
+import de.dogedev.ld35.ashley.components.BackgroundComponent;
 import de.dogedev.ld35.ashley.components.PositionComponent;
 import de.dogedev.ld35.ashley.components.VelocityComponent;
 
@@ -31,8 +32,8 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void addedToEngine (Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).get());
-        engine.addEntityListener(Family.all(PositionComponent.class, VelocityComponent.class).get(), this);
+        entities = engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).exclude(BackgroundComponent.class).get());
+        engine.addEntityListener(Family.all(PositionComponent.class, VelocityComponent.class).exclude(BackgroundComponent.class).get(), this);
         for(Entity e: entities){
             sortedEntities.add(e);
         }
