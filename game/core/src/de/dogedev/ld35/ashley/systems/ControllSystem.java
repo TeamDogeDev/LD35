@@ -46,7 +46,7 @@ public class ControllSystem extends EntitySystem {
 //                velocity.direction.y = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                velocity.x = -10;
+                velocity.x = -5;
                 velocity.y = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
@@ -55,7 +55,7 @@ public class ControllSystem extends EntitySystem {
 //                velocity.direction.y = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                velocity.x = 10;
+                velocity.x = 5;
                 velocity.y = 0;
             }
 

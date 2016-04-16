@@ -22,6 +22,7 @@ import de.dogedev.ld35.ashley.components.VelocityComponent;
 import de.dogedev.ld35.ashley.systems.ControllSystem;
 import de.dogedev.ld35.ashley.systems.MovementSystem;
 import de.dogedev.ld35.ashley.systems.RenderSystem;
+import de.dogedev.ld35.michelangelo.DebugTileLayer;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
 import de.dogedev.ld35.overlays.DebugOverlay;
@@ -43,6 +44,7 @@ public class GameScreen implements Screen {
         camera.translate(320, 180);
 
         demoMap = new TmxMapLoader().load("level/basic.tmx");
+        demoMap.getLayers().add(new DebugTileLayer(16,16,"debug"));
         mapRenderer = new OrthogonalTiledMapRenderer(demoMap);
 
         Statics.ashley.addSystem(new RenderSystem(camera));
@@ -105,7 +107,7 @@ public class GameScreen implements Screen {
         PlayerComponent plc = Statics.ashley.createComponent(PlayerComponent.class);
         entity.add(plc);
         SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
-        sc.textureRegion = new TextureRegion(new Texture("john.png"));
+        sc.textureRegion = new TextureRegion(new Texture("playerDemo.png"));
         entity.add(sc);
         Statics.ashley.addEntity(entity);
     }
