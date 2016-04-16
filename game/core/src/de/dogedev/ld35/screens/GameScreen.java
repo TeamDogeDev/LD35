@@ -82,21 +82,6 @@ public class GameScreen implements Screen {
         demoEntity();
 
         Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean scrolled(int amount) {
-//                if(amount < 0){
-//                    camera.zoom /= 2f;
-//                } else {
-//                    camera.zoom *= 2f;
-//                }
-//                if (camera.zoom > 1) {
-//                    camera.zoom = 1;
-//                }
-//                if (camera.zoom < 0.25f) {
-//                    camera.zoom = 0.25f;
-//                }
-                return super.scrolled(amount);
-            }
 
             boolean fullscreen = false;
 
