@@ -16,11 +16,12 @@ import java.text.DecimalFormat;
  * Created by elektropapst on 27.12.2015.
  */
 public class DebugOverlay extends AbstractOverlay {
+    public static Console console = new Console();
+
     private BitmapFont font;
     private OrthographicCamera camera;
     private DecimalFormat floatFormat = new DecimalFormat("#.##");
     private PooledEngine ashley;
-    private Console console;
 
     public DebugOverlay(OrthographicCamera camera, PooledEngine ashley) {
         init();
@@ -31,7 +32,6 @@ public class DebugOverlay extends AbstractOverlay {
     @Override
     public void init() {
         font = new BitmapFont();
-        console = new Console();
         console.setSizePercent(100, 33);
         console.setPositionPercent(0, 67);
         console.setKeyID(Input.Keys.F2);

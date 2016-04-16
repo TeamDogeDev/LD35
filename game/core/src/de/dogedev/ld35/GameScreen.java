@@ -25,7 +25,6 @@ public class GameScreen implements Screen {
     private final OrthogonalTiledMapRenderer mapRenderer;
 
     public GameScreen(){
-        Statics.initCat();
         overlays = new Array<>();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 0.5f;
