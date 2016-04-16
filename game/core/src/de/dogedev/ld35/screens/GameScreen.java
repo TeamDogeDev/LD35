@@ -7,7 +7,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -22,7 +23,7 @@ import de.dogedev.ld35.ashley.components.VelocityComponent;
 import de.dogedev.ld35.ashley.systems.ControllSystem;
 import de.dogedev.ld35.ashley.systems.MovementSystem;
 import de.dogedev.ld35.ashley.systems.RenderSystem;
-import de.dogedev.ld35.michelangelo.DebugTileLayer;
+import de.dogedev.ld35.assets.enums.Textures;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
 import de.dogedev.ld35.overlays.DebugOverlay;
@@ -36,8 +37,10 @@ public class GameScreen implements Screen {
     private final Array<AbstractOverlay> overlays;
     private final TiledMap demoMap;
     private final OrthogonalTiledMapRenderer mapRenderer;
+    private Batch batch;
 
     public GameScreen(){
+        batch = new SpriteBatch();
         overlays = new Array<>();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 0.5f;
@@ -125,6 +128,12 @@ public class GameScreen implements Screen {
 //        input();
 
         camera.update();
+
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        batch.draw(Statics.asset.getTexture(Textures.SKY), 0, 0);
+        batch.end();
+
         mapRenderer.setView(camera);
         mapRenderer.render();
         Statics.ashley.update(delta);
