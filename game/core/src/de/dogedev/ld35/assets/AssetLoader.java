@@ -26,7 +26,7 @@ public class AssetLoader implements Disposable {
     private AssetManager manager = new AssetManager();
 
     public AssetLoader() {
-        // loadTextures();
+        loadTextures();
         // loadParticles();
         // loadMusics();
         // loadSounds();

@@ -9,7 +9,8 @@ package de.dogedev.ld35.assets.enums;
  */
 public enum Textures {
 
-    TMP("");
+    JOHN("entities/john.png"),
+    SKY("textures/sky.png");
 
     public String name;
 
