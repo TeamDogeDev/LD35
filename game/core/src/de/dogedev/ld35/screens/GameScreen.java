@@ -1,4 +1,4 @@
-package de.dogedev.ld35;
+package de.dogedev.ld35.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.Array;
+import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
 import de.dogedev.ld35.overlays.DebugOverlay;

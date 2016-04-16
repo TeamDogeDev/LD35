@@ -1,6 +1,7 @@
 package de.dogedev.ld35;
 
 import com.badlogic.gdx.Game;
+import de.dogedev.ld35.screens.GameScreen;
 
 public class LDGame extends Game {
 
