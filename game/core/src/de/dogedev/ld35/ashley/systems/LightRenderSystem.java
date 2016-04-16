@@ -45,10 +45,10 @@ public class LightRenderSystem extends EntitySystem {
         shadowRenderShader = Statics.asset.getShader(ShaderPrograms.SHADOWRENDER);
         batch = new SpriteBatch();
 
-        occludersFBO = new FrameBuffer(Pixmap.Format.RGBA8888, 512, 512, false);
+        occludersFBO = new FrameBuffer(Pixmap.Format.RGBA8888, 2048, 2048, false);
         occludersTexture = new TextureRegion(occludersFBO.getColorBufferTexture());
         occludersTexture.flip(false, true);
-        shadowMapFBO = new FrameBuffer(Pixmap.Format.RGBA8888, 512, 1, false);
+        shadowMapFBO = new FrameBuffer(Pixmap.Format.RGBA8888, 2048, 1, false);
         Texture shadowMapTexture = shadowMapFBO.getColorBufferTexture();
         shadowMapTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         shadowMapTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
@@ -160,4 +160,6 @@ public class LightRenderSystem extends EntitySystem {
 
         batch.setColor(Color.WHITE);
     }
+
+
 }

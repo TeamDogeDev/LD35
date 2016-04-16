@@ -55,29 +55,29 @@ public class GameScreen implements Screen {
 
         Entity e = Statics.ashley.createEntity();
         LightComponent lc = Statics.ashley.createComponent(LightComponent.class);
-        lc.color = Color.YELLOW;
-        lc.lightSize = 512;
+        lc.color = new Color(1f, 1f, .87f, 0.6f);
+        lc.lightSize = 2048;
         lc.softShadows = true;
         PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
-        pc.x = 300;
-        pc.y = 300;
+        pc.x = Gdx.graphics.getWidth()-16*8;
+        pc.y = Gdx.graphics.getHeight()-16;
 
         e.add(pc);
         e.add(lc);
         Statics.ashley.addEntity(e);
 
-        e = Statics.ashley.createEntity();
-        lc = Statics.ashley.createComponent(LightComponent.class);
-        lc.color = Color.GREEN;
-        lc.lightSize = 512;
-        lc.softShadows = true;
-        pc = Statics.ashley.createComponent(PositionComponent.class);
-        pc.x = 800;
-        pc.y = 160;
-
-        e.add(pc);
-        e.add(lc);
-        Statics.ashley.addEntity(e);
+        // e = Statics.ashley.createEntity();
+        // lc = Statics.ashley.createComponent(LightComponent.class);
+        // lc.color = Color.GREEN;
+        // lc.lightSize = 512;
+        // lc.softShadows = true;
+        // pc = Statics.ashley.createComponent(PositionComponent.class);
+        // pc.x = 800;
+        // pc.y = 160;
+        //
+        // e.add(pc);
+        // e.add(lc);
+        // Statics.ashley.addEntity(e);
 
         demoEntity();
 
