@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.assets.enums.ShaderPrograms;
@@ -64,10 +65,12 @@ public class MapRenderSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         renderLight();
-        mapRenderer.render();
+        // mapRenderer.render();
         batch.begin();
-        batch.setShader(null);
-        batch.draw(Statics.asset.getTexture(Textures.JOHN), 200, 400);
+        batch.draw(occludersTexture, 100, 100);
+        // batch.setShader(null);
+        // mapRenderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("deco"));
+        // batch.draw(Statics.asset.getTexture(Textures.JOHN), 200, 400);
 
         batch.end();
         //
@@ -89,8 +92,8 @@ public class MapRenderSystem extends EntitySystem {
     }
 
     private void renderLight() {
-        float mx = 150;
-        float my = 400;
+        float mx = Gdx.input.getX();
+        float my = Gdx.graphics.getHeight() - Gdx.input.getY();
 
         occludersFBO.begin();
 
@@ -104,7 +107,7 @@ public class MapRenderSystem extends EntitySystem {
         batch.setProjectionMatrix(camera.combined);
         batch.setShader(null);
         batch.begin();
-        // shadowMapRenderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("collision"));
+        shadowMapRenderer.renderTileLayer((TiledMapTileLayer) map.getLayers().get("deco"));
         batch.draw(Statics.asset.getTexture(Textures.JOHN), 200, 400);
         batch.end();
         occludersFBO.end();

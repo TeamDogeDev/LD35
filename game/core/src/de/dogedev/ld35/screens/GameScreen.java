@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
         demoMap = new TmxMapLoader().load("level/basic.tmx");
         // demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
 
-        Statics.ashley.addSystem(new BackgroundRenderSystem(camera));
+        // Statics.ashley.addSystem(new BackgroundRenderSystem(camera));
         Statics.ashley.addSystem(new MapRenderSystem(demoMap, camera));
         Statics.ashley.addSystem(new EntityRenderSystem(camera));
         Statics.ashley.addSystem(new ControllSystem());
