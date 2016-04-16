@@ -24,6 +24,7 @@ import de.dogedev.ld35.ashley.systems.ControllSystem;
 import de.dogedev.ld35.ashley.systems.MovementSystem;
 import de.dogedev.ld35.ashley.systems.RenderSystem;
 import de.dogedev.ld35.assets.enums.Textures;
+import de.dogedev.ld35.michelangelo.DebugTileLayer;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
 import de.dogedev.ld35.overlays.DebugOverlay;
