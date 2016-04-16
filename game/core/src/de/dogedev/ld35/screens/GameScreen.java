@@ -1,16 +1,27 @@
 package de.dogedev.ld35.screens;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld35.Statics;
+import de.dogedev.ld35.ashley.components.PlayerComponent;
+import de.dogedev.ld35.ashley.components.PositionComponent;
+import de.dogedev.ld35.ashley.components.SpriteComponent;
+import de.dogedev.ld35.ashley.components.VelocityComponent;
+import de.dogedev.ld35.ashley.systems.ControllSystem;
+import de.dogedev.ld35.ashley.systems.MovementSystem;
+import de.dogedev.ld35.ashley.systems.RenderSystem;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
 import de.dogedev.ld35.overlays.DebugOverlay;
@@ -33,6 +44,12 @@ public class GameScreen implements Screen {
 
         demoMap = new TmxMapLoader().load("level/basic.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(demoMap);
+
+        Statics.ashley.addSystem(new RenderSystem(camera));
+        Statics.ashley.addSystem(new ControllSystem());
+        Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get(0)));
+
+        demoEntity();
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -75,6 +92,22 @@ public class GameScreen implements Screen {
         });
 
         overlays.add(new DebugOverlay(camera, Statics.ashley));
+    }
+
+    private void demoEntity() {
+        Entity entity = Statics.ashley.createEntity();
+        PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
+        pc.set(160, 160);
+        entity.add(pc);
+        VelocityComponent vc = Statics.ashley.createComponent(VelocityComponent.class);
+        vc.set(0, 0);
+        entity.add(vc);
+        PlayerComponent plc = Statics.ashley.createComponent(PlayerComponent.class);
+        entity.add(plc);
+        SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
+        sc.textureRegion = new TextureRegion(new Texture("playerDemo.png"));
+        entity.add(sc);
+        Statics.ashley.addEntity(entity);
     }
 
     @Override
