@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Pool;
  *
  * @author elektropapst
  */
-public class KeyComponent implements Pool.Poolable, Component {
+public class KeyComponent implements Component, Pool.Poolable {
 
     public int keyId;
 

@@ -47,6 +47,7 @@ public class GameScreen implements Screen {
 
         Statics.ashley.addSystem(new BackgroundRenderSystem(camera));
         Statics.ashley.addSystem(new LightRenderSystem(demoMap, camera));
+        Statics.ashley.addSystem(new ItemSystem(demoMap));
         Statics.ashley.addSystem(new MapRenderSystem(demoMap, camera));
         Statics.ashley.addSystem(new EntityRenderSystem(camera));
         Statics.ashley.addSystem(new ControllSystem());

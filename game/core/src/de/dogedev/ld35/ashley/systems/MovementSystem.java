@@ -4,11 +4,9 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
-import de.dogedev.ld35.ashley.components.BackgroundComponent;
-import de.dogedev.ld35.ashley.components.PositionComponent;
-import de.dogedev.ld35.ashley.components.SizeComponent;
-import de.dogedev.ld35.ashley.components.VelocityComponent;
+import de.dogedev.ld35.ashley.components.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +20,7 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
     private final TiledMapTileLayer collisionlayer;
     private ImmutableArray<Entity> entities;
+    private ImmutableArray<Entity> keys;
     private ArrayList<Entity> sortedEntities;
     private YComparator comparator = new YComparator();
     private BitmapFont font;
@@ -32,17 +31,18 @@ public class MovementSystem extends EntitySystem implements EntityListener {
     }
 
     @Override
-    public void addedToEngine (Engine engine) {
+    public void addedToEngine(Engine engine) {
         entities = engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).exclude(BackgroundComponent.class).get());
+        keys = engine.getEntitiesFor(Family.all(PositionComponent.class, KeyComponent.class).exclude(BackgroundComponent.class).get());
         engine.addEntityListener(Family.all(PositionComponent.class, VelocityComponent.class).exclude(BackgroundComponent.class).get(), this);
-        for(Entity e: entities){
+        for (Entity e : entities) {
             sortedEntities.add(e);
         }
         Collections.sort(sortedEntities, comparator);
     }
 
     @Override
-    public void removedFromEngine (Engine engine) {
+    public void removedFromEngine(Engine engine) {
         engine.removeEntityListener(this);
     }
 
@@ -54,17 +54,17 @@ public class MovementSystem extends EntitySystem implements EntityListener {
     }
 
     @Override
-    public void entityAdded (Entity entity) {
+    public void entityAdded(Entity entity) {
         sortedEntities.add(entity);
     }
 
     @Override
-    public void entityRemoved (Entity entity) {
+    public void entityRemoved(Entity entity) {
         sortedEntities.remove(entity);
     }
 
     @Override
-    public void update (float deltaTime) {
+    public void update(float deltaTime) {
 
         Collections.sort(sortedEntities, comparator);
 
@@ -77,26 +77,35 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
             int width = 1;
             int height = 1;
-            if(size != null){
+            if (size != null) {
                 width = size.width;
                 height = size.height;
             }
 
-            int yTile = (int)(position.y+velocity.y)/16;;
-            int xTile = (int)(position.x)/16;
-            int xTile2 = (int)(position.x+16)/16;
+            int yTile = (int) (position.y + velocity.y) / 16;
 
-            for(int widthStep = 0; widthStep < width; widthStep++){
+            int xTile = (int) (position.x) / 16;
+            int xTile2 = (int) (position.x + 16) / 16;
 
-                if(velocity.y <0){
-                    if(collisionlayer != null && (collisionlayer.getCell(xTile, yTile) != null || collisionlayer.getCell(xTile2, yTile) != null)){
+            for (Entity key : keys) {
+                PositionComponent keyPc = ComponentMappers.position.get(key);
+                if (((keyPc.x / 16) == xTile) && ((keyPc.y / 16) == yTile + 1)) {
+                    // COLLECTED
+                    Statics.ashley.removeEntity(key);
+                }
+            }
+
+            for (int widthStep = 0; widthStep < width; widthStep++) {
+
+                if (velocity.y < 0) {
+                    if (collisionlayer != null && (collisionlayer.getCell(xTile, yTile) != null || collisionlayer.getCell(xTile2, yTile) != null)) {
                         position.isStanding = true;
-                        velocity.y = -1*(position.y-((yTile+1)*16));
+                        velocity.y = -1 * (position.y - ((yTile + 1) * 16));
                     } else {
                         position.isStanding = false;
                     }
-                } else if(velocity.y > 0) {
-                    if(collisionlayer != null && (collisionlayer.getCell(xTile, yTile+height) != null || collisionlayer.getCell(xTile2, yTile+height) != null)){
+                } else if (velocity.y > 0) {
+                    if (collisionlayer != null && (collisionlayer.getCell(xTile, yTile + height) != null || collisionlayer.getCell(xTile2, yTile + height) != null)) {
                         position.isStanding = false;
                         velocity.y = 0;
                     } else {
@@ -108,16 +117,16 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             }
 
 
-            xTile = (int)(position.x+velocity.x)/16;
-            yTile = (int)(position.y+velocity.y)/16;
-            for(int heightStep = 0; heightStep < height; heightStep++){
-                if(velocity.x < 0){
-                    if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
+            xTile = (int) (position.x + velocity.x) / 16;
+            yTile = (int) (position.y + velocity.y) / 16;
+            for (int heightStep = 0; heightStep < height; heightStep++) {
+                if (velocity.x < 0) {
+                    if (collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null) {
                         velocity.x = 0;
                         break;
                     }
-                } else if(velocity.x > 0){
-                    if(collisionlayer != null && collisionlayer.getCell(xTile+width, yTile) != null){
+                } else if (velocity.x > 0) {
+                    if (collisionlayer != null && collisionlayer.getCell(xTile + width, yTile) != null) {
                         velocity.x = 0;
                         break;
                     }
@@ -126,19 +135,18 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             }
 
 
-
             position.add(velocity);
 
         }
 
     }
 
-    private boolean rectCollides(float x1, float y1, float x2, float y2, float size){
+    private boolean rectCollides(float x1, float y1, float x2, float y2, float size) {
 //        checks++;
-        if((x1-size) < x2 && x2 < (x1+size) && Math.abs(y2-y1) < size){
+        if ((x1 - size) < x2 && x2 < (x1 + size) && Math.abs(y2 - y1) < size) {
             return true;
         }
-        if((y1-size) < y2 && y2 < (y1+size) && Math.abs(x2-x1) < size){
+        if ((y1 - size) < y2 && y2 < (y1 + size) && Math.abs(x2 - x1) < size) {
             return true;
         }
         return false;
@@ -146,6 +154,6 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
 
     private float distance(float i, float y) {
-        return Math.abs(i-y);
+        return Math.abs(i - y);
     }
 }
