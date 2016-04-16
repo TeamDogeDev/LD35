@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.BackgroundComponent;
 import de.dogedev.ld35.ashley.components.PositionComponent;
+import de.dogedev.ld35.ashley.components.SizeComponent;
 import de.dogedev.ld35.ashley.components.VelocityComponent;
 
 import java.util.ArrayList;
@@ -72,53 +73,59 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
             PositionComponent position = ComponentMappers.position.get(e);
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
+            SizeComponent size = ComponentMappers.size.get(e);
 
-            int yTile = (int)(position.y+velocity.y)/16;
+            int width = 1;
+            int height = 1;
+            if(size != null){
+                width = size.width;
+                height = size.height;
+            }
+
+            int yTile = (int)(position.y+velocity.y)/16;;
             int xTile = (int)(position.x)/16;
             int xTile2 = (int)(position.x+16)/16;
 
-            if(velocity.y <0){
-                if(collisionlayer != null && (collisionlayer.getCell(xTile, yTile) != null || collisionlayer.getCell(xTile2, yTile) != null)){
-                    position.isStanding = true;
-                    velocity.y = -1*(position.y-((yTile+1)*16));
-                } else {
-                    position.isStanding = false;
+            for(int widthStep = 0; widthStep < width; widthStep++){
+
+                if(velocity.y <0){
+                    if(collisionlayer != null && (collisionlayer.getCell(xTile, yTile) != null || collisionlayer.getCell(xTile2, yTile) != null)){
+                        position.isStanding = true;
+                        velocity.y = -1*(position.y-((yTile+1)*16));
+                    } else {
+                        position.isStanding = false;
+                    }
+                } else if(velocity.y > 0) {
+                    if(collisionlayer != null && (collisionlayer.getCell(xTile, yTile+height) != null || collisionlayer.getCell(xTile2, yTile+height) != null)){
+                        position.isStanding = false;
+                        velocity.y = 0;
+                    } else {
+                        position.isStanding = false;
+                    }
                 }
-            } else if(velocity.y > 0) {
-                if(collisionlayer != null && (collisionlayer.getCell(xTile, yTile+2) != null || collisionlayer.getCell(xTile2, yTile+2) != null)){
-                    position.isStanding = false;
-                    velocity.y = 0;
-                } else {
-                    position.isStanding = false;
-                }
+                xTile++;
+                xTile2++;
             }
 
 
             xTile = (int)(position.x+velocity.x)/16;
             yTile = (int)(position.y+velocity.y)/16;
-            if(velocity.x < 0){
-                if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
-                    velocity.x = 0;
+            for(int heightStep = 0; heightStep < height; heightStep++){
+                if(velocity.x < 0){
+                    if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
+                        velocity.x = 0;
+                        break;
+                    }
+                } else if(velocity.x > 0){
+                    if(collisionlayer != null && collisionlayer.getCell(xTile+width, yTile) != null){
+                        velocity.x = 0;
+                        break;
+                    }
                 }
-            } else if(velocity.x > 0){
-                if(collisionlayer != null && collisionlayer.getCell(xTile+1, yTile) != null){
-                    velocity.x = 0;
-
-                }
+                yTile += 1;
             }
 
-            yTile += 1;
-            if(velocity.x < 0){
-                if(collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null){
-                    velocity.x = 0;
 
-                }
-            } else if(velocity.x > 0){
-                if(collisionlayer != null && collisionlayer.getCell(xTile+1, yTile) != null){
-                    velocity.x = 0;
-
-                }
-            }
 
             position.add(velocity);
 

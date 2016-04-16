@@ -140,6 +140,10 @@ public class GameScreen implements Screen {
         AccelerationComponent ac = Statics.ashley.createComponent(AccelerationComponent.class);
         ac.set(0, 0);
         entity.add(ac);
+        SizeComponent sc = Statics.ashley.createComponent(SizeComponent.class);
+        sc.height = 2;
+        sc.width = 1;
+        entity.add(sc);
         PlayerComponent plc = Statics.ashley.createComponent(PlayerComponent.class);
         entity.add(plc);
 //        SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
