@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -113,10 +114,19 @@ public class GameScreen implements Screen {
         entity.add(ac);
         PlayerComponent plc = Statics.ashley.createComponent(PlayerComponent.class);
         entity.add(plc);
-        SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
-        sc.center = false;
-        sc.textureRegion = new TextureRegion(new Texture("entities/playerDemo.png"));
-        entity.add(sc);
+//        SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
+//        sc.center = false;
+//        sc.textureRegion = new TextureRegion(new Texture("entities/playerDemo.png"));
+//        entity.add(sc);
+        AnimationComponent anc = Statics.ashley.createComponent(AnimationComponent.class);
+        anc.center = false;
+        anc.idleAnimation = new Animation(2f, new Array<>(new TextureRegion[]{new TextureRegion(new Texture("entities/playerDemo.png")) }), Animation.PlayMode.LOOP);
+        anc.walkAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{new TextureRegion(new Texture("entities/playerDemo_walk1.png")), new TextureRegion(new Texture("entities/playerDemo_walk2.png")) }), Animation.PlayMode.LOOP);
+        anc.jumpAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{new TextureRegion(new Texture("entities/playerDemo_jump1.png")), new TextureRegion(new Texture("entities/playerDemo_jump2.png")) }), Animation.PlayMode.NORMAL);
+        anc.fallAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{new TextureRegion(new Texture("entities/playerDemo_jump2.png"))}), Animation.PlayMode.LOOP);
+        anc.currentAnimation = anc.idleAnimation;
+
+        entity.add(anc);
         Statics.ashley.addEntity(entity);
     }
 

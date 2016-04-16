@@ -10,6 +10,10 @@ import com.badlogic.gdx.utils.Pool;
 public class AnimationComponent implements Component, Pool.Poolable {
 
     public Animation currentAnimation;
+    public Animation jumpAnimation;
+    public Animation fallAnimation;
+    public Animation walkAnimation;
+    public Animation idleAnimation;
     public float currentAnimationTime;
     public boolean center;
 
