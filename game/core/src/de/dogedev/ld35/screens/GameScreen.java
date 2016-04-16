@@ -1,7 +1,10 @@
 package de.dogedev.ld35.screens;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,15 +14,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.components.*;
-import de.dogedev.ld35.ashley.systems.AccelerationSystem;
-import de.dogedev.ld35.ashley.systems.ControllSystem;
-import de.dogedev.ld35.ashley.systems.MovementSystem;
-import de.dogedev.ld35.ashley.systems.RenderSystem;
-import de.dogedev.ld35.assets.enums.Textures;
+import de.dogedev.ld35.ashley.systems.*;
 import de.dogedev.ld35.michelangelo.DebugTileLayer;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
@@ -33,7 +31,6 @@ public class GameScreen implements Screen {
     private final OrthographicCamera camera;
     private final Array<AbstractOverlay> overlays;
     private final TiledMap demoMap;
-    private final OrthogonalTiledMapRenderer mapRenderer;
     private Batch batch;
 
     public GameScreen() {
@@ -42,12 +39,14 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 1f;
         camera.translate(1280 >> 1, 720 >> 1);
+        camera.update();
 
         demoMap = new TmxMapLoader().load("level/basic.tmx");
         demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
-        mapRenderer = new OrthogonalTiledMapRenderer(demoMap);
 
-        Statics.ashley.addSystem(new RenderSystem(camera));
+        Statics.ashley.addSystem(new BackgroundRenderSystem(camera));
+        Statics.ashley.addSystem(new MapRenderSystem(demoMap, camera));
+        Statics.ashley.addSystem(new EntityRenderSystem(camera));
         Statics.ashley.addSystem(new ControllSystem());
         Statics.ashley.addSystem(new AccelerationSystem());
         Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get(0)));
@@ -134,15 +133,6 @@ public class GameScreen implements Screen {
 //        input();
 
         camera.update();
-
-        batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        batch.draw(Statics.asset.getTexture(Textures.SKY), 0, 0);
-        batch.draw(Statics.asset.getTexture(Textures.CLOUD), 300, 300);
-        batch.end();
-
-        mapRenderer.setView(camera);
-        mapRenderer.render();
         Statics.ashley.update(delta);
 
         //Render Overlays
