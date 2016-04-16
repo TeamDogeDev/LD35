@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.components.*;
@@ -165,7 +166,7 @@ public class GameScreen implements Screen {
 //        input();
 
         camera.update();
-        Statics.ashley.update(delta);
+        Statics.ashley.update(MathUtils.clamp(delta, 0, 0.020f));
 
         //Render Overlays
         for (AbstractOverlay overlay : overlays) {
