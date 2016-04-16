@@ -44,27 +44,22 @@ public class ControllSystem extends EntitySystem {
             acceleration.x = 0;
             acceleration.y = 0;
 
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-//                velocity.speed = 10;
-//                velocity.direction.x = 0;
-//                velocity.direction.y = 0;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 acceleration.x = -5;
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 //                velocity.speed = 10;
 //                velocity.direction.x = 0;
 //                velocity.direction.y = 0;
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 acceleration.x = 5;
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && pc.isStanding) {
+            if (pc.isStanding && (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
                 acceleration.y = 200;
             }
             //Don't slide
-            if(!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D) && pc.isStanding){
+            if(pc.isStanding && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.D) && ! Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
                 acceleration.x = 0;
                 velocity.x *= 0.9;
             }
