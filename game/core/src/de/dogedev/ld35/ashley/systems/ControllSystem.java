@@ -38,7 +38,8 @@ public class ControllSystem extends EntitySystem {
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
             PositionComponent pc = ComponentMappers.position.get(e);
             AnimationComponent ac = ComponentMappers.animation.get(e);
-
+            SizeComponent sc = ComponentMappers.size.get(e);
+            sc.height = 2;
             if(pc.isStanding){
                 ac.currentAnimation = ac.idleAnimation;
             }
@@ -58,6 +59,7 @@ public class ControllSystem extends EntitySystem {
 //                velocity.speed = 10;
 //                velocity.direction.x = 0;
 //                velocity.direction.y = 0;
+                sc.height = 1;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 acceleration.x = 5;
