@@ -118,7 +118,7 @@ public class LightRenderSystem extends EntitySystem {
                 batch.draw(esc.textureRegion, epc.x, epc.y);
             } else {
                 eac = ComponentMappers.animation.get(e);
-                batch.draw(eac.currentAnimation.getKeyFrame(eac.currentAnimationTime).getTexture(), epc.x, epc.y);
+                batch.draw(eac.currentAnimation.getKeyFrame(eac.currentAnimationTime), epc.x, epc.y);
             }
         }
         batch.end();

@@ -48,8 +48,11 @@ public class ControllSystem extends EntitySystem {
 
             if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 acceleration.x = -5;
-                ac.currentAnimation = ac.walkAnimation;
-
+                if(velocity.x > 0) {
+                    ac.currentAnimation = ac.walkRightAnimation;
+                } else if(velocity.x < 0){
+                    ac.currentAnimation = ac.walkLeftAnimation;
+                }
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 //                velocity.speed = 10;
@@ -58,7 +61,11 @@ public class ControllSystem extends EntitySystem {
             }
             if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 acceleration.x = 5;
-                ac.currentAnimation = ac.walkAnimation;
+                if(velocity.x > 0) {
+                    ac.currentAnimation = ac.walkRightAnimation;
+                } else if(velocity.x < 0){
+                    ac.currentAnimation = ac.walkLeftAnimation;
+                }
             }
             if (pc.isStanding && (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
                 ac.currentAnimationTime = 0;

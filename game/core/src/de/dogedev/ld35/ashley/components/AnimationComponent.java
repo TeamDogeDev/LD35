@@ -12,10 +12,11 @@ public class AnimationComponent implements Component, Pool.Poolable {
     public Animation currentAnimation;
     public Animation jumpAnimation;
     public Animation fallAnimation;
-    public Animation walkAnimation;
+    public Animation walkRightAnimation;
     public Animation idleAnimation;
     public float currentAnimationTime;
     public boolean center;
+    public Animation walkLeftAnimation;
 
     @Override
     public void reset() {

@@ -8,7 +8,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.components.*;
 import de.dogedev.ld35.ashley.systems.*;
+import de.dogedev.ld35.assets.enums.Textures;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
 import de.dogedev.ld35.overlays.DebugOverlay;
@@ -125,6 +125,7 @@ public class GameScreen implements Screen {
         entity.add(vc);
         AccelerationComponent ac = Statics.ashley.createComponent(AccelerationComponent.class);
         ac.set(0, 0);
+        ac.maxVelocityX = 3;
         entity.add(ac);
         SizeComponent sc = Statics.ashley.createComponent(SizeComponent.class);
         sc.height = 2;
@@ -138,10 +139,13 @@ public class GameScreen implements Screen {
 //        entity.add(sc);
         AnimationComponent anc = Statics.ashley.createComponent(AnimationComponent.class);
         anc.center = false;
-        anc.idleAnimation = new Animation(2f, new Array<>(new TextureRegion[]{new TextureRegion(new Texture("entities/playerDemo.png")) }), Animation.PlayMode.LOOP);
-        anc.walkAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{new TextureRegion(new Texture("entities/playerDemo_walk1.png")), new TextureRegion(new Texture("entities/playerDemo_walk2.png")) }), Animation.PlayMode.LOOP);
-        anc.jumpAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{new TextureRegion(new Texture("entities/playerDemo_jump1.png")), new TextureRegion(new Texture("entities/playerDemo_jump2.png")) }), Animation.PlayMode.NORMAL);
-        anc.fallAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{new TextureRegion(new Texture("entities/playerDemo_jump2.png"))}), Animation.PlayMode.LOOP);
+        TextureRegion[][] split = TextureRegion.split(Statics.asset.getTexture(Textures.JOHN), 32, 64);
+
+        anc.idleAnimation = new Animation(2f, new Array<>(new TextureRegion[]{split[0][0]}), Animation.PlayMode.LOOP);
+        anc.walkRightAnimation = new Animation(0.1f, new Array<>(split[0]), Animation.PlayMode.LOOP);
+        anc.walkLeftAnimation = new Animation(0.1f, new Array<>(split[1]), Animation.PlayMode.LOOP);
+        anc.jumpAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{split[0][0]}), Animation.PlayMode.NORMAL);
+        anc.fallAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{split[0][0]}), Animation.PlayMode.LOOP);
         anc.currentAnimation = anc.idleAnimation;
 
         entity.add(anc);
