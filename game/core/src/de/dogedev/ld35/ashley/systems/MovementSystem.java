@@ -87,14 +87,17 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             int xTile = (int) (position.x) / 16;
             int xTile2 = (int) (position.x + 16) / 16;
 
+            //Entity <-> Key Collision
             for (Entity key : keys) {
                 PositionComponent keyPc = ComponentMappers.position.get(key);
-                if (((keyPc.x / 16) == xTile) && ((keyPc.y / 16) == yTile + 1)) {
-                    // COLLECTED
+                if(rectCollides(position.x, position.x+(width*16), keyPc.x, keyPc.x+16, width+16) &&
+                    rectCollides(position.y, position.y+(height*16), keyPc.y, keyPc.y+16, height+16)){
                     Statics.ashley.removeEntity(key);
                 }
             }
 
+
+            //Entity Movement <-> Map Collision
             for (int widthStep = 0; widthStep < width; widthStep++) {
 
                 if (velocity.y < 0) {
