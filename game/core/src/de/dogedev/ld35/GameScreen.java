@@ -22,6 +22,8 @@ public class GameScreen implements Screen {
     public GameScreen(){
         overlays = new Array<>();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.zoom = 0.5f;
+
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean scrolled(int amount) {
