@@ -153,7 +153,7 @@ public class MapRenderSystem extends EntitySystem {
         shadowRenderShader.setUniformf("resolution", 512, 512);
         shadowRenderShader.setUniformf("softShadows", false ? 1f : 0f);
         //set color to light
-        batch.setColor(Color.GREEN);
+        batch.setColor(Color.WHITE);
 
         float finalSize = 512 * 1;
 

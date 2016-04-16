@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
         demoMap = new TmxMapLoader().load("level/basic.tmx");
         // demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
 
-        // Statics.ashley.addSystem(new BackgroundRenderSystem(camera));
+        Statics.ashley.addSystem(new BackgroundRenderSystem(camera));
         Statics.ashley.addSystem(new MapRenderSystem(demoMap, camera));
         Statics.ashley.addSystem(new EntityRenderSystem(camera));
         Statics.ashley.addSystem(new ControllSystem());
@@ -137,7 +137,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
+        Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 3f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 //        input();
