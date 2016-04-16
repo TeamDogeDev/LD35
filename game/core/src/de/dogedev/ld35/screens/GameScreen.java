@@ -1,10 +1,7 @@
 package de.dogedev.ld35.screens;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -41,15 +38,15 @@ public class GameScreen implements Screen {
     private final OrthogonalTiledMapRenderer mapRenderer;
     private Batch batch;
 
-    public GameScreen(){
+    public GameScreen() {
         batch = new SpriteBatch();
         overlays = new Array<>();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 1f;
-        camera.translate(1280>>1, 720>>1);
+        camera.translate(1280 >> 1, 720 >> 1);
 
         demoMap = new TmxMapLoader().load("level/basic.tmx");
-        demoMap.getLayers().add(new DebugTileLayer(16,16,"debug"));
+        demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
         mapRenderer = new OrthogonalTiledMapRenderer(demoMap);
 
         Statics.ashley.addSystem(new RenderSystem(camera));
@@ -89,6 +86,11 @@ public class GameScreen implements Screen {
                 }
                 if (keycode == Input.Keys.F11) {
                     fullscreen = !fullscreen;
+                    if (fullscreen) {
+                        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+                    } else {
+                        Gdx.graphics.setWindowedMode(1280, 720);
+                    }
                     return true;
                 } else if (keycode == Input.Keys.ESCAPE) {
                     Gdx.app.exit();
@@ -134,7 +136,7 @@ public class GameScreen implements Screen {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         batch.draw(Statics.asset.getTexture(Textures.SKY), 0, 0);
-        batch.draw(Statics.asset.getTexture(Textures.CLOUD), 100, 100);
+        batch.draw(Statics.asset.getTexture(Textures.CLOUD), 300, 300);
         batch.end();
 
         mapRenderer.setView(camera);
