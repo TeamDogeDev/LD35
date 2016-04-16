@@ -8,8 +8,9 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import de.dogedev.ld35.ashley.ComponentMappers;
+import de.dogedev.ld35.ashley.components.AccelerationComponent;
 import de.dogedev.ld35.ashley.components.PlayerComponent;
-import de.dogedev.ld35.ashley.components.VelocityComponent;
+import de.dogedev.ld35.ashley.components.PositionComponent;
 
 /**
  * Created by Furuha on 28.01.2016.
@@ -24,7 +25,7 @@ public class ControllSystem extends EntitySystem {
 
     @Override
     public void addedToEngine (Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PlayerComponent.class, VelocityComponent.class).get());
+        entities = engine.getEntitiesFor(Family.all(PlayerComponent.class, AccelerationComponent.class).get());
     }
 
     @Override
@@ -35,10 +36,10 @@ public class ControllSystem extends EntitySystem {
 
         for (int i = 0; i < entities.size(); ++i) {
             Entity e = entities.get(i);
-            VelocityComponent velocity = ComponentMappers.velocity.get(e);
+            AccelerationComponent acceleration = ComponentMappers.acceleration.get(e);
 
-            velocity.x = 0;
-            velocity.y = 0;
+            acceleration.x = 0;
+            acceleration.y = 0;
 
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 //                velocity.speed = 10;
@@ -46,8 +47,7 @@ public class ControllSystem extends EntitySystem {
 //                velocity.direction.y = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                velocity.x = -5;
-                velocity.y = 0;
+                acceleration.x = -5;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 //                velocity.speed = 10;
@@ -55,8 +55,11 @@ public class ControllSystem extends EntitySystem {
 //                velocity.direction.y = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                velocity.x = 5;
-                velocity.y = 0;
+                acceleration.x = 5;
+            }
+            PositionComponent pc = ComponentMappers.position.get(e);
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && pc.isStanding) {
+                acceleration.y = 200;
             }
 
         }

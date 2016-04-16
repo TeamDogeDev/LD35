@@ -14,10 +14,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld35.Statics;
-import de.dogedev.ld35.ashley.components.PlayerComponent;
-import de.dogedev.ld35.ashley.components.PositionComponent;
-import de.dogedev.ld35.ashley.components.SpriteComponent;
-import de.dogedev.ld35.ashley.components.VelocityComponent;
+import de.dogedev.ld35.ashley.components.*;
+import de.dogedev.ld35.ashley.systems.AccelerationSystem;
 import de.dogedev.ld35.ashley.systems.ControllSystem;
 import de.dogedev.ld35.ashley.systems.MovementSystem;
 import de.dogedev.ld35.ashley.systems.RenderSystem;
@@ -51,6 +49,7 @@ public class GameScreen implements Screen {
 
         Statics.ashley.addSystem(new RenderSystem(camera));
         Statics.ashley.addSystem(new ControllSystem());
+        Statics.ashley.addSystem(new AccelerationSystem());
         Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get(0)));
 
         demoEntity();
@@ -111,6 +110,9 @@ public class GameScreen implements Screen {
         VelocityComponent vc = Statics.ashley.createComponent(VelocityComponent.class);
         vc.set(0, 0);
         entity.add(vc);
+        AccelerationComponent ac = Statics.ashley.createComponent(AccelerationComponent.class);
+        ac.set(0, 0);
+        entity.add(ac);
         PlayerComponent plc = Statics.ashley.createComponent(PlayerComponent.class);
         entity.add(plc);
         SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);

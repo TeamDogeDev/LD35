@@ -31,8 +31,8 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void addedToEngine (Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PositionComponent.class).get());
-        engine.addEntityListener(Family.all(PositionComponent.class).get(), this);
+        entities = engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).get());
+        engine.addEntityListener(Family.all(PositionComponent.class, VelocityComponent.class).get(), this);
         for(Entity e: entities){
             sortedEntities.add(e);
         }
@@ -73,7 +73,6 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             PositionComponent position = ComponentMappers.position.get(e);
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
 
-            velocity.y -= deltaTime * 9.81f*16;
 
             int xTile = (int)((position.x+velocity.x))/16;
             int yTile = (int)((position.y+velocity.y)-1)/16;
