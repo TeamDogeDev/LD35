@@ -76,7 +76,7 @@ public class ControllSystem extends EntitySystem {
             //Don't slide
             if(pc.isStanding && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.D) && ! Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
                 acceleration.x = 0;
-                velocity.x *= 0.9;
+                velocity.x *= 0.3;
             }
 
         }
