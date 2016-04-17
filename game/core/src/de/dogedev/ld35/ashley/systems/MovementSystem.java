@@ -82,16 +82,16 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                 height = size.height;
             }
 
-            int yTile = (int) (position.y + velocity.y) / 16;
+            int yTile = (int) (position.y + velocity.y) / Statics.tileSize;
 
-            int xTile = (int) (position.x) / 16;
-            int xTile2 = (int) (position.x + 16) / 16;
+            int xTile = (int) (position.x) / Statics.tileSize;
+            int xTile2 = (int) (position.x + Statics.tileSize) / Statics.tileSize;
 
             //Entity <-> Key Collision
             for (Entity key : keys) {
                 PositionComponent keyPc = ComponentMappers.position.get(key);
-                if(rectCollides(position.x, position.x+(width*16), keyPc.x, keyPc.x+16, width+16) &&
-                    rectCollides(position.y, position.y+(height*16), keyPc.y, keyPc.y+16, height+16)){
+                if(rectCollides(position.x, position.x+(width*Statics.tileSize), keyPc.x, keyPc.x+Statics.tileSize, width+Statics.tileSize) &&
+                    rectCollides(position.y, position.y+(height*Statics.tileSize), keyPc.y, keyPc.y+Statics.tileSize, height+Statics.tileSize)){
                     Statics.ashley.removeEntity(key);
                 }
             }
@@ -103,7 +103,7 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                 if (velocity.y < 0) {
                     if (collisionlayer != null && (collisionlayer.getCell(xTile, yTile) != null || collisionlayer.getCell(xTile2, yTile) != null)) {
                         position.isStanding = true;
-                        velocity.y = -1 * (position.y - ((yTile + 1) * 16));
+                        velocity.y = -1 * (position.y - ((yTile + 1) * Statics.tileSize));
                     } else {
                         position.isStanding = false;
                     }
@@ -120,8 +120,8 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             }
 
 
-            xTile = (int) (position.x + velocity.x) / 16;
-            yTile = (int) (position.y + velocity.y) / 16;
+            xTile = (int) (position.x + velocity.x) / Statics.tileSize;
+            yTile = (int) (position.y + velocity.y) / Statics.tileSize;
             for (int heightStep = 0; heightStep < height; heightStep++) {
                 if (velocity.x < 0) {
                     if (collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null) {

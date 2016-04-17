@@ -61,8 +61,8 @@ public class GameScreen implements Screen {
         lc.lightSize = 2048;
         lc.softShadows = true;
         PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
-        pc.x = Gdx.graphics.getWidth()-16*8;
-        pc.y = Gdx.graphics.getHeight()-16;
+        pc.x = Gdx.graphics.getWidth()-Statics.tileSize*8;
+        pc.y = Gdx.graphics.getHeight()-Statics.tileSize;
 
         e.add(pc);
         e.add(lc);

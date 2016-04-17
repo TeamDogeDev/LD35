@@ -10,6 +10,7 @@ public class Statics {
 
     public static PooledEngine ashley;
     public static AssetLoader asset;
+    public static final int tileSize = 16;
 
     public static void initCat(){
         asset = new AssetLoader();

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.Align;
 import com.strongjoshua.console.CommandExecutor;
 import com.strongjoshua.console.Console;
+import de.dogedev.ld35.Statics;
 
 import java.text.DecimalFormat;
 
@@ -52,8 +53,8 @@ public class DebugOverlay extends AbstractOverlay {
         font.draw(batch, "cam y="+floatFormat.format(camera.position.y) , 1070, startY-40, 200, Align.right, false);
         font.draw(batch, "entities="+ashley.getEntities().size(), 1070, startY-60, 200, Align.right, false);
         font.draw(batch, "zoom="+camera.zoom, 1070, startY-80, 200, Align.right, false);
-        font.draw(batch, "x="+Math.round((camera.position.x)/16), 1070, startY-100, 200, Align.right, false);
-        font.draw(batch, "y="+Math.round((camera.position.y)/32) , 1070, startY-120, 200, Align.right, false);
+        font.draw(batch, "x="+Math.round((camera.position.x)/ Statics.tileSize), 1070, startY-100, 200, Align.right, false);
+        font.draw(batch, "y="+Math.round((camera.position.y)/ (Statics.tileSize*2)) , 1070, startY-120, 200, Align.right, false);
         font.draw(batch, "DC="+GLProfiler.drawCalls, 1070, startY-140, 200, Align.right, false);
         font.draw(batch, "TXB="+GLProfiler.textureBindings , 1070, startY-160, 200, Align.right, false);
         font.draw(batch, "FPS="+Gdx.graphics.getFramesPerSecond() , 1070, startY-180, 200, Align.right, false);
