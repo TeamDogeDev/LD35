@@ -87,8 +87,6 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
             int yTile = (int) (position.y + velocity.y) / Statics.settings.tileSize;
 
-            int xTile = (int) (position.x) / Statics.settings.tileSize;
-            int xTile2 = (int) (position.x + Statics.settings.tileSize) / Statics.settings.tileSize;
 
             //Entity <-> Key Collision
             for (Entity key : keys) {
@@ -99,6 +97,11 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                 }
             }
 
+            int xTile = (int) (position.x) / Statics.settings.tileSize;
+            int xTile2 = (int) (position.x + Statics.settings.tileSize) / Statics.settings.tileSize;
+            if(position.x%Statics.settings.tileSize < 2){
+                xTile2 = xTile;
+            }
 
             //Entity Movement <-> Map Collision
             for (int widthStep = 0; widthStep < width; widthStep++) {
@@ -145,7 +148,6 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             }
             lastStep += deltaTime;
             if((velocity.x > 1 || velocity.x < -1) && position.isStanding && lastStep > 0.3){
-                System.out.println("M;OVE SOUND");
                 Statics.sound.playSoundPitched(Sounds.WALK);
                 lastStep = 0;
             }
