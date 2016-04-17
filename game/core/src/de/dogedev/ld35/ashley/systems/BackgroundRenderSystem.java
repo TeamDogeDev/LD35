@@ -80,12 +80,15 @@ public class BackgroundRenderSystem extends EntitySystem {
         batch.setProjectionMatrix(camera.combined);
         batch.setColor(1, 1, 1, 1);
         // batch.draw(background, 0, 0);
-        float parallaxScale = 0.1f;
+        float focalPointSpeed = 0.07f;
+        float layerDifference = 0.02f;
+        float parallaxScale = focalPointSpeed + (layerDifference*parallaxTextures.size);
         for (int i = 0; i < parallaxTextures.size; i++) {
+
             Texture tr = parallaxTextures.get(i);
             if(i == parallaxTextures.size) parallaxScale = 0;
             batch.draw(tr, 0, 0, (int)(camera.position.x*parallaxScale), (int)-(camera.position.y*parallaxScale), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            parallaxScale /= 2;
+            parallaxScale -= layerDifference;
         }
         // batch.draw(parallax2, 0, 0, (int)(camera.position.x*0.05), (int)-(camera.position.y*0.05), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // batch.draw(parallax1, 0, 0, (int)(camera.position.x*0.1), (int)-(camera.position.y*0.1), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
