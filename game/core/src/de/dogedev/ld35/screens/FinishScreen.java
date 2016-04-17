@@ -46,41 +46,63 @@ public class FinishScreen implements Screen {
         text.setPosition(0, -300);
         text.setColor(Color.BLACK);
         text.setScale(5);
-        text.addAction(sequence(delay(0), moveTo(0, 500, 2),delay(1), moveBy(0, 800, 2)));
+        text.addAction(sequence(delay(0), moveTo(0, 550, 2),delay(2), moveBy(0, 800, 2)));
         stage.addActor(text);
 
-        text = new TextActor("You beat the game!", 1280, Align.center);
+        text = new TextActor("Made for Ludum Dare 35 Jam", 1280, Align.center);
+        text.setPosition(0, -300);
+        text.setColor(Color.BLACK);
+        text.setScale(3);
+        text.addAction(sequence(delay(0), moveTo(0, 450, 2),delay(2), moveBy(0, 800, 2)));
+        stage.addActor(text);
+
+        text = new TextActor("By Elektropapst, Arse, Meisterfuu", 1280, Align.center);
+        text.setPosition(0, -300);
+        text.setColor(Color.BLACK);
+        text.setScale(3);
+        text.addAction(sequence(delay(0), moveTo(0, 350, 2),delay(2), moveBy(0, 800, 2)));
+        stage.addActor(text);
+
+        text = new TextActor("Made with LibGDX & Ashley", 1280, Align.center);
         text.setPosition(0, -300);
         text.setColor(Color.BLACK);
         text.setScale(5);
-        text.addAction(sequence(delay(3), moveTo(0, 500, 2),delay(1), moveBy(0, 800, 2)));
+        text.addAction(sequence(delay(4), moveTo(0, 500, 2),delay(2), moveBy(0, 800, 2)));
         stage.addActor(text);
 
         text = new TextActor("Assets from Kenny.nl", 1280, Align.center);
         text.setPosition(0, -300);
         text.setColor(Color.BLACK);
         text.setScale(5);
-        text.addAction(sequence(delay(6), moveTo(0, 500, 2),delay(1), moveBy(0, 800, 2)));
+        text.addAction(sequence(delay(8), moveTo(0, 500, 2),delay(2), moveBy(0, 800, 2)));
         stage.addActor(text);
 
         text = new TextActor("Music from ourmusicbox.com", 1280, Align.center);
         text.setPosition(0, -300);
         text.setColor(Color.BLACK);
         text.setScale(5);
-        text.addAction(sequence(delay(9), moveTo(0, 500, 2),delay(1), moveBy(0, 800, 2)));
+        text.addAction(sequence(delay(12), moveTo(0, 500, 2),delay(2), moveBy(0, 800, 2)));
         stage.addActor(text);
 
         text = new TextActor("Grass sound from duckduckpony (CC BY 3.0)", 1280, Align.center);
         text.setPosition(0, -300);
         text.setColor(Color.BLACK);
         text.setScale(5);
-        text.addAction(sequence(delay(12), moveTo(0, 500, 2),delay(1), moveBy(0, 800, 2)));
+        text.addAction(sequence(delay(16), moveTo(0, 500, 2),delay(2), moveBy(0, 800, 2)));
+        stage.addActor(text);
 
         text = new TextActor("The End!", 1280, Align.center);
         text.setPosition(0, -300);
         text.setColor(Color.BLACK);
         text.setScale(5);
-        text.addAction(sequence(delay(18), moveTo(0, 500, 2)));
+        text.addAction(sequence(delay(21), moveTo(0, 500, 2),delay(10), moveBy(0, 800, 2)));
+        stage.addActor(text);
+
+        text = new TextActor("TeamDogeDev", 1280, Align.center);
+        text.setPosition(0, -300);
+        text.setColor(Color.BLACK);
+        text.setScale(5);
+        text.addAction(sequence(delay(35), moveTo(0, 500, 2)));
         stage.addActor(text);
     }
 
