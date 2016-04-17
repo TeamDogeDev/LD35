@@ -97,7 +97,7 @@ public class BackgroundRenderSystem extends EntitySystem {
         pc.z = z;
         entity.add(pc);
         VelocityComponent vc = Statics.ashley.createComponent(VelocityComponent.class);
-        vc.x = -z*Statics.tileSize;
+        vc.x = -z*Statics.settings.tileSize;
         vc.y = 0;
         entity.add(vc);
         entity.add(Statics.ashley.createComponent(BackgroundComponent.class));

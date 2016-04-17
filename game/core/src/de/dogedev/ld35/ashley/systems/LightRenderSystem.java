@@ -110,7 +110,7 @@ public class LightRenderSystem extends EntitySystem {
         for (int x = 0; x < collision.getWidth(); x++) {
             for (int y = 0; y < collision.getHeight(); y++) {
                 if (collision.getCell(x, y) != null && collision.getCell(x, y).getTile() != null)
-                    batch.draw(collision.getCell(x, y).getTile().getTextureRegion(), x * Statics.tileSize, y * Statics.tileSize);
+                    batch.draw(collision.getCell(x, y).getTile().getTextureRegion(), x * Statics.settings.tileSize, y * Statics.settings.tileSize);
             }
         }
         PositionComponent epc;
