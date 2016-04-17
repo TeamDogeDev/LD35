@@ -144,7 +144,8 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                 yTile += 1;
             }
             lastStep += deltaTime;
-            if(velocity.x != 0 && position.isStanding && lastStep > 0.3){
+            if((velocity.x > 1 || velocity.x < -1) && position.isStanding && lastStep > 0.3){
+                System.out.println("M;OVE SOUND");
                 Statics.sound.playSoundPitched(Sounds.WALK);
                 lastStep = 0;
             }
