@@ -43,7 +43,7 @@ public class BackgroundRenderSystem extends EntitySystem {
 
         background = Statics.asset.getTexture(Textures.SKY);
         parallax1 = Statics.asset.getTexture(Textures.PARALLAX_1);
-        parallax1.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        parallax1.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
 
         parallax2 = Statics.asset.getTexture(Textures.PARALLAX_2);
         parallax2.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.ClampToEdge);

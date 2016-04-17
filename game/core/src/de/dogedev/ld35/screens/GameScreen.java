@@ -2,6 +2,7 @@ package de.dogedev.ld35.screens;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -65,7 +66,7 @@ public class GameScreen implements Screen {
         ashley.addSystem(new TextboxSystem(8, camera));
         ashley.addSystem(new ControllSystem());
         ashley.addSystem(new AccelerationSystem());
-        ashley.addSystem(new MovementSystem((TiledMapTileLayer) currentMap.getLayers().get("collision")));
+        ashley.addSystem(new MovementSystem((TiledMapTileLayer) currentMap.getLayers().get("collision"), this));
 
         Entity e = ashley.createEntity();
         LightComponent lc = ashley.createComponent(LightComponent.class);
@@ -73,8 +74,8 @@ public class GameScreen implements Screen {
         lc.lightSize = 2048;
         lc.softShadows = true;
         PositionComponent pc = ashley.createComponent(PositionComponent.class);
-        pc.x = Gdx.graphics.getWidth()- settings.tileSize*8;
-        pc.y = Gdx.graphics.getHeight()- settings.tileSize;
+        pc.x = Gdx.graphics.getWidth() - settings.tileSize * 8;
+        pc.y = Gdx.graphics.getHeight() - settings.tileSize;
 
         e.add(pc);
         e.add(lc);
@@ -93,7 +94,7 @@ public class GameScreen implements Screen {
         // e.add(lc);
         // Statics.ashley.addEntity(e);
 
-        demoEntity();
+        // demoEntity();
 
         Gdx.input.setInputProcessor(new InputAdapter() {
 
@@ -119,10 +120,7 @@ public class GameScreen implements Screen {
                     return true;
                 } else if (keycode == Input.Keys.ESCAPE) {
                     Gdx.app.exit();
-                } else if(keycode == Input.Keys.I) {
-                    loadLevel(currentLevel.next);
                 }
-
                 return super.keyDown(keycode);
             }
         });
@@ -131,46 +129,103 @@ public class GameScreen implements Screen {
         overlays.add(new DebugOverlay(camera, ashley));
     }
 
+    public void nextLevel() {
+        loadLevel(currentLevel.next);
+    }
+
     public void loadLevel(LevelMaps levelMap) {
-        if(levelMap != null) {
+        if (levelMap != null) {
+
+            clearMap();
+
             currentLevel = levelMap;
             System.out.println("Load" + currentLevel);
             currentMap = asset.getLevelMap(levelMap);
             updateMapInSystems();
+            demoEntity();
+
+            // create exit
+            TiledMapTileLayer items = (TiledMapTileLayer) currentMap.getLayers().get("items");
+            for (int x = 0; x < items.getWidth(); x++) {
+                for (int y = 0; y < items.getHeight(); y++) {
+                    if (items.getCell(x, y) != null && items.getCell(x, y).getTile() != null) {
+                        System.out.println(items.getCell(x, y).getTile().getId());
+                        if (items.getCell(x, y).getTile().getId() == 3) {
+                            Entity e = Statics.ashley.createEntity();
+                            PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
+                            pc.set(x * Statics.settings.tileSize, y * Statics.settings.tileSize);
+                            e.add(pc);
+                            e.add(Statics.ashley.createComponent(ExitComponent.class));
+                            Statics.ashley.addEntity(e);
+                        }
+                    }
+                }
+            }
         } else {
             System.out.println("DONE!");
         }
     }
 
+    private void clearMap() {
+        ImmutableArray<Entity> players = Statics.ashley.getEntitiesFor(Family.all(PlayerComponent.class).get());
+        ImmutableArray<Entity> keys = Statics.ashley.getEntitiesFor(Family.all(KeyComponent.class).get());
+        ImmutableArray<Entity> exits = Statics.ashley.getEntitiesFor(Family.all(ExitComponent.class).get());
+        for(Entity e : players) {
+            Statics.ashley.removeEntity(e);
+        }
+        for(Entity e : keys) {
+            Statics.ashley.removeEntity(e);
+        }
+        for(Entity e : exits) {
+            Statics.ashley.removeEntity(e);
+        }
+    }
+
     public void updateMapInSystems() {
         CollisionRenderSystem s = Statics.ashley.getSystem(CollisionRenderSystem.class);
-        if(s != null) {
+        if (s != null) {
             s.setMap(currentMap);
         }
 
         BackDecoRenderSystem s1 = Statics.ashley.getSystem(BackDecoRenderSystem.class);
-        if(s1 != null) {
+        if (s1 != null) {
             s1.setMap(currentMap);
         }
 
         FrontDecoRenderSystem s2 = Statics.ashley.getSystem(FrontDecoRenderSystem.class);
-        if(s2 != null) {
+        if (s2 != null) {
             s2.setMap(currentMap);
         }
         ItemSystem s3 = Statics.ashley.getSystem(ItemSystem.class);
-        if(s3 != null) {
+        if (s3 != null) {
             s3.setMap(currentMap);
         }
         MovementSystem s4 = Statics.ashley.getSystem(MovementSystem.class);
-        if(s4 != null) {
+        if (s4 != null) {
             s4.setCollisionlayer((TiledMapTileLayer) currentMap.getLayers().get("collision"));
         }
     }
 
     private void demoEntity() {
+
         Entity entity = ashley.createEntity();
         PositionComponent pc = ashley.createComponent(PositionComponent.class);
-        pc.set(30* settings.tileSize, 20* settings.tileSize);
+        pc.set(30 * settings.tileSize, 20 * settings.tileSize);
+        TiledMapTileLayer items = (TiledMapTileLayer) currentMap.getLayers().get("items");
+
+        for (int x = 0; x < items.getWidth(); x++) {
+            for (int y = 0; y < items.getHeight(); y++) {
+                if (items.getCell(x, y) != null && items.getCell(x, y).getTile() != null) {
+                    System.out.println(items.getCell(x, y).getTile().getId());
+                    if (items.getCell(x, y).getTile().getId() == 2) {
+                        System.out.println("SPAWN @ " + x + ", " + y);
+                        pc.set(x * settings.tileSize, y * settings.tileSize);
+                    }
+                }
+            }
+        }
+
+
         entity.add(pc);
         VelocityComponent vc = ashley.createComponent(VelocityComponent.class);
         vc.set(0, 0);
@@ -218,10 +273,10 @@ public class GameScreen implements Screen {
         // quick n dirty camera following
         Entity player = ashley.getEntitiesFor(Family.all(PlayerComponent.class).get()).get(0);
         PositionComponent pc = ComponentMappers.position.get(player);
-        float objX = MathUtils.clamp(pc.x, Gdx.graphics.getWidth()/4,
-                Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/4);
-        float objY = MathUtils.clamp(pc.y, Gdx.graphics.getHeight()/4,
-                Gdx.graphics.getWidth()-Gdx.graphics.getHeight()/4);
+        float objX = MathUtils.clamp(pc.x, Gdx.graphics.getWidth() / 4,
+                Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 4);
+        float objY = MathUtils.clamp(pc.y, Gdx.graphics.getHeight() / 4,
+                Gdx.graphics.getWidth() - Gdx.graphics.getHeight() / 4);
         float lerp = 4f;
 
         Vector3 position = camera.position;

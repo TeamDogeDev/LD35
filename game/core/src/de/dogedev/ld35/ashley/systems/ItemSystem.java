@@ -37,6 +37,7 @@ public class ItemSystem extends EntitySystem {
     public ItemSystem(TiledMap map, OrthographicCamera camera) {
         this(0, map, camera);
     }
+
     public ItemSystem(int priority, TiledMap map, OrthographicCamera camera) {
         super(priority);
         this.camera = camera;
@@ -73,8 +74,8 @@ public class ItemSystem extends EntitySystem {
         SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
         KeyComponent kc = Statics.ashley.createComponent(KeyComponent.class);
 
-        pc.x = tileX*Statics.settings.tileSize;
-        pc.y = tileY*Statics.settings.tileSize;
+        pc.x = tileX * Statics.settings.tileSize;
+        pc.y = tileY * Statics.settings.tileSize;
         kc.keyId = keyId;
 
         sc.textureRegion = new TextureRegion(Statics.asset.getTexture(Textures.KEY));
@@ -87,13 +88,15 @@ public class ItemSystem extends EntitySystem {
 
 
     public void setMap(TiledMap map) {
-        for(MapLayer layer : map.getLayers()) {
-            if(layer.getName().equals("items") && layer instanceof TiledMapTileLayer) {
+        for (MapLayer layer : map.getLayers()) {
+            if (layer.getName().equals("items") && layer instanceof TiledMapTileLayer) {
                 TiledMapTileLayer l = (TiledMapTileLayer) layer;
-                for(int x = 0; x < l.getWidth(); x++) {
+                for (int x = 0; x < l.getWidth(); x++) {
                     for (int y = 0; y < l.getHeight(); y++) {
-                        if(l.getCell(x, y) != null && l.getCell(x, y).getTile() != null) {
-                            spawnKey(l.getCell(x, y).getTile().getId(), x, y);
+                        if (l.getCell(x, y) != null && l.getCell(x, y).getTile() != null) {
+                            if (l.getCell(x, y).getTile().getId() == 1) {
+                                spawnKey(l.getCell(x, y).getTile().getId(), x, y);
+                            }
                         }
                     }
                 }

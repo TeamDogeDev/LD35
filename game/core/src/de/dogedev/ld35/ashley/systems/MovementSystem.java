@@ -9,6 +9,7 @@ import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
 import de.dogedev.ld35.assets.ParticlePool;
 import de.dogedev.ld35.assets.enums.Sounds;
+import de.dogedev.ld35.screens.GameScreen;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,20 +24,24 @@ public class MovementSystem extends EntitySystem implements EntityListener {
     private TiledMapTileLayer collisionlayer;
     private ImmutableArray<Entity> entities;
     private ImmutableArray<Entity> keys;
+    private ImmutableArray<Entity> exit;
     private ArrayList<Entity> sortedEntities;
     private YComparator comparator = new YComparator();
     private BitmapFont font;
     private float lastStep = 10;
+    private GameScreen game;
 
-    public MovementSystem(TiledMapTileLayer collisionlayer) {
+    public MovementSystem(TiledMapTileLayer collisionlayer, GameScreen gameScreen) {
         this.collisionlayer = collisionlayer;
         sortedEntities = new ArrayList<>();
+        this.game = gameScreen;
     }
 
     @Override
     public void addedToEngine(Engine engine) {
         entities = engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).exclude(BackgroundComponent.class).get());
         keys = engine.getEntitiesFor(Family.all(PositionComponent.class, KeyComponent.class).exclude(BackgroundComponent.class).get());
+        exit = engine.getEntitiesFor(Family.all(PositionComponent.class, ExitComponent.class).get());
         engine.addEntityListener(Family.all(PositionComponent.class, VelocityComponent.class).exclude(BackgroundComponent.class).get(), this);
         for (Entity e : entities) {
             sortedEntities.add(e);
@@ -96,6 +101,15 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                     Statics.ashley.removeEntity(key);
                     Statics.sound.playSound(Sounds.KEY);
                 }
+            }
+            if(exit.size() == 1) {
+                PositionComponent exitPc = ComponentMappers.position.get(exit.get(0));
+                if(rectCollides(position.x, position.x+(width*Statics.settings.tileSize), exitPc.x, exitPc.x+Statics.settings.tileSize, width+Statics.settings.tileSize) &&
+                        rectCollides(position.y, position.y+(height*Statics.settings.tileSize), exitPc.y, exitPc.y+Statics.settings.tileSize, height+Statics.settings.tileSize)){
+                        game.nextLevel();
+                }
+            } else {
+                System.out.println("Troll Level - no exit");
             }
 
             int xTile = (int) (position.x) / Statics.settings.tileSize;
