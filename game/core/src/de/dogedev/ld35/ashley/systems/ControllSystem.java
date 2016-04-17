@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
+import de.dogedev.ld35.assets.ParticlePool;
 import de.dogedev.ld35.assets.enums.Sounds;
 
 /**
@@ -56,6 +57,10 @@ public class ControllSystem extends EntitySystem {
                 } else if(velocity.x < 0){
                     ac.currentAnimation = ac.walkLeftAnimation;
                 }
+                if(velocity.x > 1){
+                    Statics.particle.createParticleAt(ParticlePool.ParticleType.DUST_R, pc.x, pc.y);
+                    velocity.x = 1;
+                }
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 //                velocity.speed = 10;
@@ -70,13 +75,40 @@ public class ControllSystem extends EntitySystem {
                 } else if(velocity.x < 0){
                     ac.currentAnimation = ac.walkLeftAnimation;
                 }
+                if(velocity.x < -1){
+                    Statics.particle.createParticleAt(ParticlePool.ParticleType.DUST_L, pc.x, pc.y);
+                    velocity.x = -1;
+                }
             }
-            if (pc.isStanding && (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                ac.currentAnimationTime = 0;
-                ac.currentAnimation = ac.jumpAnimation;
-                acceleration.y = 250;
-                Statics.sound.playSound(Sounds.JUMP);
+
+            pc.lastJumpDelta += deltaTime;
+            if(pc.lastJumpDelta > 0.45f){
+                if (!pc.isStanding && pc.wallLeft && (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+                    ac.currentAnimationTime = 0;
+                    ac.currentAnimation = ac.jumpAnimation;
+                    acceleration.y = 300;
+                    acceleration.x = 200;
+                    Statics.sound.playSound(Sounds.JUMP);
+                    pc.lastJumpDelta = 0;
+                } else
+                if (!pc.isStanding && pc.wallRight && (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+                    ac.currentAnimationTime = 0;
+                    ac.currentAnimation = ac.jumpAnimation;
+                    acceleration.y = 300;
+                    acceleration.x = -200;
+                    Statics.sound.playSound(Sounds.JUMP);
+                    pc.lastJumpDelta = 0;
+                } else
+                if (pc.isStanding && (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+                    ac.currentAnimationTime = 0;
+                    ac.currentAnimation = ac.jumpAnimation;
+                    acceleration.y = 250;
+                    Statics.sound.playSound(Sounds.JUMP);
+                    pc.lastJumpDelta = 0;
+                }
             }
+
+
 
             //Don't slide
             if(pc.isStanding && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.D) && ! Gdx.input.isKeyPressed(Input.Keys.RIGHT)){

@@ -9,7 +9,9 @@ package de.dogedev.ld35.assets.enums;
  */
 public enum Particles {
 
-    DUST("effects/dust.p", "effects/images");
+    DUST("effects/dust.p", "effects/images"),
+    DUST_L("effects/dustL.p", "effects/images"),
+    DUST_R("effects/dustR.p", "effects/images");
 
     public String effectFile;
     public String imageDir;

@@ -11,6 +11,9 @@ public class PositionComponent extends Vector2 implements Component, Pool.Poolab
 
     public float z;
     public boolean isStanding = false;
+    public boolean wallLeft = false;
+    public boolean wallRight = false;
+    public float lastJumpDelta = 10;
 
     @Override
     public void reset() {

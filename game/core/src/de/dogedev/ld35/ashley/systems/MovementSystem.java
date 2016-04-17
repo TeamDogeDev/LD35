@@ -130,18 +130,21 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                 xTile2++;
             }
 
-
+            position.wallLeft = false;
+            position.wallRight = false;
             xTile = (int) (position.x + velocity.x) / Statics.settings.tileSize;
             yTile = (int) (position.y + velocity.y) / Statics.settings.tileSize;
             for (int heightStep = 0; heightStep < height; heightStep++) {
                 if (velocity.x < 0) {
                     if (collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null) {
                         velocity.x = 0;
+                        position.wallLeft = true;
                         break;
                     }
                 } else if (velocity.x > 0) {
                     if (collisionlayer != null && collisionlayer.getCell(xTile + width, yTile) != null) {
                         velocity.x = 0;
+                        position.wallRight = true;
                         break;
                     }
                 }

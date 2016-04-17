@@ -24,7 +24,9 @@ public class ParticlePool {
     }
 
     public enum ParticleType {
-        DUST(new GameEffect(Statics.asset.getParticleEffect(Particles.DUST), 25, 100));
+        DUST(new GameEffect(Statics.asset.getParticleEffect(Particles.DUST), 25, 100)),
+        DUST_L(new GameEffect(Statics.asset.getParticleEffect(Particles.DUST_L), 25, 100)),
+        DUST_R(new GameEffect(Statics.asset.getParticleEffect(Particles.DUST_R), 25, 100));
 
         final GameEffect gameEffect;
 
