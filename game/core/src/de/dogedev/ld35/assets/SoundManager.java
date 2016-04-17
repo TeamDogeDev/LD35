@@ -32,6 +32,14 @@ public class SoundManager {
         return playSoundPitched(sound, Statics.settings.soundVolume, MathUtils.random(0.7f, 1.3f));
     }
 
+    public long playSoundPitched(Sounds sound, float volume) {
+        return playSoundPitched(sound, volume, MathUtils.random(0.7f, 1.3f));
+    }
+
+    public long playSoundPitchedHigh(Sounds sound, float volume) {
+        return playSoundPitched(sound, volume, MathUtils.random(1.5f, 2));
+    }
+
     public long playSound(Sounds sound, float volume) {
         return Statics.asset.getSound(sound).play(volume);
     }

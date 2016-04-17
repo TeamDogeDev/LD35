@@ -30,7 +30,7 @@ import de.dogedev.ld35.assets.enums.LevelMaps;
 import de.dogedev.ld35.assets.enums.Textures;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
-import de.dogedev.ld35.overlays.DebugOverlay;
+import de.dogedev.ld35.overlays.UiOverlay;
 
 import static de.dogedev.ld35.Statics.*;
 
@@ -113,6 +113,11 @@ public class GameScreen implements Screen {
                 if (keycode == Input.Keys.F12) {
                     ScreenshotFactory.saveScreenshot();
                 }
+
+                if (keycode == Input.Keys.BACKSPACE) {
+                    GameScreen.this.loadLevel(currentLevel);
+                }
+
                 if (keycode == Input.Keys.F11) {
                     fullscreen = !fullscreen;
                     if (fullscreen) {
@@ -128,8 +133,8 @@ public class GameScreen implements Screen {
             }
         });
 
-        // overlays.add(new TextOverlay());
-        overlays.add(new DebugOverlay(camera, ashley));
+         overlays.add(new UiOverlay(camera, ashley));
+//        overlays.add(new DebugOverlay(camera, ashley));
     }
 
     public void nextLevel() {
@@ -267,7 +272,9 @@ public class GameScreen implements Screen {
                 }
             }
         }
-
+        TiledMapTileLayer main = (TiledMapTileLayer) currentMap.getLayers().get("collision");
+        int maxShiftCount = Integer.valueOf((String) main.getProperties().get("maxShiftCount"));
+        float maxShiftTime = Float.valueOf((String) main.getProperties().get("maxShiftTime"));
 
         entity.add(pc);
         VelocityComponent vc = ashley.createComponent(VelocityComponent.class);
@@ -282,6 +289,8 @@ public class GameScreen implements Screen {
         sc.width = 1;
         entity.add(sc);
         PlayerComponent plc = ashley.createComponent(PlayerComponent.class);
+        plc.maxShiftTime = maxShiftTime;
+        plc.maxShiftCount = maxShiftCount;
         entity.add(plc);
 //        SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
 //        sc.center = false;
@@ -289,10 +298,13 @@ public class GameScreen implements Screen {
 //        entity.add(sc);
         AnimationComponent anc = ashley.createComponent(AnimationComponent.class);
         TextureRegion[][] split = TextureRegion.split(asset.getTexture(Textures.JOHN), 16, 32);
+        TextureRegion[][] chickenSplit = TextureRegion.split(asset.getTexture(Textures.CHICKEN), 16, 16);
 
         anc.idleAnimation = new Animation(2f, new Array<>(new TextureRegion[]{split[4][0], split[4][1], split[4][2], split[4][3], split[4][4], split[4][5]}), Animation.PlayMode.LOOP);
         anc.walkRightAnimation = new Animation(0.1f, new Array<>(split[0]), Animation.PlayMode.LOOP);
         anc.walkLeftAnimation = new Animation(0.1f, new Array<>(split[1]), Animation.PlayMode.LOOP);
+        anc.chickenWalkRight = new Animation(0.1f, new Array<>(chickenSplit[0]), Animation.PlayMode.LOOP);
+        anc.chickenWalkLeft = new Animation(0.1f, new Array<>(chickenSplit[1]), Animation.PlayMode.LOOP);
         anc.jumpAnimation = new Animation(0.1f, new Array<>(new TextureRegion[]{split[2][0], split[2][1], split[2][2], split[2][3], split[2][4], split[2][5]}), Animation.PlayMode.LOOP);
         anc.fallAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{split[0][0]}), Animation.PlayMode.LOOP);
         anc.currentAnimation = anc.idleAnimation;

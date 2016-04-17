@@ -13,6 +13,8 @@ public enum Sounds {
     WALK("sounds/move2.mp3"),
     KEY("sounds/key.wav"),
     ERROR("sounds/error.wav"),
+    CHICKEN("sounds/chicken.wav"),
+    FLAP("sounds/flap.mp3"),
     LANDING("sounds/move3.mp3");
 
     public String name;

@@ -15,7 +15,9 @@ public enum Textures {
     PARALLAX_2("textures/parallax_2.png"),
     CLOUD("textures/cloud.png"),
     KEY("entities/key.png"),
-    BUBBLE("textures/bubble.png");
+    BUBBLE("textures/bubble.png"),
+    CHICKEN("entities/john_chicken.png"),
+    CHICKWEN_SINGLE("entities/chicken.png");
 
     public String name;
 

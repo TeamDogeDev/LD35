@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.AccelerationComponent;
+import de.dogedev.ld35.ashley.components.PlayerComponent;
 import de.dogedev.ld35.ashley.components.PositionComponent;
 import de.dogedev.ld35.ashley.components.VelocityComponent;
 import de.dogedev.ld35.overlays.DebugOverlay;
@@ -21,11 +22,13 @@ public class AccelerationSystem extends EntitySystem  {
 
     private ImmutableArray<Entity> entities;
 
+    private Vector2 gravityChicken;
     private Vector2 gravity;
     private Vector2 temp;
 
     public AccelerationSystem() {
         gravity = new Vector2(0, -9.81f);
+        gravityChicken = new Vector2(0, -9.81f);
         temp = new Vector2();
     }
 
@@ -46,12 +49,22 @@ public class AccelerationSystem extends EntitySystem  {
 
             AccelerationComponent acceleration = ComponentMappers.acceleration.get(e);
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
+            PlayerComponent player = ComponentMappers.player.get(e);
 
-            acceleration.add(gravity);
+            if(player != null && player.isTransformed){
+                acceleration.add(gravityChicken);
+            } else {
+                acceleration.add(gravity);
+            }
+
             velocity.add(temp.set(acceleration).scl(deltaTime));
 
             if(acceleration.y > 0){
                 DebugOverlay.console.log("Jump " + acceleration.toString());
+            }
+
+            if(player != null && player.isTransformed){
+                velocity.y = MathUtils.clamp(velocity.y, -0.8f, Float.MAX_VALUE);
             }
 
             if(acceleration.maxVelocityX != -1){

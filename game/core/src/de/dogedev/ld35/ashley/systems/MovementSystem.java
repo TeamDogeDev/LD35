@@ -81,6 +81,7 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
             PositionComponent position = ComponentMappers.position.get(e);
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
+            PlayerComponent player = ComponentMappers.player.get(e);
             SizeComponent size = ComponentMappers.size.get(e);
 
             int width = 1;
@@ -102,11 +103,15 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                     Statics.sound.playSound(Sounds.KEY);
                 }
             }
+            //Entity <-> Exit Collision
             if(exit.size() == 1) {
                 PositionComponent exitPc = ComponentMappers.position.get(exit.get(0));
                 if(rectCollides(position.x, position.x+(width*Statics.settings.tileSize), exitPc.x, exitPc.x+Statics.settings.tileSize, width+Statics.settings.tileSize) &&
                         rectCollides(position.y, position.y+(height*Statics.settings.tileSize), exitPc.y, exitPc.y+Statics.settings.tileSize, height+Statics.settings.tileSize)){
-                        game.nextLevel();
+
+                        if(keys.size() == 0){
+                            game.nextLevel();
+                        }
                 }
             } else {
                 System.out.println("Troll Level - no exit");
@@ -167,6 +172,10 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             lastStep += deltaTime;
             if((velocity.x > 1 || velocity.x < -1) && position.isStanding && lastStep > 0.3){
                 Statics.sound.playSoundPitched(Sounds.WALK);
+                lastStep = 0;
+            }
+            if(player != null && player.isTransformed && !position.isStanding && lastStep > 0.2){
+                Statics.sound.playSoundPitchedHigh(Sounds.FLAP, 1);
                 lastStep = 0;
             }
 

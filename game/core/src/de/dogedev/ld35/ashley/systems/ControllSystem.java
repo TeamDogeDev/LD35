@@ -42,38 +42,74 @@ public class ControllSystem extends EntitySystem {
             PositionComponent pc = ComponentMappers.position.get(e);
             AnimationComponent ac = ComponentMappers.animation.get(e);
             SizeComponent sc = ComponentMappers.size.get(e);
-            sc.height = 2;
-            if(pc.isStanding){
-                ac.currentAnimation = ac.idleAnimation;
-            }
+            PlayerComponent player = ComponentMappers.player.get(e);
 
+
+            //Checks and resets
+            if(player.isTransformed){
+                player.shiftTime += deltaTime;
+                if(player.shiftTime  >= player.maxShiftTime){
+                    sc.height = 2;
+                    player.isTransformed = false;
+                    player.shiftTime = 0;
+                }
+            }
+            if(pc.isStanding){
+                if(player.isTransformed){
+
+                }else {
+                    ac.currentAnimation = ac.idleAnimation;
+                }
+            }
             acceleration.x = 0;
             acceleration.y = 0;
 
+            //Shift controls
+            if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                if(!player.isTransformed && player.maxShiftCount > 0){
+                    sc.height = 1;
+                    player.isTransformed = true;
+                    player.maxShiftCount -= 1;
+                    ac.currentAnimation = ac.chickenWalkLeft;
+                    Statics.asset.getSound(Sounds.CHICKEN).play();
+                }
+            }
+
+            //Movement controls
             if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 acceleration.x = -5;
                 if(velocity.x > 0) {
-                    ac.currentAnimation = ac.walkRightAnimation;
+                    if(!player.isTransformed){
+                        ac.currentAnimation = ac.walkRightAnimation;
+                    } else {
+                        ac.currentAnimation = ac.chickenWalkRight;
+                    }
                 } else if(velocity.x < 0){
-                    ac.currentAnimation = ac.walkLeftAnimation;
+                    if(!player.isTransformed){
+                        ac.currentAnimation = ac.walkLeftAnimation;
+                    } else {
+                        ac.currentAnimation = ac.chickenWalkLeft;
+                    }
                 }
                 if(velocity.x > 1){
                     Statics.particle.createParticleAt(ParticlePool.ParticleType.DUST_R, pc.x, pc.y);
                     velocity.x = 1;
                 }
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-//                velocity.speed = 10;
-//                velocity.direction.x = 0;
-//                velocity.direction.y = 0;
-                sc.height = 1;
-            }
             if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 acceleration.x = 5;
                 if(velocity.x > 0) {
-                    ac.currentAnimation = ac.walkRightAnimation;
+                    if(!player.isTransformed){
+                        ac.currentAnimation = ac.walkRightAnimation;
+                    } else {
+                        ac.currentAnimation = ac.chickenWalkRight;
+                    }
                 } else if(velocity.x < 0){
-                    ac.currentAnimation = ac.walkLeftAnimation;
+                    if(!player.isTransformed){
+                        ac.currentAnimation = ac.walkLeftAnimation;
+                    } else {
+                        ac.currentAnimation = ac.chickenWalkLeft;
+                    }
                 }
                 if(velocity.x < -1){
                     Statics.particle.createParticleAt(ParticlePool.ParticleType.DUST_L, pc.x, pc.y);
@@ -81,27 +117,34 @@ public class ControllSystem extends EntitySystem {
                 }
             }
 
+            //Jump controls
             pc.lastJumpDelta += deltaTime;
             if(pc.lastJumpDelta > 0.45f){
                 if (!pc.isStanding && pc.wallLeft && (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                    ac.currentAnimationTime = 0;
-                    ac.currentAnimation = ac.jumpAnimation;
+                    if(!player.isTransformed){
+                        ac.currentAnimationTime = 0;
+                        ac.currentAnimation = ac.jumpAnimation;
+                    }
                     acceleration.y = 300;
                     acceleration.x = 200;
                     Statics.sound.playSound(Sounds.JUMP);
                     pc.lastJumpDelta = 0;
                 } else
                 if (!pc.isStanding && pc.wallRight && (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                    ac.currentAnimationTime = 0;
-                    ac.currentAnimation = ac.jumpAnimation;
+                    if(!player.isTransformed){
+                        ac.currentAnimationTime = 0;
+                        ac.currentAnimation = ac.jumpAnimation;
+                    }
                     acceleration.y = 300;
                     acceleration.x = -200;
                     Statics.sound.playSound(Sounds.JUMP);
                     pc.lastJumpDelta = 0;
                 } else
                 if (pc.isStanding && (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-                    ac.currentAnimationTime = 0;
-                    ac.currentAnimation = ac.jumpAnimation;
+                    if(!player.isTransformed){
+                        ac.currentAnimationTime = 0;
+                        ac.currentAnimation = ac.jumpAnimation;
+                    }
                     acceleration.y = 250;
                     Statics.sound.playSound(Sounds.JUMP);
                     pc.lastJumpDelta = 0;

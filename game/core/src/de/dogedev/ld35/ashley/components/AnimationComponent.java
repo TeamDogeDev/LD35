@@ -17,6 +17,8 @@ public class AnimationComponent implements Component, Pool.Poolable {
     public float currentAnimationTime;
     public boolean center;
     public Animation walkLeftAnimation;
+    public Animation chickenWalkRight;
+    public Animation chickenWalkLeft;
 
     @Override
     public void reset() {
