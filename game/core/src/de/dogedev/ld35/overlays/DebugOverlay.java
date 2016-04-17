@@ -1,6 +1,5 @@
 package de.dogedev.ld35.overlays;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,8 +10,6 @@ import com.badlogic.gdx.utils.Align;
 import com.strongjoshua.console.CommandExecutor;
 import com.strongjoshua.console.Console;
 import de.dogedev.ld35.Statics;
-import de.dogedev.ld35.ashley.components.PositionComponent;
-import de.dogedev.ld35.ashley.components.TextboxComponent;
 
 import java.text.DecimalFormat;
 
@@ -102,24 +99,10 @@ public class DebugOverlay extends AbstractOverlay {
             console.log("NOPE!");
         }
 
-        public void tb() {
-            textbox("Press [#ff0000ff]W/UP/SPACE[] to jump", 10, 10, 3);
-        }
+        // public void tb() {
+        //     textbox("Press [#ff0000ff]W/UP/SPACE[] to jump", 10, 10, 3);
+        // }
 
-        public void textbox(String text, int x, int y, int i) {
-            Entity e = Statics.ashley.createEntity();
-            PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
-            TextboxComponent tc = Statics.ashley.createComponent(TextboxComponent.class);
-            pc.x = x*Statics.settings.tileSize;
-            pc.y = y*Statics.settings.tileSize;
-            tc.text = text;
-            tc.visTime = i;
-            tc.visible = true;
-            tc.right = false;
 
-            e.add(pc);
-            e.add(tc);
-            Statics.ashley.addEntity(e);
-        }
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="80" height="45" tilewidth="16" tileheight="16" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="80" height="45" tilewidth="16" tileheight="16" nextobjectid="4">
  <tileset firstgid="1" name="items" tilewidth="16" tileheight="16" tilecount="400" columns="20">
   <image source="items.png" width="320" height="320"/>
  </tileset>
@@ -153,4 +153,21 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup name="text">
+  <object id="1" gid="4" x="832" y="128" width="16" height="16">
+   <properties>
+    <property name="text" value="Hallo das ist ein TestText"/>
+   </properties>
+  </object>
+  <object id="2" gid="4" x="688" y="128" width="16" height="16">
+   <properties>
+    <property name="text" value="Hallo ein zweiter test"/>
+   </properties>
+  </object>
+  <object id="3" gid="4" x="928" y="592" width="16" height="16">
+   <properties>
+    <property name="text" value="Wow such textbox"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

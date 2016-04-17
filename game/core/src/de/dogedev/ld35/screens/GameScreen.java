@@ -14,8 +14,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -161,6 +163,22 @@ public class GameScreen implements Screen {
                     }
                 }
             }
+
+            if(currentMap.getLayers().get("text") != null) {
+                MapObjects objects = currentMap.getLayers().get("text").getObjects();
+
+                for(int i = 0; i < objects.getCount(); i++) {
+                    TiledMapTileMapObject textObj = (TiledMapTileMapObject) objects.get(i);
+                    int x = (int) textObj.getX() / Statics.settings.tileSize;
+                    int y = (int) textObj.getY() / Statics.settings.tileSize;
+                    if(textObj.getProperties().get("text") != null) {
+                        String text = textObj.getProperties().get("text").toString();
+                        if (text != null && !text.isEmpty()) {
+                            textbox(text, x, y, -1);
+                        }
+                    }
+                }
+            }
         } else {
             System.out.println("DONE!");
         }
@@ -170,6 +188,7 @@ public class GameScreen implements Screen {
         ImmutableArray<Entity> players = Statics.ashley.getEntitiesFor(Family.all(PlayerComponent.class).get());
         ImmutableArray<Entity> keys = Statics.ashley.getEntitiesFor(Family.all(KeyComponent.class).get());
         ImmutableArray<Entity> exits = Statics.ashley.getEntitiesFor(Family.all(ExitComponent.class).get());
+        ImmutableArray<Entity> textboxes = Statics.ashley.getEntitiesFor(Family.all(TextboxComponent.class).get());
         for(Entity e : players) {
             Statics.ashley.removeEntity(e);
         }
@@ -177,6 +196,9 @@ public class GameScreen implements Screen {
             Statics.ashley.removeEntity(e);
         }
         for(Entity e : exits) {
+            Statics.ashley.removeEntity(e);
+        }
+        for(Entity e : textboxes) {
             Statics.ashley.removeEntity(e);
         }
     }
@@ -204,6 +226,22 @@ public class GameScreen implements Screen {
         if (s4 != null) {
             s4.setCollisionlayer((TiledMapTileLayer) currentMap.getLayers().get("collision"));
         }
+    }
+
+    public void textbox(String text, int x, int y, int i) {
+        Entity e = Statics.ashley.createEntity();
+        PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
+        TextboxComponent tc = Statics.ashley.createComponent(TextboxComponent.class);
+        pc.x = x*Statics.settings.tileSize;
+        pc.y = y*Statics.settings.tileSize;
+        tc.text = text;
+        tc.visTime = i;
+        tc.visible = true;
+        tc.alignRight = false;
+
+        e.add(pc);
+        e.add(tc);
+        Statics.ashley.addEntity(e);
     }
 
     private void demoEntity() {

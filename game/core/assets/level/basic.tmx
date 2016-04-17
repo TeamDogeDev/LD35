@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="80" height="45" tilewidth="16" tileheight="16" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="80" height="45" tilewidth="16" tileheight="16" nextobjectid="15">
  <tileset firstgid="1" name="items" tilewidth="16" tileheight="16" tilecount="400" columns="20">
   <image source="items.png" width="320" height="320"/>
  </tileset>
@@ -307,4 +307,11 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup name="text">
+  <object id="14" gid="4" x="912" y="576" width="16" height="16">
+   <properties>
+    <property name="text" value="So many text"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

@@ -16,7 +16,7 @@ public class TextboxComponent implements Component, Pool.Poolable{
     public float visTime;
     public float elapsedTime;
     public boolean visible;
-    public boolean right;
+    public boolean alignRight;
 
     @Override
     public void reset() {
@@ -24,6 +24,6 @@ public class TextboxComponent implements Component, Pool.Poolable{
         visTime = 5;
         elapsedTime = 0;
         visible = false;
-        right = false;
+        alignRight = false;
     }
 }
