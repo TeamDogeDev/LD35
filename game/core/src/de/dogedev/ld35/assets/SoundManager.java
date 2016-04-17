@@ -29,7 +29,7 @@ public class SoundManager {
     }
 
     public long playSoundPitched(Sounds sound) {
-        return playSoundPitched(sound, Statics.settings.soundVolume, MathUtils.random(0.8f, 1.3f));
+        return playSoundPitched(sound, Statics.settings.soundVolume, MathUtils.random(0.7f, 1.3f));
     }
 
     public long playSound(Sounds sound, float volume) {
