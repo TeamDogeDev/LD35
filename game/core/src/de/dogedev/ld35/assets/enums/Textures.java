@@ -11,6 +11,8 @@ public enum Textures {
 
     JOHN("entities/john_walker.png"),
     SKY("textures/sky.png"),
+    PARALLAX_1("textures/parallax_1.png"),
+    PARALLAX_2("textures/parallax_2.png"),
     CLOUD("textures/cloud.png"),
     KEY("entities/key.png"),
     BUBBLE("textures/bubble.png");

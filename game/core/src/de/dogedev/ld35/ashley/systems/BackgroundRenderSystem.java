@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -28,6 +29,9 @@ public class BackgroundRenderSystem extends EntitySystem {
     private OrthographicCamera camera;
     private Batch batch;
     private ImmutableArray<Entity> clouds;
+    private Texture background;
+    private Texture parallax1;
+    private Texture parallax2;
     private float cloudDarkness = 0;
 
     private static final int MAXCLOUDS = 30;
@@ -36,6 +40,13 @@ public class BackgroundRenderSystem extends EntitySystem {
         super(priority);
         batch = new SpriteBatch();
         this.camera = camera;
+
+        background = Statics.asset.getTexture(Textures.SKY);
+        parallax1 = Statics.asset.getTexture(Textures.PARALLAX_1);
+        parallax1.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+
+        parallax2 = Statics.asset.getTexture(Textures.PARALLAX_2);
+        parallax2.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.ClampToEdge);
     }
     public BackgroundRenderSystem(OrthographicCamera camera) {
         this(0, camera);
@@ -52,13 +63,19 @@ public class BackgroundRenderSystem extends EntitySystem {
         } while(clouds.size() < MAXCLOUDS);
     }
 
+    private double rescale(double val, double minIn, double maxIn, double minOut, double maxOut) {
+        return ((maxOut - minOut) * (val - minIn) / (maxIn - minIn)) + minIn;
+    }
 
+    int s;
     @Override
     public void update(float deltaTime) {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         batch.setColor(1, 1, 1, 1);
-        batch.draw(Statics.asset.getTexture(Textures.SKY), 0, 0);
+        batch.draw(background, 0, 0);
+        batch.draw(parallax2, 0, 0, (int)(camera.position.x*0.05), (int)-(camera.position.y*0.05), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(parallax1, 0, 0, (int)(camera.position.x*0.1), (int)-(camera.position.y*0.1), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         PositionComponent pc;
         SpriteComponent sc;
         VelocityComponent vc;
