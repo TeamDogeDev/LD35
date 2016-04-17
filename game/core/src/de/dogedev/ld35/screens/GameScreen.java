@@ -58,7 +58,7 @@ public class GameScreen implements Screen {
 
         // demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
 
-        ashley.addSystem(new BackgroundRenderSystem(0, camera));
+        ashley.addSystem(new BackgroundRenderSystem(0, camera, currentMap));
         // Statics.ashley.addSystem(new LightRenderSystem(1, demoMap, camera));
         ashley.addSystem(new CollisionRenderSystem(2, currentMap, camera));
         ashley.addSystem(new BackDecoRenderSystem(3, currentMap, camera));
@@ -226,6 +226,10 @@ public class GameScreen implements Screen {
         MovementSystem s4 = Statics.ashley.getSystem(MovementSystem.class);
         if (s4 != null) {
             s4.setCollisionlayer((TiledMapTileLayer) currentMap.getLayers().get("collision"));
+        }
+        BackgroundRenderSystem s5 = Statics.ashley.getSystem(BackgroundRenderSystem.class);
+        if(s5 != null) {
+            s5.setMap(currentMap);
         }
     }
 

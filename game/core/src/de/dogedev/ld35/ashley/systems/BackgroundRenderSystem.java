@@ -11,7 +11,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
@@ -30,26 +33,29 @@ public class BackgroundRenderSystem extends EntitySystem {
     private Batch batch;
     private ImmutableArray<Entity> clouds;
     private Texture background;
+    private Array<Texture> parallaxTextures;
     private Texture parallax1;
     private Texture parallax2;
     private float cloudDarkness = 0;
 
     private static final int MAXCLOUDS = 30;
+    private TiledMap map;
 
-    public BackgroundRenderSystem(int priority, OrthographicCamera camera) {
+    public BackgroundRenderSystem(int priority, OrthographicCamera camera, TiledMap map) {
         super(priority);
+        parallaxTextures = new Array<>();
+        setMap(map);
         batch = new SpriteBatch();
         this.camera = camera;
 
         background = Statics.asset.getTexture(Textures.SKY);
-        parallax1 = Statics.asset.getTexture(Textures.PARALLAX_1);
-        parallax1.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
-
-        parallax2 = Statics.asset.getTexture(Textures.PARALLAX_2);
-        parallax2.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.ClampToEdge);
+        // parallax1 = Statics.asset.getTexture(Textures.PARALLAX_1);
+        //
+        // parallax2 = Statics.asset.getTexture(Textures.PARALLAX_2);
+        // parallax2.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.ClampToEdge);
     }
-    public BackgroundRenderSystem(OrthographicCamera camera) {
-        this(0, camera);
+    public BackgroundRenderSystem(OrthographicCamera camera, TiledMap map) {
+        this(0, camera, map);
     }
 
     @Override
@@ -73,9 +79,16 @@ public class BackgroundRenderSystem extends EntitySystem {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         batch.setColor(1, 1, 1, 1);
-        batch.draw(background, 0, 0);
-        batch.draw(parallax2, 0, 0, (int)(camera.position.x*0.05), (int)-(camera.position.y*0.05), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(parallax1, 0, 0, (int)(camera.position.x*0.1), (int)-(camera.position.y*0.1), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // batch.draw(background, 0, 0);
+        float parallaxScale = 0.1f;
+        for (int i = 0; i < parallaxTextures.size; i++) {
+            Texture tr = parallaxTextures.get(i);
+            if(i == parallaxTextures.size) parallaxScale = 0;
+            batch.draw(tr, 0, 0, (int)(camera.position.x*parallaxScale), (int)-(camera.position.y*parallaxScale), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            parallaxScale /= 2;
+        }
+        // batch.draw(parallax2, 0, 0, (int)(camera.position.x*0.05), (int)-(camera.position.y*0.05), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // batch.draw(parallax1, 0, 0, (int)(camera.position.x*0.1), (int)-(camera.position.y*0.1), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         PositionComponent pc;
         SpriteComponent sc;
         VelocityComponent vc;
@@ -126,5 +139,18 @@ public class BackgroundRenderSystem extends EntitySystem {
                 pc.y <= Gdx.graphics.getHeight() &&
                 pc.x + sc.textureRegion.getRegionWidth() >= 0 &&
                 pc.y + sc.textureRegion.getRegionHeight() >= 0;
+    }
+
+    public void setMap(TiledMap map) {
+        this.map = map;
+        parallaxTextures.clear();
+
+        Array<TiledMapImageLayer> imageLayers = map.getLayers().getByType(TiledMapImageLayer.class);
+
+        for(TiledMapImageLayer imageLayer : imageLayers) {
+            Texture texture = imageLayer.getTextureRegion().getTexture();
+            texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
+            parallaxTextures.add(texture);
+        }
     }
 }
