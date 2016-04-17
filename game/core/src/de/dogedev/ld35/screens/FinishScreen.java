@@ -3,12 +3,17 @@ package de.dogedev.ld35.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.assets.enums.Musics;
+import de.dogedev.ld35.michelangelo.TextActor;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 /**
  * Project: game
@@ -22,15 +27,61 @@ public class FinishScreen implements Screen {
     private Batch batch;
     private Texture tex;
     private Music music;
-
+    private Stage stage;
+    private TextActor text;
     public FinishScreen() {
         init();
     }
 
     private void init() {
+        stage = new Stage();
         batch = new SpriteBatch();
         music = Statics.asset.getMusic(Musics.VICTORY2);//.play();
-        tex = new Texture(Gdx.files.internal("textures/titlescreen.png"));
+        tex = new Texture(Gdx.files.internal("textures/finishscreen.png"));
+
+
+        TextActor text;
+
+        text = new TextActor("YOU WON!", 1280, Align.center);
+        text.setPosition(0, -300);
+        text.setColor(Color.BLACK);
+        text.setScale(5);
+        text.addAction(sequence(delay(0), moveTo(0, 500, 2),delay(1), moveBy(0, 800, 2)));
+        stage.addActor(text);
+
+        text = new TextActor("You beat the game!", 1280, Align.center);
+        text.setPosition(0, -300);
+        text.setColor(Color.BLACK);
+        text.setScale(5);
+        text.addAction(sequence(delay(3), moveTo(0, 500, 2),delay(1), moveBy(0, 800, 2)));
+        stage.addActor(text);
+
+        text = new TextActor("Assets from Kenny.nl", 1280, Align.center);
+        text.setPosition(0, -300);
+        text.setColor(Color.BLACK);
+        text.setScale(5);
+        text.addAction(sequence(delay(6), moveTo(0, 500, 2),delay(1), moveBy(0, 800, 2)));
+        stage.addActor(text);
+
+        text = new TextActor("Music from ourmusicbox.com", 1280, Align.center);
+        text.setPosition(0, -300);
+        text.setColor(Color.BLACK);
+        text.setScale(5);
+        text.addAction(sequence(delay(9), moveTo(0, 500, 2),delay(1), moveBy(0, 800, 2)));
+        stage.addActor(text);
+
+        text = new TextActor("Grass sound from duckduckpony (CC BY 3.0)", 1280, Align.center);
+        text.setPosition(0, -300);
+        text.setColor(Color.BLACK);
+        text.setScale(5);
+        text.addAction(sequence(delay(12), moveTo(0, 500, 2),delay(1), moveBy(0, 800, 2)));
+
+        text = new TextActor("The End!", 1280, Align.center);
+        text.setPosition(0, -300);
+        text.setColor(Color.BLACK);
+        text.setScale(5);
+        text.addAction(sequence(delay(18), moveTo(0, 500, 2)));
+        stage.addActor(text);
     }
 
     @Override
@@ -48,6 +99,9 @@ public class FinishScreen implements Screen {
         batch.begin();
         batch.draw(tex, 0, 0);
         batch.end();
+
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
