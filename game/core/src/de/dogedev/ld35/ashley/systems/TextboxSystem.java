@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -35,9 +36,11 @@ public class TextboxSystem extends EntitySystem {
     private TextboxComponent localTc;
     private Texture textboxTexture;
     private float time;
+    private OrthographicCamera camera;
 
-    public TextboxSystem(int priority) {
+    public TextboxSystem(int priority, OrthographicCamera camera) {
         super(priority);
+        this.camera = camera;
         batch = new SpriteBatch();
         font = Statics.asset.getBitmapFont(BitmapFonts.GAME, true);
         textboxTexture = Statics.asset.getTexture(Textures.BUBBLE);
@@ -54,6 +57,7 @@ public class TextboxSystem extends EntitySystem {
     public void update(float deltaTime) {
         time += deltaTime;
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
         font.setColor(Color.BLACK);
         for (Entity e : textboxes) {
             localTc = ComponentMappers.textbox.get(e);
@@ -71,14 +75,14 @@ public class TextboxSystem extends EntitySystem {
                             localTc.right, false
                             );
 
-                localTc.elapsedTime += deltaTime;
-                if (localTc.elapsedTime >= localTc.visTime) {
-                    Statics.ashley.removeEntity(e);
-                }
                 font.draw(batch, localTc.text,
                         localPc.x + 4, localPc.y + (textboxTexture.getHeight()*yScale) - 4,
                         textboxTexture.getWidth() - 8, Align.topLeft, true
                 );
+                if (localTc.visTime > 0 && localTc.elapsedTime >= localTc.visTime) {
+                    Statics.ashley.removeEntity(e);
+                }
+                localTc.elapsedTime += deltaTime;
             }
         }
         batch.end();

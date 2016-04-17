@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -31,12 +32,14 @@ public class ItemSystem extends EntitySystem {
     private PositionComponent localPc;
     private SpriteComponent localSc;
     private Batch batch;
+    private OrthographicCamera camera;
 
-    public ItemSystem(TiledMap map) {
-        this(0, map);
+    public ItemSystem(TiledMap map, OrthographicCamera camera) {
+        this(0, map, camera);
     }
-    public ItemSystem(int priority, TiledMap map) {
+    public ItemSystem(int priority, TiledMap map, OrthographicCamera camera) {
         super(priority);
+        this.camera = camera;
         batch = new SpriteBatch();
         // spawn Items
         for(MapLayer layer : map.getLayers()) {
@@ -65,6 +68,7 @@ public class ItemSystem extends EntitySystem {
     public void update(float deltaTime) {
         super.update(deltaTime);
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
         for (Entity e : items) {
             localSc = ComponentMappers.sprite.get(e);
             localPc = ComponentMappers.position.get(e);
