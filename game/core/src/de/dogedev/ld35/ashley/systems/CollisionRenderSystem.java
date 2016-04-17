@@ -53,4 +53,8 @@ public class CollisionRenderSystem extends EntitySystem {
         }
         mapBatch.end();
     }
+
+    public void setMap(TiledMap map) {
+        this.map = map;
+    }
 }

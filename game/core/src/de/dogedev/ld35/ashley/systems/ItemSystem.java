@@ -42,18 +42,7 @@ public class ItemSystem extends EntitySystem {
         this.camera = camera;
         batch = new SpriteBatch();
         // spawn Items
-        for(MapLayer layer : map.getLayers()) {
-            if(layer.getName().equals("items") && layer instanceof TiledMapTileLayer) {
-                TiledMapTileLayer l = (TiledMapTileLayer) layer;
-                for(int x = 0; x < l.getWidth(); x++) {
-                    for (int y = 0; y < l.getHeight(); y++) {
-                        if(l.getCell(x, y) != null && l.getCell(x, y).getTile() != null) {
-                            spawnKey(l.getCell(x, y).getTile().getId(), x, y);
-                        }
-                    }
-                }
-            }
-        }
+        setMap(map);
     }
 
     @Override
@@ -96,4 +85,19 @@ public class ItemSystem extends EntitySystem {
         Statics.ashley.addEntity(e);
     }
 
+
+    public void setMap(TiledMap map) {
+        for(MapLayer layer : map.getLayers()) {
+            if(layer.getName().equals("items") && layer instanceof TiledMapTileLayer) {
+                TiledMapTileLayer l = (TiledMapTileLayer) layer;
+                for(int x = 0; x < l.getWidth(); x++) {
+                    for (int y = 0; y < l.getHeight(); y++) {
+                        if(l.getCell(x, y) != null && l.getCell(x, y).getTile() != null) {
+                            spawnKey(l.getCell(x, y).getTile().getId(), x, y);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

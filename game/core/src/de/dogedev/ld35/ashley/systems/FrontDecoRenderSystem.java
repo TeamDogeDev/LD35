@@ -53,5 +53,7 @@ public class FrontDecoRenderSystem extends EntitySystem {
         mapBatch.end();
     }
 
-
+    public void setMap(TiledMap map) {
+        this.map = map;
+    }
 }

@@ -3,12 +3,15 @@ package de.dogedev.ld35.assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Disposable;
 import de.dogedev.ld35.assets.enums.*;
 
@@ -24,11 +27,20 @@ public class AssetLoader implements Disposable {
     private AssetManager manager = new AssetManager();
 
     public AssetLoader() {
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+
         loadTextures();
         loadParticles();
         // loadMusics();
         loadSounds();
         loadBitmapFonts();
+        loadLevelMaps();
+    }
+
+    private void loadLevelMaps() {
+        for(LevelMaps levelMap : LevelMaps.values()) {
+            manager.load(levelMap.name, TiledMap.class);
+        }
     }
 
     public boolean load() {
@@ -102,6 +114,9 @@ public class AssetLoader implements Disposable {
         return retVal;
     }
 
+    public TiledMap getLevelMap(LevelMaps levelMap) {
+        return manager.get(levelMap.name);
+    }
 
     @Override
     public void dispose() {

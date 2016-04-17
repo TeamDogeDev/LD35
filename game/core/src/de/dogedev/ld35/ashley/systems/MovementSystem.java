@@ -20,7 +20,7 @@ import java.util.Comparator;
 public class MovementSystem extends EntitySystem implements EntityListener {
 
 
-    private final TiledMapTileLayer collisionlayer;
+    private TiledMapTileLayer collisionlayer;
     private ImmutableArray<Entity> entities;
     private ImmutableArray<Entity> keys;
     private ArrayList<Entity> sortedEntities;
@@ -158,6 +158,10 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
         }
 
+    }
+
+    public void setCollisionlayer(TiledMapTileLayer collisionlayer) {
+        this.collisionlayer = collisionlayer;
     }
 
     private boolean rectCollides(float x1, float y1, float x2, float y2, float size) {
