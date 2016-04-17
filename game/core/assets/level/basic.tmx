@@ -16,11 +16,11 @@
  <imagelayer name="Bildebene 3">
   <image source="../textures/sky.png"/>
  </imagelayer>
- <imagelayer name="Bildebene 2">
-  <image source="../textures/parallax_1.png"/>
- </imagelayer>
  <imagelayer name="Bildebene 1">
   <image source="../textures/parallax_2.png"/>
+ </imagelayer>
+ <imagelayer name="Bildebene 2">
+  <image source="../textures/parallax_1.png"/>
  </imagelayer>
  <layer name="collision" width="80" height="45">
   <data encoding="csv">
