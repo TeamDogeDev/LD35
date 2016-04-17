@@ -53,6 +53,7 @@ public class GameScreen implements Screen {
         Statics.ashley.addSystem(new EntityRenderSystem(4, camera));
         Statics.ashley.addSystem(new FrontDecoRenderSystem(5, demoMap, camera));
         Statics.ashley.addSystem(new ItemSystem(6, demoMap));
+        Statics.ashley.addSystem(new TextboxSystem(7));
         Statics.ashley.addSystem(new ControllSystem());
         Statics.ashley.addSystem(new AccelerationSystem());
         Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get("collision")));
@@ -115,6 +116,7 @@ public class GameScreen implements Screen {
             }
         });
 
+        // overlays.add(new TextOverlay());
         overlays.add(new DebugOverlay(camera, Statics.ashley));
     }
 

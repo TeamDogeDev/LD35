@@ -9,7 +9,7 @@ package de.dogedev.ld35.assets.enums;
  */
 public enum BitmapFonts {
 
-    TMP("");
+    GAME("fonts/gamefont.fnt");
 
     public String name;
 

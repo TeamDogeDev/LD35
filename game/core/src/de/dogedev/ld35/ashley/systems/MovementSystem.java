@@ -102,6 +102,9 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
                 if (velocity.y < 0) {
                     if (collisionlayer != null && (collisionlayer.getCell(xTile, yTile) != null || collisionlayer.getCell(xTile2, yTile) != null)) {
+                        if(!position.isStanding) {
+                            System.out.println("PUFF");
+                        }
                         position.isStanding = true;
                         velocity.y = -1 * (position.y - ((yTile + 1) * Statics.tileSize));
                     } else {
