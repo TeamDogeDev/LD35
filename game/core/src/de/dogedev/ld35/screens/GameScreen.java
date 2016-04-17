@@ -54,9 +54,10 @@ public class GameScreen implements Screen {
         Statics.ashley.addSystem(new CollisionRenderSystem(2, demoMap, camera));
         Statics.ashley.addSystem(new BackDecoRenderSystem(3, demoMap, camera));
         Statics.ashley.addSystem(new EntityRenderSystem(4, camera));
-        Statics.ashley.addSystem(new FrontDecoRenderSystem(5, demoMap, camera));
-        Statics.ashley.addSystem(new ItemSystem(6, demoMap, camera));
-        Statics.ashley.addSystem(new TextboxSystem(7, camera));
+        Statics.ashley.addSystem(new ParticleRenderSystem(5, camera));
+        Statics.ashley.addSystem(new FrontDecoRenderSystem(6, demoMap, camera));
+        Statics.ashley.addSystem(new ItemSystem(7, demoMap, camera));
+        Statics.ashley.addSystem(new TextboxSystem(8, camera));
         Statics.ashley.addSystem(new ControllSystem());
         Statics.ashley.addSystem(new AccelerationSystem());
         Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get("collision")));
@@ -184,7 +185,6 @@ public class GameScreen implements Screen {
         position.x += (objX - position.x) * lerp * delta;
         position.y += (objY - position.y) * lerp * delta;
 
-        // camera.position.set(xf, yf, 0);
         camera.update();
         Statics.ashley.update(MathUtils.clamp(delta, 0, 0.020f));
 

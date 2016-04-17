@@ -25,7 +25,7 @@ public class AssetLoader implements Disposable {
 
     public AssetLoader() {
         loadTextures();
-        // loadParticles();
+        loadParticles();
         // loadMusics();
         // loadSounds();
         loadBitmapFonts();

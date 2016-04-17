@@ -9,7 +9,7 @@ package de.dogedev.ld35.assets.enums;
  */
 public enum Particles {
 
-    TMP("", "");
+    DUST("effects/dust.p", "effects/images");
 
     public String effectFile;
     public String imageDir;
