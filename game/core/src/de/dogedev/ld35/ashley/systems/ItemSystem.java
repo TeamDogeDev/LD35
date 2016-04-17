@@ -33,6 +33,10 @@ public class ItemSystem extends EntitySystem {
     private Batch batch;
 
     public ItemSystem(TiledMap map) {
+        this(0, map);
+    }
+    public ItemSystem(int priority, TiledMap map) {
+        super(priority);
         batch = new SpriteBatch();
         // spawn Items
         for(MapLayer layer : map.getLayers()) {

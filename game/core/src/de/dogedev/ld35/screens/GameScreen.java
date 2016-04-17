@@ -46,11 +46,13 @@ public class GameScreen implements Screen {
         demoMap = new TmxMapLoader().load("level/basic.tmx");
         // demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
 
-        Statics.ashley.addSystem(new BackgroundRenderSystem(camera));
-        Statics.ashley.addSystem(new LightRenderSystem(demoMap, camera));
-        Statics.ashley.addSystem(new ItemSystem(demoMap));
-        Statics.ashley.addSystem(new MapRenderSystem(demoMap, camera));
-        Statics.ashley.addSystem(new EntityRenderSystem(camera));
+        Statics.ashley.addSystem(new BackgroundRenderSystem(0, camera));
+        // Statics.ashley.addSystem(new LightRenderSystem(1, demoMap, camera));
+        Statics.ashley.addSystem(new CollisionRenderSystem(2, demoMap, camera));
+        Statics.ashley.addSystem(new BackDecoRenderSystem(3, demoMap, camera));
+        Statics.ashley.addSystem(new EntityRenderSystem(4, camera));
+        Statics.ashley.addSystem(new FrontDecoRenderSystem(5, demoMap, camera));
+        Statics.ashley.addSystem(new ItemSystem(6, demoMap));
         Statics.ashley.addSystem(new ControllSystem());
         Statics.ashley.addSystem(new AccelerationSystem());
         Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get("collision")));
@@ -163,7 +165,6 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 //        input();
-
         camera.update();
         Statics.ashley.update(MathUtils.clamp(delta, 0, 0.020f));
 

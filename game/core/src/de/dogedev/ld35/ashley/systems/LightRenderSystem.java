@@ -38,7 +38,13 @@ public class LightRenderSystem extends EntitySystem {
     private ImmutableArray<Entity> lightSources;
     private ImmutableArray<Entity> entities;
 
+
+
     public LightRenderSystem(TiledMap map, OrthographicCamera camera) {
+        this(0, map, camera);
+    }
+    public LightRenderSystem(int priority, TiledMap map, OrthographicCamera camera) {
+        super(priority);
         this.map = map;
         this.camera = camera;
         shadowMapShader = Statics.asset.getShader(ShaderPrograms.SHADOWMAP);

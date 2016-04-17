@@ -32,9 +32,13 @@ public class BackgroundRenderSystem extends EntitySystem {
 
     private static final int MAXCLOUDS = 30;
 
-    public BackgroundRenderSystem(OrthographicCamera camera) {
+    public BackgroundRenderSystem(int priority, OrthographicCamera camera) {
+        super(priority);
         batch = new SpriteBatch();
         this.camera = camera;
+    }
+    public BackgroundRenderSystem(OrthographicCamera camera) {
+        this(0, camera);
     }
 
     @Override

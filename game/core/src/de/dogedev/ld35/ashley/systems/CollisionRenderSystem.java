@@ -12,11 +12,11 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 /**
  * Project: game
  * Package: de.dogedev.ld35.ashley.systems
- * Date: 16.04.2016
+ * Date: 17.04.2016
  *
  * @author elektropapst
  */
-public class MapRenderSystem extends EntitySystem {
+public class CollisionRenderSystem extends EntitySystem {
 
     private final OrthogonalTiledMapRenderer mapRenderer;
     private Batch mapBatch;
@@ -24,7 +24,12 @@ public class MapRenderSystem extends EntitySystem {
     private TiledMapTileLayer localTiledMapTileLayer;
 
 
-    public MapRenderSystem(TiledMap map, OrthographicCamera camera) {
+    public CollisionRenderSystem(TiledMap map, OrthographicCamera camera) {
+        this(0, map, camera);
+    }
+
+    public CollisionRenderSystem(int priority, TiledMap map, OrthographicCamera camera) {
+        super(priority);
         this.map = map;
         mapBatch = new SpriteBatch();
         mapRenderer = new OrthogonalTiledMapRenderer(map, mapBatch);
@@ -36,7 +41,7 @@ public class MapRenderSystem extends EntitySystem {
         super.update(deltaTime);
         mapBatch.begin();
         for (MapLayer tiledMap : map.getLayers()) {
-            if(!tiledMap.getName().equals("items")) {
+            if (tiledMap.getName().equals("collision")) {
                 if (tiledMap instanceof TiledMapTileLayer) {
                     localTiledMapTileLayer = (TiledMapTileLayer) tiledMap;
                     mapRenderer.renderTileLayer(localTiledMapTileLayer);
@@ -45,6 +50,4 @@ public class MapRenderSystem extends EntitySystem {
         }
         mapBatch.end();
     }
-
-
 }
