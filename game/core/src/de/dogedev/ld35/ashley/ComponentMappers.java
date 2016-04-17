@@ -16,4 +16,5 @@ public class ComponentMappers {
     public static final ComponentMapper<NameComponent> name = ComponentMapper.getFor(NameComponent.class);
     public static final ComponentMapper<SizeComponent> size = ComponentMapper.getFor(SizeComponent.class);
     public static final ComponentMapper<LightComponent> light = ComponentMapper.getFor(LightComponent.class);
+    public static final ComponentMapper<TextboxComponent> textbox = ComponentMapper.getFor(TextboxComponent.class);
 }

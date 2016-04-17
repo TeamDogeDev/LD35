@@ -2,11 +2,13 @@ package de.dogedev.ld35.overlays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  * Created by elektropapst on 27.12.2015.
  */
-public abstract class AbstractOverlay {
+public abstract class AbstractOverlay implements Disposable {
+
     protected SpriteBatch batch = new SpriteBatch();
     protected boolean visible = true;
 
@@ -26,6 +28,7 @@ public abstract class AbstractOverlay {
         this.visible = visible;
     }
 
+    @Override
     public void dispose() {
         batch.dispose();
     }

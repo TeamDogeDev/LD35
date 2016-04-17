@@ -1,6 +1,7 @@
 package de.dogedev.ld35.screens;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -16,8 +17,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import de.dogedev.ld35.Statics;
+import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
 import de.dogedev.ld35.ashley.systems.*;
 import de.dogedev.ld35.assets.enums.Textures;
@@ -39,8 +42,8 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         overlays = new Array<>();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = 1f;
-        camera.translate(1280 >> 1, 720 >> 1);
+        camera.zoom = .5f;
+        camera.translate(1280 >> 2, 720 >> 2);
         camera.update();
 
         demoMap = new TmxMapLoader().load("level/basic.tmx");
@@ -51,8 +54,10 @@ public class GameScreen implements Screen {
         Statics.ashley.addSystem(new CollisionRenderSystem(2, demoMap, camera));
         Statics.ashley.addSystem(new BackDecoRenderSystem(3, demoMap, camera));
         Statics.ashley.addSystem(new EntityRenderSystem(4, camera));
-        Statics.ashley.addSystem(new FrontDecoRenderSystem(5, demoMap, camera));
-        Statics.ashley.addSystem(new ItemSystem(6, demoMap));
+        Statics.ashley.addSystem(new ParticleRenderSystem(5, camera));
+        Statics.ashley.addSystem(new FrontDecoRenderSystem(6, demoMap, camera));
+        Statics.ashley.addSystem(new ItemSystem(7, demoMap, camera));
+        Statics.ashley.addSystem(new TextboxSystem(8, camera));
         Statics.ashley.addSystem(new ControllSystem());
         Statics.ashley.addSystem(new AccelerationSystem());
         Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get("collision")));
@@ -115,13 +120,14 @@ public class GameScreen implements Screen {
             }
         });
 
+        // overlays.add(new TextOverlay());
         overlays.add(new DebugOverlay(camera, Statics.ashley));
     }
 
     private void demoEntity() {
         Entity entity = Statics.ashley.createEntity();
         PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
-        pc.set(320, 160);
+        pc.set(30*Statics.tileSize, 20*Statics.tileSize);
         entity.add(pc);
         VelocityComponent vc = Statics.ashley.createComponent(VelocityComponent.class);
         vc.set(0, 0);
@@ -165,6 +171,20 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 //        input();
+
+        // quick n dirty camera following
+        Entity player = Statics.ashley.getEntitiesFor(Family.all(PlayerComponent.class).get()).get(0);
+        PositionComponent pc = ComponentMappers.position.get(player);
+        float objX = MathUtils.clamp(pc.x, Gdx.graphics.getWidth()/4,
+                Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/4);
+        float objY = MathUtils.clamp(pc.y, Gdx.graphics.getHeight()/4,
+                Gdx.graphics.getWidth()-Gdx.graphics.getHeight()/4);
+        float lerp = 4f;
+
+        Vector3 position = camera.position;
+        position.x += (objX - position.x) * lerp * delta;
+        position.y += (objY - position.y) * lerp * delta;
+
         camera.update();
         Statics.ashley.update(MathUtils.clamp(delta, 0, 0.020f));
 

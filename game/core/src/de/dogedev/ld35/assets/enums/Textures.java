@@ -12,7 +12,8 @@ public enum Textures {
     JOHN("entities/john_walker.png"),
     SKY("textures/sky.png"),
     CLOUD("textures/cloud.png"),
-    KEY("entities/key.png");
+    KEY("entities/key.png"),
+    BUBBLE("textures/bubble.png");
 
     public String name;
 

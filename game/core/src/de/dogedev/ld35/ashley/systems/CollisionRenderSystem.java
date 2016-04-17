@@ -22,6 +22,7 @@ public class CollisionRenderSystem extends EntitySystem {
     private Batch mapBatch;
     private TiledMap map;
     private TiledMapTileLayer localTiledMapTileLayer;
+    private OrthographicCamera camera;
 
 
     public CollisionRenderSystem(TiledMap map, OrthographicCamera camera) {
@@ -31,6 +32,7 @@ public class CollisionRenderSystem extends EntitySystem {
     public CollisionRenderSystem(int priority, TiledMap map, OrthographicCamera camera) {
         super(priority);
         this.map = map;
+        this.camera = camera;
         mapBatch = new SpriteBatch();
         mapRenderer = new OrthogonalTiledMapRenderer(map, mapBatch);
         mapRenderer.setView(camera);
@@ -40,6 +42,7 @@ public class CollisionRenderSystem extends EntitySystem {
     public void update(float deltaTime) {
         super.update(deltaTime);
         mapBatch.begin();
+        mapRenderer.setView(camera);
         for (MapLayer tiledMap : map.getLayers()) {
             if (tiledMap.getName().equals("collision")) {
                 if (tiledMap instanceof TiledMapTileLayer) {

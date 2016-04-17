@@ -22,6 +22,7 @@ public class BackDecoRenderSystem extends EntitySystem {
     private Batch mapBatch;
     private TiledMap map;
     private TiledMapTileLayer localTiledMapTileLayer;
+    private OrthographicCamera camera;
 
     public BackDecoRenderSystem(TiledMap map, OrthographicCamera camera) {
         this(0, map, camera);
@@ -30,6 +31,7 @@ public class BackDecoRenderSystem extends EntitySystem {
     public BackDecoRenderSystem(int priority, TiledMap map, OrthographicCamera camera) {
         super(priority);
         this.map = map;
+        this.camera = camera;
         mapBatch = new SpriteBatch();
         mapRenderer = new OrthogonalTiledMapRenderer(map, mapBatch);
         mapRenderer.setView(camera);
@@ -39,6 +41,8 @@ public class BackDecoRenderSystem extends EntitySystem {
     public void update(float deltaTime) {
         super.update(deltaTime);
         mapBatch.begin();
+        mapBatch.setColor(.9f,.9f,.9f,.8f);
+        mapRenderer.setView(camera);
         for (MapLayer tiledMap : map.getLayers()) {
             if(tiledMap.getName().startsWith("deco_back")) {
                 if (tiledMap instanceof TiledMapTileLayer) {

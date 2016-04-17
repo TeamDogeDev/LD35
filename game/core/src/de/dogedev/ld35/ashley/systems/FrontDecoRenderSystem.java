@@ -22,6 +22,7 @@ public class FrontDecoRenderSystem extends EntitySystem {
     private Batch mapBatch;
     private TiledMap map;
     private TiledMapTileLayer localTiledMapTileLayer;
+    private OrthographicCamera camera;
 
     public FrontDecoRenderSystem(TiledMap map, OrthographicCamera camera) {
         this(0, map, camera);
@@ -30,6 +31,7 @@ public class FrontDecoRenderSystem extends EntitySystem {
     public FrontDecoRenderSystem(int priority, TiledMap map, OrthographicCamera camera) {
         super(priority);
         this.map = map;
+        this.camera = camera;
         mapBatch = new SpriteBatch();
         mapRenderer = new OrthogonalTiledMapRenderer(map, mapBatch);
         mapRenderer.setView(camera);
@@ -39,6 +41,7 @@ public class FrontDecoRenderSystem extends EntitySystem {
     public void update(float deltaTime) {
         super.update(deltaTime);
         mapBatch.begin();
+        mapRenderer.setView(camera);
         for (MapLayer tiledMap : map.getLayers()) {
             if(tiledMap.getName().startsWith("deco_front")) {
                 if (tiledMap instanceof TiledMapTileLayer) {

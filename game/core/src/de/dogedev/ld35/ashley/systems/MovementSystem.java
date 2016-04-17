@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
+import de.dogedev.ld35.assets.ParticlePool;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -102,6 +103,9 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
                 if (velocity.y < 0) {
                     if (collisionlayer != null && (collisionlayer.getCell(xTile, yTile) != null || collisionlayer.getCell(xTile2, yTile) != null)) {
+                        if(!position.isStanding) {
+                            Statics.particle.createParticleAt(ParticlePool.ParticleType.DUST, position.x, position.y);
+                        }
                         position.isStanding = true;
                         velocity.y = -1 * (position.y - ((yTile + 1) * Statics.tileSize));
                     } else {
