@@ -182,14 +182,7 @@ public class MovementSystem extends EntitySystem implements EntityListener {
     }
 
     private boolean rectCollides(float x1, float y1, float x2, float y2, float size) {
-//        checks++;
-        if ((x1 - size) < x2 && x2 < (x1 + size) && Math.abs(y2 - y1) < size) {
-            return true;
-        }
-        if ((y1 - size) < y2 && y2 < (y1 + size) && Math.abs(x2 - x1) < size) {
-            return true;
-        }
-        return false;
+        return (x1 - size) < x2 && x2 < (x1 + size) && Math.abs(y2 - y1) < size || (y1 - size) < y2 && y2 < (y1 + size) && Math.abs(x2 - x1) < size;
     }
 
 
