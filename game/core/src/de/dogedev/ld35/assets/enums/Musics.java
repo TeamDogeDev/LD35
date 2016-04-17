@@ -9,7 +9,8 @@ package de.dogedev.ld35.assets.enums;
  */
 public enum Musics {
 
-    TMP("");
+    VICTORY1("sounds/150413_Track_And_Field.mp3"),
+    VICTORY2("sounds/150413_Victory_Ballad.mp3");
 
     public String name;
 

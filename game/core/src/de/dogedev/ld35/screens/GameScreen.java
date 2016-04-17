@@ -21,6 +21,7 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import de.dogedev.ld35.LDGame;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
@@ -180,7 +181,7 @@ public class GameScreen implements Screen {
                 }
             }
         } else {
-            System.out.println("DONE!");
+            LDGame.game.setScreen(new FinishScreen());
         }
     }
 
