@@ -26,6 +26,7 @@ public class MovementSystem extends EntitySystem implements EntityListener {
     private ArrayList<Entity> sortedEntities;
     private YComparator comparator = new YComparator();
     private BitmapFont font;
+    private float lastStep = 10;
 
     public MovementSystem(TiledMapTileLayer collisionlayer) {
         this.collisionlayer = collisionlayer;
@@ -141,6 +142,11 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                     }
                 }
                 yTile += 1;
+            }
+            lastStep += deltaTime;
+            if(velocity.x != 0 && position.isStanding && lastStep > 0.3){
+                Statics.sound.playSoundPitched(Sounds.WALK);
+                lastStep = 0;
             }
 
 
