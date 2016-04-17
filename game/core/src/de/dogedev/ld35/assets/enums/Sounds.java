@@ -9,8 +9,10 @@ package de.dogedev.ld35.assets.enums;
  */
 public enum Sounds {
 
-    JUMP("sounds/move1.mp3"),
+    JUMP("sounds/jump.wav"),
     WALK("sounds/move2.mp3"),
+    KEY("sounds/key.wav"),
+    ERROR("sounds/error.wav"),
     LANDING("sounds/move3.mp3");
 
     public String name;
