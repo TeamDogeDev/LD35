@@ -48,7 +48,7 @@ public class GameScreen implements Screen {
         camera.zoom = .5f;
         camera.translate(1280 >> 2, 720 >> 2);
         camera.update();
-        
+
         currentLevel = LevelMaps.TUTORIAL;
         loadLevel(currentLevel);
 
