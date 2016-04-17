@@ -106,7 +106,7 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                     if (collisionlayer != null && (collisionlayer.getCell(xTile, yTile) != null || collisionlayer.getCell(xTile2, yTile) != null)) {
                         if(!position.isStanding) {
                             Statics.particle.createParticleAt(ParticlePool.ParticleType.DUST, position.x, position.y);
-                            Statics.sound.playSound(Sounds.HIT);
+                            Statics.sound.playSoundPitched(Sounds.LANDING);
                         }
                         position.isStanding = true;
                         velocity.y = -1 * (position.y - ((yTile + 1) * Statics.settings.tileSize));

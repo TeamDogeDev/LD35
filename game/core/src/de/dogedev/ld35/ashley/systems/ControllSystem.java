@@ -75,7 +75,7 @@ public class ControllSystem extends EntitySystem {
                 ac.currentAnimationTime = 0;
                 ac.currentAnimation = ac.jumpAnimation;
                 acceleration.y = 250;
-                Statics.sound.playSound(Sounds.JUMP);
+                Statics.sound.playSoundPitched(Sounds.JUMP);
             }
 
             //Don't slide
