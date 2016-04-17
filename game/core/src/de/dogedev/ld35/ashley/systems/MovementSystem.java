@@ -94,6 +94,7 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                 if(rectCollides(position.x, position.x+(width*Statics.settings.tileSize), keyPc.x, keyPc.x+Statics.settings.tileSize, width+Statics.settings.tileSize) &&
                     rectCollides(position.y, position.y+(height*Statics.settings.tileSize), keyPc.y, keyPc.y+Statics.settings.tileSize, height+Statics.settings.tileSize)){
                     Statics.ashley.removeEntity(key);
+                    Statics.sound.playSound(Sounds.KEY);
                 }
             }
 
