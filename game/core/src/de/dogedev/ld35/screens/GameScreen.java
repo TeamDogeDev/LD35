@@ -290,10 +290,10 @@ public class GameScreen implements Screen {
         AnimationComponent anc = ashley.createComponent(AnimationComponent.class);
         TextureRegion[][] split = TextureRegion.split(asset.getTexture(Textures.JOHN), 16, 32);
 
-        anc.idleAnimation = new Animation(2f, new Array<>(new TextureRegion[]{split[0][0]}), Animation.PlayMode.LOOP);
+        anc.idleAnimation = new Animation(2f, new Array<>(new TextureRegion[]{split[4][0], split[4][1], split[4][2], split[4][3], split[4][4], split[4][5]}), Animation.PlayMode.LOOP);
         anc.walkRightAnimation = new Animation(0.1f, new Array<>(split[0]), Animation.PlayMode.LOOP);
         anc.walkLeftAnimation = new Animation(0.1f, new Array<>(split[1]), Animation.PlayMode.LOOP);
-        anc.jumpAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{split[0][0]}), Animation.PlayMode.NORMAL);
+        anc.jumpAnimation = new Animation(0.1f, new Array<>(new TextureRegion[]{split[2][0], split[2][1], split[2][2], split[2][3], split[2][4], split[2][5]}), Animation.PlayMode.LOOP);
         anc.fallAnimation = new Animation(0.3f, new Array<>(new TextureRegion[]{split[0][0]}), Animation.PlayMode.LOOP);
         anc.currentAnimation = anc.idleAnimation;
 
