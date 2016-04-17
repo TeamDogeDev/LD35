@@ -84,8 +84,8 @@ public class ItemSystem extends EntitySystem {
         SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
         KeyComponent kc = Statics.ashley.createComponent(KeyComponent.class);
 
-        pc.x = tileX*Statics.tileSize;
-        pc.y = tileY*Statics.tileSize;
+        pc.x = tileX*Statics.settings.tileSize;
+        pc.y = tileY*Statics.settings.tileSize;
         kc.keyId = keyId;
 
         sc.textureRegion = new TextureRegion(Statics.asset.getTexture(Textures.KEY));

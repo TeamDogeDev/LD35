@@ -56,8 +56,8 @@ public class DebugOverlay extends AbstractOverlay {
         font.draw(batch, "cam y="+floatFormat.format(camera.position.y) , 1070, startY-40, 200, Align.right, false);
         font.draw(batch, "entities="+ashley.getEntities().size(), 1070, startY-60, 200, Align.right, false);
         font.draw(batch, "zoom="+camera.zoom, 1070, startY-80, 200, Align.right, false);
-        font.draw(batch, "x="+Math.round((camera.position.x)/ Statics.tileSize), 1070, startY-100, 200, Align.right, false);
-        font.draw(batch, "y="+Math.round((camera.position.y)/ (Statics.tileSize*2)) , 1070, startY-120, 200, Align.right, false);
+        font.draw(batch, "x="+Math.round((camera.position.x)/ Statics.settings.tileSize), 1070, startY-100, 200, Align.right, false);
+        font.draw(batch, "y="+Math.round((camera.position.y)/ (Statics.settings.tileSize*2)) , 1070, startY-120, 200, Align.right, false);
         font.draw(batch, "DC="+GLProfiler.drawCalls, 1070, startY-140, 200, Align.right, false);
         font.draw(batch, "TXB="+GLProfiler.textureBindings , 1070, startY-160, 200, Align.right, false);
         font.draw(batch, "FPS="+Gdx.graphics.getFramesPerSecond() , 1070, startY-180, 200, Align.right, false);
@@ -110,8 +110,8 @@ public class DebugOverlay extends AbstractOverlay {
             Entity e = Statics.ashley.createEntity();
             PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
             TextboxComponent tc = Statics.ashley.createComponent(TextboxComponent.class);
-            pc.x = x*Statics.tileSize;
-            pc.y = y*Statics.tileSize;
+            pc.x = x*Statics.settings.tileSize;
+            pc.y = y*Statics.settings.tileSize;
             tc.text = text;
             tc.visTime = i;
             tc.visible = true;

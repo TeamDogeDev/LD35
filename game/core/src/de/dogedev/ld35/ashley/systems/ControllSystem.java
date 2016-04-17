@@ -7,8 +7,10 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
+import de.dogedev.ld35.assets.enums.Sounds;
 
 /**
  * Created by Furuha on 28.01.2016.
@@ -73,6 +75,7 @@ public class ControllSystem extends EntitySystem {
                 ac.currentAnimationTime = 0;
                 ac.currentAnimation = ac.jumpAnimation;
                 acceleration.y = 250;
+                Statics.sound.playSound(Sounds.JUMP);
             }
 
             //Don't slide

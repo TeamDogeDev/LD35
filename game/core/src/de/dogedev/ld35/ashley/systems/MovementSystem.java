@@ -8,6 +8,7 @@ import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
 import de.dogedev.ld35.assets.ParticlePool;
+import de.dogedev.ld35.assets.enums.Sounds;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,16 +84,16 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                 height = size.height;
             }
 
-            int yTile = (int) (position.y + velocity.y) / Statics.tileSize;
+            int yTile = (int) (position.y + velocity.y) / Statics.settings.tileSize;
 
-            int xTile = (int) (position.x) / Statics.tileSize;
-            int xTile2 = (int) (position.x + Statics.tileSize) / Statics.tileSize;
+            int xTile = (int) (position.x) / Statics.settings.tileSize;
+            int xTile2 = (int) (position.x + Statics.settings.tileSize) / Statics.settings.tileSize;
 
             //Entity <-> Key Collision
             for (Entity key : keys) {
                 PositionComponent keyPc = ComponentMappers.position.get(key);
-                if(rectCollides(position.x, position.x+(width*Statics.tileSize), keyPc.x, keyPc.x+Statics.tileSize, width+Statics.tileSize) &&
-                    rectCollides(position.y, position.y+(height*Statics.tileSize), keyPc.y, keyPc.y+Statics.tileSize, height+Statics.tileSize)){
+                if(rectCollides(position.x, position.x+(width*Statics.settings.tileSize), keyPc.x, keyPc.x+Statics.settings.tileSize, width+Statics.settings.tileSize) &&
+                    rectCollides(position.y, position.y+(height*Statics.settings.tileSize), keyPc.y, keyPc.y+Statics.settings.tileSize, height+Statics.settings.tileSize)){
                     Statics.ashley.removeEntity(key);
                 }
             }
@@ -105,9 +106,10 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                     if (collisionlayer != null && (collisionlayer.getCell(xTile, yTile) != null || collisionlayer.getCell(xTile2, yTile) != null)) {
                         if(!position.isStanding) {
                             Statics.particle.createParticleAt(ParticlePool.ParticleType.DUST, position.x, position.y);
+                            Statics.sound.playSound(Sounds.HIT);
                         }
                         position.isStanding = true;
-                        velocity.y = -1 * (position.y - ((yTile + 1) * Statics.tileSize));
+                        velocity.y = -1 * (position.y - ((yTile + 1) * Statics.settings.tileSize));
                     } else {
                         position.isStanding = false;
                     }
@@ -124,8 +126,8 @@ public class MovementSystem extends EntitySystem implements EntityListener {
             }
 
 
-            xTile = (int) (position.x + velocity.x) / Statics.tileSize;
-            yTile = (int) (position.y + velocity.y) / Statics.tileSize;
+            xTile = (int) (position.x + velocity.x) / Statics.settings.tileSize;
+            yTile = (int) (position.y + velocity.y) / Statics.settings.tileSize;
             for (int heightStep = 0; heightStep < height; heightStep++) {
                 if (velocity.x < 0) {
                     if (collisionlayer != null && collisionlayer.getCell(xTile, yTile) != null) {

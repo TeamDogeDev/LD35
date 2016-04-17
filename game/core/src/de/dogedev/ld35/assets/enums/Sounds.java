@@ -9,7 +9,8 @@ package de.dogedev.ld35.assets.enums;
  */
 public enum Sounds {
 
-    TMP("");
+    JUMP("sounds/jump.mp3"),
+    HIT("sounds/hit.mp3");
 
     public String name;
 

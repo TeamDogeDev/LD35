@@ -68,8 +68,8 @@ public class GameScreen implements Screen {
         lc.lightSize = 2048;
         lc.softShadows = true;
         PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
-        pc.x = Gdx.graphics.getWidth()-Statics.tileSize*8;
-        pc.y = Gdx.graphics.getHeight()-Statics.tileSize;
+        pc.x = Gdx.graphics.getWidth()-Statics.settings.tileSize*8;
+        pc.y = Gdx.graphics.getHeight()-Statics.settings.tileSize;
 
         e.add(pc);
         e.add(lc);
@@ -127,7 +127,7 @@ public class GameScreen implements Screen {
     private void demoEntity() {
         Entity entity = Statics.ashley.createEntity();
         PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
-        pc.set(30*Statics.tileSize, 20*Statics.tileSize);
+        pc.set(30*Statics.settings.tileSize, 20*Statics.settings.tileSize);
         entity.add(pc);
         VelocityComponent vc = Statics.ashley.createComponent(VelocityComponent.class);
         vc.set(0, 0);
