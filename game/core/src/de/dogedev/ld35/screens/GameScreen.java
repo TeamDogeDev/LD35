@@ -15,7 +15,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -23,10 +22,13 @@ import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
 import de.dogedev.ld35.ashley.systems.*;
+import de.dogedev.ld35.assets.enums.LevelMaps;
 import de.dogedev.ld35.assets.enums.Textures;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
 import de.dogedev.ld35.overlays.DebugOverlay;
+
+import static de.dogedev.ld35.Statics.*;
 
 /**
  * Created by Furuha on 16.04.2016.
@@ -35,7 +37,8 @@ public class GameScreen implements Screen {
 
     private final OrthographicCamera camera;
     private final Array<AbstractOverlay> overlays;
-    private final TiledMap demoMap;
+    private TiledMap currentMap;
+    private LevelMaps currentLevel;
     private Batch batch;
 
     public GameScreen() {
@@ -45,35 +48,37 @@ public class GameScreen implements Screen {
         camera.zoom = .5f;
         camera.translate(1280 >> 2, 720 >> 2);
         camera.update();
+        
+        currentLevel = LevelMaps.TUTORIAL;
+        loadLevel(currentLevel);
 
-        demoMap = new TmxMapLoader().load("level/basic.tmx");
         // demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
 
-        Statics.ashley.addSystem(new BackgroundRenderSystem(0, camera));
+        ashley.addSystem(new BackgroundRenderSystem(0, camera));
         // Statics.ashley.addSystem(new LightRenderSystem(1, demoMap, camera));
-        Statics.ashley.addSystem(new CollisionRenderSystem(2, demoMap, camera));
-        Statics.ashley.addSystem(new BackDecoRenderSystem(3, demoMap, camera));
-        Statics.ashley.addSystem(new EntityRenderSystem(4, camera));
-        Statics.ashley.addSystem(new ParticleRenderSystem(5, camera));
-        Statics.ashley.addSystem(new FrontDecoRenderSystem(6, demoMap, camera));
-        Statics.ashley.addSystem(new ItemSystem(7, demoMap, camera));
-        Statics.ashley.addSystem(new TextboxSystem(8, camera));
-        Statics.ashley.addSystem(new ControllSystem());
-        Statics.ashley.addSystem(new AccelerationSystem());
-        Statics.ashley.addSystem(new MovementSystem((TiledMapTileLayer) demoMap.getLayers().get("collision")));
+        ashley.addSystem(new CollisionRenderSystem(2, currentMap, camera));
+        ashley.addSystem(new BackDecoRenderSystem(3, currentMap, camera));
+        ashley.addSystem(new EntityRenderSystem(4, camera));
+        ashley.addSystem(new ParticleRenderSystem(5, camera));
+        ashley.addSystem(new FrontDecoRenderSystem(6, currentMap, camera));
+        ashley.addSystem(new ItemSystem(7, currentMap, camera));
+        ashley.addSystem(new TextboxSystem(8, camera));
+        ashley.addSystem(new ControllSystem());
+        ashley.addSystem(new AccelerationSystem());
+        ashley.addSystem(new MovementSystem((TiledMapTileLayer) currentMap.getLayers().get("collision")));
 
-        Entity e = Statics.ashley.createEntity();
-        LightComponent lc = Statics.ashley.createComponent(LightComponent.class);
+        Entity e = ashley.createEntity();
+        LightComponent lc = ashley.createComponent(LightComponent.class);
         lc.color = new Color(1f, 1f, .87f, 0.6f);
         lc.lightSize = 2048;
         lc.softShadows = true;
-        PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
-        pc.x = Gdx.graphics.getWidth()-Statics.settings.tileSize*8;
-        pc.y = Gdx.graphics.getHeight()-Statics.settings.tileSize;
+        PositionComponent pc = ashley.createComponent(PositionComponent.class);
+        pc.x = Gdx.graphics.getWidth()- settings.tileSize*8;
+        pc.y = Gdx.graphics.getHeight()- settings.tileSize;
 
         e.add(pc);
         e.add(lc);
-        Statics.ashley.addEntity(e);
+        ashley.addEntity(e);
 
         // e = Statics.ashley.createEntity();
         // lc = Statics.ashley.createComponent(LightComponent.class);
@@ -114,6 +119,8 @@ public class GameScreen implements Screen {
                     return true;
                 } else if (keycode == Input.Keys.ESCAPE) {
                     Gdx.app.exit();
+                } else if(keycode == Input.Keys.I) {
+                    loadLevel(currentLevel.next);
                 }
 
                 return super.keyDown(keycode);
@@ -121,33 +128,69 @@ public class GameScreen implements Screen {
         });
 
         // overlays.add(new TextOverlay());
-        overlays.add(new DebugOverlay(camera, Statics.ashley));
+        overlays.add(new DebugOverlay(camera, ashley));
+    }
+
+    public void loadLevel(LevelMaps levelMap) {
+        if(levelMap != null) {
+            currentLevel = levelMap;
+            System.out.println("Load" + currentLevel);
+            currentMap = asset.getLevelMap(levelMap);
+            updateMapInSystems();
+        } else {
+            System.out.println("DONE!");
+        }
+    }
+
+    public void updateMapInSystems() {
+        CollisionRenderSystem s = Statics.ashley.getSystem(CollisionRenderSystem.class);
+        if(s != null) {
+            s.setMap(currentMap);
+        }
+
+        BackDecoRenderSystem s1 = Statics.ashley.getSystem(BackDecoRenderSystem.class);
+        if(s1 != null) {
+            s1.setMap(currentMap);
+        }
+
+        FrontDecoRenderSystem s2 = Statics.ashley.getSystem(FrontDecoRenderSystem.class);
+        if(s2 != null) {
+            s2.setMap(currentMap);
+        }
+        ItemSystem s3 = Statics.ashley.getSystem(ItemSystem.class);
+        if(s3 != null) {
+            s3.setMap(currentMap);
+        }
+        MovementSystem s4 = Statics.ashley.getSystem(MovementSystem.class);
+        if(s4 != null) {
+            s4.setCollisionlayer((TiledMapTileLayer) currentMap.getLayers().get("collision"));
+        }
     }
 
     private void demoEntity() {
-        Entity entity = Statics.ashley.createEntity();
-        PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
-        pc.set(30*Statics.settings.tileSize, 20*Statics.settings.tileSize);
+        Entity entity = ashley.createEntity();
+        PositionComponent pc = ashley.createComponent(PositionComponent.class);
+        pc.set(30* settings.tileSize, 20* settings.tileSize);
         entity.add(pc);
-        VelocityComponent vc = Statics.ashley.createComponent(VelocityComponent.class);
+        VelocityComponent vc = ashley.createComponent(VelocityComponent.class);
         vc.set(0, 0);
         entity.add(vc);
-        AccelerationComponent ac = Statics.ashley.createComponent(AccelerationComponent.class);
+        AccelerationComponent ac = ashley.createComponent(AccelerationComponent.class);
         ac.set(0, 0);
         ac.maxVelocityX = 3;
         entity.add(ac);
-        SizeComponent sc = Statics.ashley.createComponent(SizeComponent.class);
+        SizeComponent sc = ashley.createComponent(SizeComponent.class);
         sc.height = 2;
         sc.width = 1;
         entity.add(sc);
-        PlayerComponent plc = Statics.ashley.createComponent(PlayerComponent.class);
+        PlayerComponent plc = ashley.createComponent(PlayerComponent.class);
         entity.add(plc);
 //        SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
 //        sc.center = false;
 //        sc.textureRegion = new TextureRegion(new Texture("entities/playerDemo.png"));
 //        entity.add(sc);
-        AnimationComponent anc = Statics.ashley.createComponent(AnimationComponent.class);
-        TextureRegion[][] split = TextureRegion.split(Statics.asset.getTexture(Textures.JOHN), 16, 32);
+        AnimationComponent anc = ashley.createComponent(AnimationComponent.class);
+        TextureRegion[][] split = TextureRegion.split(asset.getTexture(Textures.JOHN), 16, 32);
 
         anc.idleAnimation = new Animation(2f, new Array<>(new TextureRegion[]{split[0][0]}), Animation.PlayMode.LOOP);
         anc.walkRightAnimation = new Animation(0.1f, new Array<>(split[0]), Animation.PlayMode.LOOP);
@@ -157,7 +200,7 @@ public class GameScreen implements Screen {
         anc.currentAnimation = anc.idleAnimation;
 
         entity.add(anc);
-        Statics.ashley.addEntity(entity);
+        ashley.addEntity(entity);
     }
 
     @Override
@@ -173,7 +216,7 @@ public class GameScreen implements Screen {
 //        input();
 
         // quick n dirty camera following
-        Entity player = Statics.ashley.getEntitiesFor(Family.all(PlayerComponent.class).get()).get(0);
+        Entity player = ashley.getEntitiesFor(Family.all(PlayerComponent.class).get()).get(0);
         PositionComponent pc = ComponentMappers.position.get(player);
         float objX = MathUtils.clamp(pc.x, Gdx.graphics.getWidth()/4,
                 Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/4);
@@ -186,7 +229,7 @@ public class GameScreen implements Screen {
         position.y += (objY - position.y) * lerp * delta;
 
         camera.update();
-        Statics.ashley.update(MathUtils.clamp(delta, 0, 0.020f));
+        ashley.update(MathUtils.clamp(delta, 0, 0.020f));
 
         //Render Overlays
         for (AbstractOverlay overlay : overlays) {
