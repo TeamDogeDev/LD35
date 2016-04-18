@@ -52,13 +52,13 @@ public class AccelerationSystem extends EntitySystem  {
             PlayerComponent player = ComponentMappers.player.get(e);
 
             if(!player.invertedGravity){
-                if(player != null && player.isTransformed){
+                if(player.isTransformed){
                     acceleration.add(gravityChicken);
                 } else {
                     acceleration.add(gravity);
                 }
             } else {
-                if(player != null && player.isTransformed){
+                if(player.isTransformed){
                     acceleration.sub(gravityChicken);
                 } else {
                     acceleration.sub(gravity);
@@ -75,11 +75,14 @@ public class AccelerationSystem extends EntitySystem  {
 
 
             if(player.invertedGravity){
-                if(player != null && player.isTransformed){
-                    velocity.y = MathUtils.clamp(velocity.y, Float.MIN_VALUE, 0.8f);
+                if(player.isTransformed){
+//                    velocity.y = MathUtils.clamp(velocity.y, Float.MIN_VALUE, 0.8f); //Why does this not work?
+                    if(velocity.y > 0.8f){
+                        velocity.y = 0.8f;
+                    }
                 }
             } else {
-                if(player != null && player.isTransformed){
+                if(player.isTransformed){
                     velocity.y = MathUtils.clamp(velocity.y, -0.8f, Float.MAX_VALUE);
                 }
             }

@@ -37,7 +37,7 @@ public class UiOverlay extends AbstractOverlay {
 
     @Override
     public void init() {
-        font = Statics.asset.getBitmapFont(BitmapFonts.GAME, true);
+        font = Statics.asset.getBitmapFont(BitmapFonts.GAME_BIG, true);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class UiOverlay extends AbstractOverlay {
     public void render() {
         PlayerComponent player = ComponentMappers.player.get(players.get(0));
         batch.begin();
-        font.draw(batch, ""+floatFormat.format(player.maxShiftTime-player.shiftTime), 10, Gdx.graphics.getHeight()-10, 200, Align.left, false);
-        font.draw(batch, "Keys left: "+keys.size(), 0, Gdx.graphics.getHeight()-10, 1270, Align.right, false);
+        font.draw(batch, ""+floatFormat.format(player.maxShiftTime-player.shiftTime), 10, Gdx.graphics.getHeight()-7, 200, Align.left, false);
+        font.draw(batch, "Keys left: "+keys.size(), 0, Gdx.graphics.getHeight()-7, 1270, Align.right, false);
         for(int i = player.maxShiftCount; i > 0; i--){
             batch.draw(Statics.asset.getTexture(Textures.CHICKWEN_SINGLE), 50+((player.maxShiftCount-i)*20), Gdx.graphics.getHeight()-25);
         }

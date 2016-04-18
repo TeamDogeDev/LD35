@@ -50,6 +50,9 @@ public class ControllSystem extends EntitySystem {
                 player.shiftTime += deltaTime;
                 if(player.shiftTime  >= player.maxShiftTime){
                     sc.height = 2;
+                    if(player.invertedGravity){
+                        pc.y -= 17;
+                    }
                     player.isTransformed = false;
                     player.shiftTime = 0;
                     Statics.particle.createParticleAt(ParticlePool.ParticleType.TRANSFORM, pc.x+8, pc.y+16);

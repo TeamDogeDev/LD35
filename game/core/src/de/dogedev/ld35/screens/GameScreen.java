@@ -193,6 +193,7 @@ public class GameScreen implements Screen {
     private void clearMap() {
         ImmutableArray<Entity> players = Statics.ashley.getEntitiesFor(Family.all(PlayerComponent.class).get());
         ImmutableArray<Entity> keys = Statics.ashley.getEntitiesFor(Family.all(KeyComponent.class).get());
+        ImmutableArray<Entity> gravs = Statics.ashley.getEntitiesFor(Family.all(GravityComponent.class).get());
         ImmutableArray<Entity> exits = Statics.ashley.getEntitiesFor(Family.all(ExitComponent.class).get());
         ImmutableArray<Entity> textboxes = Statics.ashley.getEntitiesFor(Family.all(TextboxComponent.class).get());
         for(Entity e : players) {
@@ -205,6 +206,9 @@ public class GameScreen implements Screen {
             Statics.ashley.removeEntity(e);
         }
         for(Entity e : textboxes) {
+            Statics.ashley.removeEntity(e);
+        }
+        for(Entity e : gravs) {
             Statics.ashley.removeEntity(e);
         }
     }
