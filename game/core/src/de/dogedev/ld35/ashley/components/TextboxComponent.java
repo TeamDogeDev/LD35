@@ -17,6 +17,7 @@ public class TextboxComponent implements Component, Pool.Poolable{
     public float elapsedTime;
     public boolean visible;
     public boolean alignRight;
+    public boolean lastVisible;
 
     @Override
     public void reset() {

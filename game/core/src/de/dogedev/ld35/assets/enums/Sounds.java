@@ -15,7 +15,8 @@ public enum Sounds {
     ERROR("sounds/error.wav"),
     CHICKEN("sounds/chicken.wav"),
     FLAP("sounds/flap.mp3"),
-    LANDING("sounds/move3.mp3");
+    LANDING("sounds/move3.mp3"),
+    TEXTBOX("sounds/textbox.mp3");
 
     public String name;
 

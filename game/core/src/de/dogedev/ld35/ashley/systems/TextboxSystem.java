@@ -19,6 +19,7 @@ import de.dogedev.ld35.ashley.components.PlayerComponent;
 import de.dogedev.ld35.ashley.components.PositionComponent;
 import de.dogedev.ld35.ashley.components.TextboxComponent;
 import de.dogedev.ld35.assets.enums.BitmapFonts;
+import de.dogedev.ld35.assets.enums.Sounds;
 import de.dogedev.ld35.assets.enums.Textures;
 import de.dogedev.ld35.michelangelo.Michel;
 
@@ -71,6 +72,12 @@ public class TextboxSystem extends EntitySystem {
             localTc = ComponentMappers.textbox.get(e);
 
             localTc.visible = Michel.euclDist(playerPc, localPc) < 10*Statics.settings.tileSize;
+
+            if(!localTc.lastVisible && localTc.visible) {
+                Statics.sound.playSound(Sounds.TEXTBOX);
+            }
+
+            localTc.lastVisible = localTc.visible;
 
             if (localTc.visible) {
                 float yScale = 1 + (MathUtils.sin(4*time)*.05f);
