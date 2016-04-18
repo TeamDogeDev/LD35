@@ -19,7 +19,7 @@ public enum LevelMaps {
     TUTORIAL3("level/tutorial_3.tmx", FIRST),
     TUTORIAL2("level/tutorial_2.tmx", TUTORIAL3),
     TUTORIAL1("level/tutorial_1.tmx", TUTORIAL2),
-    TEST("level/tutorial_4.tmx", null);
+    TEST("level/seven.tmx", null);
     // First level
 
     public String name;
