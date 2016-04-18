@@ -41,7 +41,7 @@ public class BackDecoRenderSystem extends EntitySystem {
     public void update(float deltaTime) {
         super.update(deltaTime);
         mapBatch.begin();
-        mapBatch.setColor(.9f,.9f,.9f,.8f);
+        // mapBatch.setColor(.9f,.9f,.9f,.8f);
         mapRenderer.setView(camera);
         for (MapLayer tiledMap : map.getLayers()) {
             if(tiledMap.getName().startsWith("deco_back")) {
