@@ -4,10 +4,10 @@
   <property name="shiftCount" value="3"/>
   <property name="shiftTimeMax" value="4"/>
  </properties>
- <tileset firstgid="1" name="items" tilewidth="16" tileheight="16" tilecount="400" columns="20">
+ <tileset firstgid="1" name="items" tilewidth="16" tileheight="16" tilecount="400">
   <image source="items.png" width="320" height="320"/>
  </tileset>
- <tileset firstgid="401" name="packed" tilewidth="16" tileheight="16" tilecount="192" columns="64">
+ <tileset firstgid="401" name="packed" tilewidth="16" tileheight="16" tilecount="192">
   <image source="packed.png" width="1024" height="48"/>
   <tile id="132">
    <properties>
@@ -17,10 +17,10 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="593" name="basic_tileset" tilewidth="16" tileheight="16" tilecount="8" columns="8">
+ <tileset firstgid="593" name="basic_tileset" tilewidth="16" tileheight="16" tilecount="8">
   <image source="basic_tileset.png" width="128" height="16"/>
  </tileset>
- <tileset firstgid="601" name="blocks" tilewidth="16" tileheight="16" margin="8" tilecount="3600" columns="80">
+ <tileset firstgid="601" name="blocks" tilewidth="16" tileheight="16" margin="8" tilecount="3600">
   <image source="blocks.png" width="1296" height="728"/>
  </tileset>
  <imagelayer name="Bildebene 3">
@@ -286,7 +286,7 @@
   </object>
   <object id="20" gid="4" x="897.5" y="451.5" width="16" height="16">
    <properties>
-    <property name="text" value="As a chicken you can pass through small openings too."/>
+    <property name="text" value="Get through narrow paths as a chicken."/>
    </properties>
   </object>
   <object id="21" gid="4" x="563.5" y="681.5" width="16" height="16">
@@ -296,7 +296,7 @@
   </object>
   <object id="22" gid="4" x="1114.5" y="455.5" width="16" height="16">
    <properties>
-    <property name="text" value="But you can only shift for a limited time and amount!"/>
+    <property name="text" value="You have a limited  amount of shifts."/>
    </properties>
   </object>
  </objectgroup>

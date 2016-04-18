@@ -278,7 +278,7 @@
  <objectgroup name="text">
   <object id="22" gid="4" x="909" y="424" width="16" height="16">
    <properties>
-    <property name="text" value="Collect all the keys in a level before you can proceed further."/>
+    <property name="text" value="Collect every key in a level before to proceed."/>
    </properties>
   </object>
  </objectgroup>
