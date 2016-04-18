@@ -5,6 +5,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
@@ -73,6 +74,7 @@ public class EntityRenderSystem extends EntitySystem implements EntityListener {
     public void update (float deltaTime) {
 
         PositionComponent position;
+        PlayerComponent player;
 
         Collections.sort(sortedEntities, comparator);
 
@@ -83,18 +85,35 @@ public class EntityRenderSystem extends EntitySystem implements EntityListener {
             Entity e = sortedEntities.get(i);
             float xOffset = 0;
             position = ComponentMappers.position.get(e);
+            player = ComponentMappers.player.get(e);
+            boolean flip = false;
+            if(player != null && player.invertedGravity){
+                flip= true;
+            }
             if(ComponentMappers.animation.has(e)){
                 AnimationComponent ac = ComponentMappers.animation.get(e);
+                TextureRegion region = ac.currentAnimation.getKeyFrame(ac.currentAnimationTime);
                 if(ac.center){
-                    xOffset = ac.currentAnimation.getKeyFrame(ac.currentAnimationTime).getRegionWidth()/2;
+                    xOffset = region.getRegionWidth()/2;
                 }
-                batch.draw(ac.currentAnimation.getKeyFrame(ac.currentAnimationTime), position.x-xOffset, position.y+position.z);
+                if(flip && !region.isFlipY()){
+                    region.flip(false, true);
+                } else if(!flip & region.isFlipY()){
+                    region.flip(false, false);
+                }
+                batch.draw(region, position.x-xOffset, position.y+position.z);
                 ac.currentAnimationTime += deltaTime;
             } else {
                 SpriteComponent visual = ComponentMappers.sprite.get(e);
                 if(visual.center){
                     xOffset = visual.textureRegion.getRegionWidth()/2;
                 }
+                if(flip && !visual.textureRegion.isFlipY()){
+                    visual.textureRegion.flip(false, true);
+                } else if(!flip & visual.textureRegion.isFlipY()){
+                    visual.textureRegion.flip(false, false);
+                }
+
                 batch.draw(visual.textureRegion, position.x-xOffset, position.y+position.z);
             }
 

@@ -2,7 +2,6 @@ package de.dogedev.ld35.ashley.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
@@ -27,7 +26,6 @@ public class MovementSystem extends EntitySystem implements EntityListener {
     private ImmutableArray<Entity> exit;
     private ArrayList<Entity> sortedEntities;
     private YComparator comparator = new YComparator();
-    private BitmapFont font;
     private float lastStep = 10;
     private GameScreen game;
 
@@ -100,6 +98,7 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                 if(rectCollides(position.x, position.x+(width*Statics.settings.tileSize), keyPc.x, keyPc.x+Statics.settings.tileSize, width+Statics.settings.tileSize) &&
                     rectCollides(position.y, position.y+(height*Statics.settings.tileSize), keyPc.y, keyPc.y+Statics.settings.tileSize, height+Statics.settings.tileSize)){
                     Statics.ashley.removeEntity(key);
+//                    player.invertedGravity = !player.invertedGravity;
                     Statics.sound.playSound(Sounds.KEY);
                 }
             }
@@ -132,14 +131,14 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                             Statics.particle.createParticleAt(ParticlePool.ParticleType.DUST, position.x, position.y);
                             Statics.sound.playSoundPitched(Sounds.LANDING);
                         }
-                        position.isStanding = true;
+                        position.isStanding = !player.invertedGravity;
                         velocity.y = -1 * (position.y - ((yTile + 1) * Statics.settings.tileSize));
                     } else {
                         position.isStanding = false;
                     }
                 } else if (velocity.y > 0) {
                     if (collisionlayer != null && (collisionlayer.getCell(xTile, yTile + height) != null || collisionlayer.getCell(xTile2, yTile + height) != null)) {
-                        position.isStanding = false;
+                        position.isStanding = player.invertedGravity;
                         velocity.y = 0;
                     } else {
                         position.isStanding = false;

@@ -151,7 +151,9 @@ public class ControllSystem extends EntitySystem {
                 }
             }
 
-
+            if(player.invertedGravity){
+                acceleration.y = -1*acceleration.y;
+            }
 
             //Don't slide
             if(pc.isStanding && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.D) && ! Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
