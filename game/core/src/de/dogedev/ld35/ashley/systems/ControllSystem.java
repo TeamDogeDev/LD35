@@ -52,6 +52,7 @@ public class ControllSystem extends EntitySystem {
                     sc.height = 2;
                     player.isTransformed = false;
                     player.shiftTime = 0;
+                    Statics.particle.createParticleAt(ParticlePool.ParticleType.TRANSFORM, pc.x+8, pc.y+16);
                 }
             }
             if(pc.isStanding){
@@ -72,6 +73,7 @@ public class ControllSystem extends EntitySystem {
                     player.maxShiftCount -= 1;
                     ac.currentAnimation = ac.chickenWalkLeft;
                     Statics.asset.getSound(Sounds.CHICKEN).play();
+                    Statics.particle.createParticleAt(ParticlePool.ParticleType.TRANSFORM, pc.x+8, pc.y+16);
                 }
             }
 
