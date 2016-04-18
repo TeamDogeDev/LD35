@@ -43,6 +43,7 @@ public class LightRenderSystem extends EntitySystem {
     public LightRenderSystem(TiledMap map, OrthographicCamera camera) {
         this(0, map, camera);
     }
+
     public LightRenderSystem(int priority, TiledMap map, OrthographicCamera camera) {
         super(priority);
         this.map = map;

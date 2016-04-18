@@ -53,13 +53,13 @@ public class GameScreen implements Screen {
         camera.translate(1280 >> 2, 720 >> 2);
         camera.update();
 
-        currentLevel = LevelMaps.TUTORIAL;
+        currentLevel = LevelMaps.TUTORIAL1;
         loadLevel(currentLevel);
 
         // demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
 
         ashley.addSystem(new BackgroundRenderSystem(0, camera, currentMap));
-        // Statics.ashley.addSystem(new LightRenderSystem(1, demoMap, camera));
+//        ashley.addSystem(new LightRenderSystem(1, currentMap, camera));
         ashley.addSystem(new CollisionRenderSystem(2, currentMap, camera));
         ashley.addSystem(new BackDecoRenderSystem(3, currentMap, camera));
         ashley.addSystem(new EntityRenderSystem(4, camera));
@@ -97,7 +97,7 @@ public class GameScreen implements Screen {
         // e.add(lc);
         // Statics.ashley.addEntity(e);
 
-        // demoEntity();
+        // loadPlayer();
 
         Gdx.input.setInputProcessor(new InputAdapter() {
 
@@ -150,7 +150,7 @@ public class GameScreen implements Screen {
             System.out.println("Load" + currentLevel);
             currentMap = asset.getLevelMap(levelMap);
             updateMapInSystems();
-            demoEntity();
+            loadPlayer();
 
             // create exit
             TiledMapTileLayer items = (TiledMapTileLayer) currentMap.getLayers().get("items");
@@ -254,7 +254,7 @@ public class GameScreen implements Screen {
         Statics.ashley.addEntity(e);
     }
 
-    private void demoEntity() {
+    private void loadPlayer() {
 
         Entity entity = ashley.createEntity();
         PositionComponent pc = ashley.createComponent(PositionComponent.class);
@@ -272,9 +272,16 @@ public class GameScreen implements Screen {
                 }
             }
         }
-        TiledMapTileLayer main = (TiledMapTileLayer) currentMap.getLayers().get("collision");
-        int maxShiftCount = Integer.valueOf((String) main.getProperties().get("maxShiftCount"));
-        float maxShiftTime = Float.valueOf((String) main.getProperties().get("maxShiftTime"));
+        int maxShiftCount = 5;
+        float maxShiftTime = 5;
+        try{
+            TiledMapTileLayer main = (TiledMapTileLayer) currentMap.getLayers().get("collision");
+            maxShiftCount = Integer.valueOf((String) main.getProperties().get("maxShiftCount"));
+            maxShiftTime = Float.valueOf((String) main.getProperties().get("maxShiftTime"));
+        } catch (Exception e){
+            System.out.println("Missing map metadata.(Shiftcount+ShiftTime)");
+        }
+
 
         entity.add(pc);
         VelocityComponent vc = ashley.createComponent(VelocityComponent.class);
