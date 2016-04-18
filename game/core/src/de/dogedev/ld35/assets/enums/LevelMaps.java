@@ -12,13 +12,14 @@ public enum LevelMaps {
     FIFTH("level/6.tmx", null),
     FOURTH("level/fourth.tmx", FIFTH),
     THIRD("level/third.tmx", FOURTH),
-    SECOND("level/second.tmx", THIRD),
+    TUTORIAL4("level/tutorial_4.tmx", THIRD),
+    SECOND("level/second.tmx", TUTORIAL4),
     FIRST("level/first.tmx", SECOND),
-    BASIC("level/basic.tmx", FIRST),
-    TUTORIAL3("level/tutorial_3.tmx", BASIC),
+    // BASIC("level/basic.tmx", FIRST),
+    TUTORIAL3("level/tutorial_3.tmx", FIRST),
     TUTORIAL2("level/tutorial_2.tmx", TUTORIAL3),
     TUTORIAL1("level/tutorial_1.tmx", TUTORIAL2),
-    TEST("level/tutorial_1.tmx", null);
+    TEST("level/tutorial_4.tmx", null);
     // First level
 
     public String name;
