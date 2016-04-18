@@ -14,8 +14,8 @@ public enum LevelMaps {
     BASIC("level/basic.tmx", FIRST),
     TUTORIAL3("level/tutorial_3.tmx", BASIC),
     TUTORIAL2("level/tutorial_2.tmx", TUTORIAL3),
-    TUTORIAL1("level/tutorial_1.tmx", TUTORIAL2);
-    // TEST("level/empty.tmx", null);
+    TUTORIAL1("level/tutorial_1.tmx", TUTORIAL2),
+    TEST("level/empty.tmx", null);
     // First level
 
     public String name;

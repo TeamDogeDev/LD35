@@ -53,7 +53,7 @@ public class GameScreen implements Screen {
         camera.translate(1280 >> 2, 720 >> 2);
         camera.update();
 
-        currentLevel = LevelMaps.TUTORIAL1;
+        currentLevel = LevelMaps.TEST;
         loadLevel(currentLevel);
 
         // demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
