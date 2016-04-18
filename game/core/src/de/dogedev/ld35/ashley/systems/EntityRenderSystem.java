@@ -102,7 +102,7 @@ public class EntityRenderSystem extends EntitySystem implements EntityListener {
                 if (flip && !region.isFlipY()) {
                     region.flip(false, true);
                 } else if (!flip & region.isFlipY()) {
-                    region.flip(false, false);
+                    region.flip(false, true);
                 }
                 batch.draw(region, position.x - xOffset, position.y + position.z);
                 ac.currentAnimationTime += deltaTime;
@@ -114,7 +114,7 @@ public class EntityRenderSystem extends EntitySystem implements EntityListener {
                 if (flip && !visual.textureRegion.isFlipY()) {
                     visual.textureRegion.flip(false, true);
                 } else if (!flip & visual.textureRegion.isFlipY()) {
-                    visual.textureRegion.flip(false, false);
+                    visual.textureRegion.flip(false, true);
                 }
 
                 batch.draw(visual.textureRegion, position.x - xOffset, position.y + position.z);
