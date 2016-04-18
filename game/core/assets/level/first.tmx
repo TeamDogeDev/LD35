@@ -21,7 +21,7 @@
   <image source="../textures/sky.png"/>
  </imagelayer>
  <imagelayer name="Bildebene 1">
-  <image source="../textures/parallax_2.png"/>
+  <image source="../textures/rock.png"/>
  </imagelayer>
  <layer name="collision" width="80" height="45">
   <properties>
