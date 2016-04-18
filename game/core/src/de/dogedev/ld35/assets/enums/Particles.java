@@ -11,7 +11,8 @@ public enum Particles {
 
     DUST("effects/dust.p", "effects/images"),
     DUST_L("effects/dustL.p", "effects/images"),
-    DUST_R("effects/dustR.p", "effects/images");
+    DUST_R("effects/dustR.p", "effects/images"),
+    TRANSFORM("effects/transform.p", "effects/images");
 
     public String effectFile;
     public String imageDir;
