@@ -39,8 +39,8 @@ public class EntityRenderSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void addedToEngine (Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class).exclude(BackgroundComponent.class).get());
-        engine.addEntityListener(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class).exclude(BackgroundComponent.class).get(), this);
+        entities = engine.getEntitiesFor(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class).exclude(BackgroundComponent.class).exclude(KeyComponent.class).get());
+        engine.addEntityListener(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class).exclude(BackgroundComponent.class).exclude(KeyComponent.class).get(), this);
         for(Entity e: entities){
             sortedEntities.add(e);
         }

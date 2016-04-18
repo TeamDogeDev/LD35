@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.MathUtils;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.KeyComponent;
@@ -53,16 +54,18 @@ public class ItemSystem extends EntitySystem {
                 Family.all(PositionComponent.class, SpriteComponent.class, KeyComponent.class).get()
         );
     }
-
+    private float time;
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+        time += deltaTime;
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
+        float yOffset = 1 + (MathUtils.sin(3*time));
         for (Entity e : items) {
             localSc = ComponentMappers.sprite.get(e);
             localPc = ComponentMappers.position.get(e);
-            batch.draw(localSc.textureRegion, localPc.x, localPc.y);
+            batch.draw(localSc.textureRegion, localPc.x, localPc.y+yOffset);
         }
         batch.end();
     }
