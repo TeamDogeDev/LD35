@@ -13,6 +13,7 @@ public class PlayerComponent implements Component, Pool.Poolable {
     public float shiftTime;
     public float maxShiftTime;
     public boolean isTransformed = false;
+    public boolean invertedGravity = false;
 
     @Override
     public void reset() {
@@ -20,6 +21,7 @@ public class PlayerComponent implements Component, Pool.Poolable {
         shiftTime = 0;
         maxShiftTime = 0;
         isTransformed = false;
+        invertedGravity = false;
         name = null;
     }
 }

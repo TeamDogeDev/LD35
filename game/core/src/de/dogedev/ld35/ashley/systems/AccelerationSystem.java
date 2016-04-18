@@ -51,11 +51,20 @@ public class AccelerationSystem extends EntitySystem  {
             VelocityComponent velocity = ComponentMappers.velocity.get(e);
             PlayerComponent player = ComponentMappers.player.get(e);
 
-            if(player != null && player.isTransformed){
-                acceleration.add(gravityChicken);
+            if(!player.invertedGravity){
+                if(player != null && player.isTransformed){
+                    acceleration.add(gravityChicken);
+                } else {
+                    acceleration.add(gravity);
+                }
             } else {
-                acceleration.add(gravity);
+                if(player != null && player.isTransformed){
+                    acceleration.sub(gravityChicken);
+                } else {
+                    acceleration.sub(gravity);
+                }
             }
+
 
             velocity.add(temp.set(acceleration).scl(deltaTime));
 
@@ -63,8 +72,16 @@ public class AccelerationSystem extends EntitySystem  {
                 DebugOverlay.console.log("Jump " + acceleration.toString());
             }
 
-            if(player != null && player.isTransformed){
-                velocity.y = MathUtils.clamp(velocity.y, -0.8f, Float.MAX_VALUE);
+
+
+            if(player.invertedGravity){
+                if(player != null && player.isTransformed){
+                    velocity.y = MathUtils.clamp(velocity.y, Float.MIN_VALUE, 0.8f);
+                }
+            } else {
+                if(player != null && player.isTransformed){
+                    velocity.y = MathUtils.clamp(velocity.y, -0.8f, Float.MAX_VALUE);
+                }
             }
 
             if(acceleration.maxVelocityX != -1){
