@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,6 +28,7 @@ import de.dogedev.ld35.ashley.ComponentMappers;
 import de.dogedev.ld35.ashley.components.*;
 import de.dogedev.ld35.ashley.systems.*;
 import de.dogedev.ld35.assets.enums.LevelMaps;
+import de.dogedev.ld35.assets.enums.Musics;
 import de.dogedev.ld35.assets.enums.Textures;
 import de.dogedev.ld35.michelangelo.ScreenshotFactory;
 import de.dogedev.ld35.overlays.AbstractOverlay;
@@ -41,6 +43,7 @@ public class GameScreen implements Screen {
 
     private final OrthographicCamera camera;
     private final Array<AbstractOverlay> overlays;
+    private final Music music;
     private TiledMap currentMap;
     private LevelMaps currentLevel;
     private Batch batch;
@@ -53,7 +56,7 @@ public class GameScreen implements Screen {
         camera.translate(1280 >> 2, 720 >> 2);
         camera.update();
 
-        currentLevel = LevelMaps.TEST;
+        currentLevel = LevelMaps.TUTORIAL1;
         loadLevel(currentLevel);
 
         // demoMap.getLayers().add(new DebugTileLayer(16, 16, "debug"));
@@ -135,6 +138,9 @@ public class GameScreen implements Screen {
 
          overlays.add(new UiOverlay(camera, ashley));
 //        overlays.add(new DebugOverlay(camera, ashley));
+        music = Statics.asset.getMusic(Musics.MAIN);
+        music.setLooping(true);
+        music.play();
     }
 
     public void nextLevel() {
@@ -147,7 +153,6 @@ public class GameScreen implements Screen {
             clearMap();
 
             currentLevel = levelMap;
-            System.out.println("Load" + currentLevel);
             currentMap = asset.getLevelMap(levelMap);
             updateMapInSystems();
             loadPlayer();
@@ -157,7 +162,7 @@ public class GameScreen implements Screen {
             for (int x = 0; x < items.getWidth(); x++) {
                 for (int y = 0; y < items.getHeight(); y++) {
                     if (items.getCell(x, y) != null && items.getCell(x, y).getTile() != null) {
-                        System.out.println(items.getCell(x, y).getTile().getId());
+                        // System.out.println(items.getCell(x, y).getTile().getId());
                         if (items.getCell(x, y).getTile().getId() == 3) {
                             Entity e = Statics.ashley.createEntity();
                             PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
@@ -268,9 +273,9 @@ public class GameScreen implements Screen {
         for (int x = 0; x < items.getWidth(); x++) {
             for (int y = 0; y < items.getHeight(); y++) {
                 if (items.getCell(x, y) != null && items.getCell(x, y).getTile() != null) {
-                    System.out.println(items.getCell(x, y).getTile().getId());
+                    // System.out.println(items.getCell(x, y).getTile().getId());
                     if (items.getCell(x, y).getTile().getId() == 2) {
-                        System.out.println("SPAWN @ " + x + ", " + y);
+                        // System.out.println("SPAWN @ " + x + ", " + y);
                         pc.set(x * settings.tileSize, y * settings.tileSize);
                     }
                 }
@@ -283,7 +288,7 @@ public class GameScreen implements Screen {
             maxShiftCount = Integer.valueOf((String) main.getProperties().get("maxShiftCount"));
             maxShiftTime = Float.valueOf((String) main.getProperties().get("maxShiftTime"));
         } catch (Exception e){
-            System.out.println("Missing map metadata.(Shiftcount+ShiftTime)");
+            // System.out.println("Missing map metadata.(Shiftcount+ShiftTime)");
         }
 
 
@@ -388,7 +393,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        music.stop();
     }
 
     @Override
