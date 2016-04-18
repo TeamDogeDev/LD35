@@ -129,6 +129,7 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                 xTile2 = xTile;
             }
 
+
             //Entity Movement <-> Map Collision
             for (int widthStep = 0; widthStep < width; widthStep++) {
 
@@ -138,15 +139,28 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                             Statics.particle.createParticleAt(ParticlePool.ParticleType.DUST, position.x, position.y);
                             Statics.sound.playSoundPitched(Sounds.LANDING);
                         }
-                        position.isStanding = !player.invertedGravity;
-                        velocity.y = -1 * (position.y - ((yTile + 1) * Statics.settings.tileSize));
+                        if(position.isStanding && player.isTransformed && player.invertedGravity){
+                            System.out.println("CHICKEN JUMP FAIL");
+                        }
+                        if(!player.invertedGravity){
+                            position.isStanding = true;
+                            velocity.y = -1 * (position.y - ((yTile + 1) * Statics.settings.tileSize));
+                        } else {
+                            position.isStanding = false;
+                            velocity.y = 0;
+                        }
                     } else {
                         position.isStanding = false;
                     }
                 } else if (velocity.y > 0) {
                     if (collisionlayer != null && (collisionlayer.getCell(xTile, yTile + height) != null || collisionlayer.getCell(xTile2, yTile + height) != null)) {
-                        position.isStanding = player.invertedGravity;
-                        velocity.y = 0;
+                        if(player.invertedGravity){
+                            position.isStanding = true;
+                            velocity.y = -((position.y+(height* Statics.settings.tileSize)) - (((yTile + height) * Statics.settings.tileSize)));
+                        } else {
+                            position.isStanding = false;
+                            velocity.y = 0;
+                        }
                     } else {
                         position.isStanding = false;
                     }

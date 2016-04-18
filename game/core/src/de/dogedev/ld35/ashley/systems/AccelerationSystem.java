@@ -76,7 +76,10 @@ public class AccelerationSystem extends EntitySystem  {
 
             if(player.invertedGravity){
                 if(player.isTransformed){
-                    velocity.y = MathUtils.clamp(velocity.y, Float.MIN_VALUE, 0.8f);
+//                    velocity.y = MathUtils.clamp(velocity.y, Float.MIN_VALUE, 0.8f); //Why does this not work?
+                    if(velocity.y > 0.8f){
+                        velocity.y = 0.8f;
+                    }
                 }
             } else {
                 if(player.isTransformed){
