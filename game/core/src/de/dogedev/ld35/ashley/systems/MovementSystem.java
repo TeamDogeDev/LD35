@@ -140,7 +140,7 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                             Statics.sound.playSoundPitched(Sounds.LANDING);
                         }
                         if(position.isStanding && player.isTransformed && player.invertedGravity){
-                            System.out.println("CHICKEN JUMP FAIL");
+                            // System.out.println("CHICKEN JUMP FAIL");
                         }
                         if(!player.invertedGravity){
                             position.isStanding = true;
