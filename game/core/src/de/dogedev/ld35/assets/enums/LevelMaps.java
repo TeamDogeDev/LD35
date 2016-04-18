@@ -9,13 +9,14 @@ package de.dogedev.ld35.assets.enums;
  */
 public enum LevelMaps {
     // Last level
-    SECOND("level/second.tmx", null),
+    THIRD("level/third.tmx", null),
+    SECOND("level/second.tmx", THIRD),
     FIRST("level/first.tmx", SECOND),
     BASIC("level/basic.tmx", FIRST),
     TUTORIAL3("level/tutorial_3.tmx", BASIC),
     TUTORIAL2("level/tutorial_2.tmx", TUTORIAL3),
     TUTORIAL1("level/tutorial_1.tmx", TUTORIAL2),
-    TEST("level/empty.tmx", null);
+    TEST("level/fourth.tmx", null);
     // First level
 
     public String name;

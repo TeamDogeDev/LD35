@@ -70,7 +70,7 @@ public class FinishScreen implements Screen {
         text.addAction(sequence(delay(4), moveTo(0, 500, 2),delay(2), moveBy(0, 800, 2)));
         stage.addActor(text);
 
-        text = new TextActor("Assets from Kenny.nl", 1280, Align.center);
+        text = new TextActor("Assets from Kenny.nl & Zeyu Ren", 1280, Align.center);
         text.setPosition(0, -300);
         text.setColor(Color.BLACK);
         text.setScale(5);
