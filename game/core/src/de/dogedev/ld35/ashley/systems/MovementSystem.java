@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import static de.dogedev.ld35.ashley.ComponentMappers.key;
+
 /**
  * Created by Furuha on 28.01.2016.
  */
@@ -22,12 +24,13 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
     private TiledMapTileLayer collisionlayer;
     private ImmutableArray<Entity> entities;
-    private ImmutableArray<Entity> keys;
+    private ImmutableArray<Entity> items;
     private ImmutableArray<Entity> exit;
     private ArrayList<Entity> sortedEntities;
     private YComparator comparator = new YComparator();
     private float lastStep = 10;
     private GameScreen game;
+    private ImmutableArray<Entity> keys;
 
     public MovementSystem(TiledMapTileLayer collisionlayer, GameScreen gameScreen) {
         this.collisionlayer = collisionlayer;
@@ -38,8 +41,10 @@ public class MovementSystem extends EntitySystem implements EntityListener {
     @Override
     public void addedToEngine(Engine engine) {
         entities = engine.getEntitiesFor(Family.all(PositionComponent.class, VelocityComponent.class).exclude(BackgroundComponent.class).get());
-        keys = engine.getEntitiesFor(Family.all(PositionComponent.class, KeyComponent.class).exclude(BackgroundComponent.class).get());
+        items = engine.getEntitiesFor(Family.all(PositionComponent.class).one(KeyComponent.class, GravityComponent.class).exclude(BackgroundComponent.class).get());
         exit = engine.getEntitiesFor(Family.all(PositionComponent.class, ExitComponent.class).get());
+        keys = engine.getEntitiesFor(Family.all(KeyComponent.class).get());
+
         engine.addEntityListener(Family.all(PositionComponent.class, VelocityComponent.class).exclude(BackgroundComponent.class).get(), this);
         for (Entity e : entities) {
             sortedEntities.add(e);
@@ -93,13 +98,16 @@ public class MovementSystem extends EntitySystem implements EntityListener {
 
 
             //Entity <-> Key Collision
-            for (Entity key : keys) {
-                PositionComponent keyPc = ComponentMappers.position.get(key);
-                if(rectCollides(position.x, position.x+(width*Statics.settings.tileSize), keyPc.x, keyPc.x+Statics.settings.tileSize, width+Statics.settings.tileSize) &&
-                    rectCollides(position.y, position.y+(height*Statics.settings.tileSize), keyPc.y, keyPc.y+Statics.settings.tileSize, height+Statics.settings.tileSize)){
-                    Statics.ashley.removeEntity(key);
-//                    player.invertedGravity = !player.invertedGravity;
-                    Statics.sound.playSound(Sounds.KEY);
+            for (Entity item : items) {
+                PositionComponent itemPc = ComponentMappers.position.get(item);
+                if(rectCollides(position.x, position.x+(width*Statics.settings.tileSize), itemPc.x, itemPc.x+Statics.settings.tileSize, width+Statics.settings.tileSize) &&
+                    rectCollides(position.y, position.y+(height*Statics.settings.tileSize), itemPc.y, itemPc.y+Statics.settings.tileSize, height+Statics.settings.tileSize)){
+                    if(key.get(item) != null) {
+                        Statics.sound.playSound(Sounds.KEY);
+                    } else if(ComponentMappers.gravity.get(item) != null) {
+                        player.invertedGravity = !player.invertedGravity;
+                    }
+                    Statics.ashley.removeEntity(item);
                 }
             }
             //Entity <-> Exit Collision
@@ -107,7 +115,6 @@ public class MovementSystem extends EntitySystem implements EntityListener {
                 PositionComponent exitPc = ComponentMappers.position.get(exit.get(0));
                 if(rectCollides(position.x, position.x+(width*Statics.settings.tileSize), exitPc.x, exitPc.x+Statics.settings.tileSize, width+Statics.settings.tileSize) &&
                         rectCollides(position.y, position.y+(height*Statics.settings.tileSize), exitPc.y, exitPc.y+Statics.settings.tileSize, height+Statics.settings.tileSize)){
-
                         if(keys.size() == 0){
                             game.nextLevel();
                         }

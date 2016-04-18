@@ -18,4 +18,6 @@ public class ComponentMappers {
     public static final ComponentMapper<LightComponent> light = ComponentMapper.getFor(LightComponent.class);
     public static final ComponentMapper<TextboxComponent> textbox = ComponentMapper.getFor(TextboxComponent.class);
     public static final ComponentMapper<PlayerComponent> player = ComponentMapper.getFor(PlayerComponent.class);
+    public static final ComponentMapper<KeyComponent> key = ComponentMapper.getFor(KeyComponent.class);
+    public static final ComponentMapper<GravityComponent> gravity = ComponentMapper.getFor(GravityComponent.class);
 }

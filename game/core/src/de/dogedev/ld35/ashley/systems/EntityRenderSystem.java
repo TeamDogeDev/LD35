@@ -30,6 +30,7 @@ public class EntityRenderSystem extends EntitySystem implements EntityListener {
     public EntityRenderSystem(OrthographicCamera camera) {
         this(0, camera);
     }
+
     public EntityRenderSystem(int priority, OrthographicCamera camera) {
         super(priority);
         this.camera = camera;
@@ -39,17 +40,19 @@ public class EntityRenderSystem extends EntitySystem implements EntityListener {
     }
 
     @Override
-    public void addedToEngine (Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class).exclude(BackgroundComponent.class, KeyComponent.class).get());
-        engine.addEntityListener(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class).exclude(BackgroundComponent.class, KeyComponent.class).get(), this);
-        for(Entity e: entities){
+    public void addedToEngine(Engine engine) {
+        entities = engine.getEntitiesFor(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class)
+                .exclude(BackgroundComponent.class, KeyComponent.class, GravityComponent.class).get());
+        engine.addEntityListener(Family.all(PositionComponent.class).one(SpriteComponent.class, AnimationComponent.class)
+                .exclude(BackgroundComponent.class, KeyComponent.class, GravityComponent.class).get(), this);
+        for (Entity e : entities) {
             sortedEntities.add(e);
         }
         Collections.sort(sortedEntities, comparator);
     }
 
     @Override
-    public void removedFromEngine (Engine engine) {
+    public void removedFromEngine(Engine engine) {
         engine.removeEntityListener(this);
     }
 
@@ -61,17 +64,17 @@ public class EntityRenderSystem extends EntitySystem implements EntityListener {
     }
 
     @Override
-    public void entityAdded (Entity entity) {
+    public void entityAdded(Entity entity) {
         sortedEntities.add(entity);
     }
 
     @Override
-    public void entityRemoved (Entity entity) {
+    public void entityRemoved(Entity entity) {
         sortedEntities.remove(entity);
     }
 
     @Override
-    public void update (float deltaTime) {
+    public void update(float deltaTime) {
 
         PositionComponent position;
         PlayerComponent player;
@@ -87,39 +90,39 @@ public class EntityRenderSystem extends EntitySystem implements EntityListener {
             position = ComponentMappers.position.get(e);
             player = ComponentMappers.player.get(e);
             boolean flip = false;
-            if(player != null && player.invertedGravity){
-                flip= true;
+            if (player != null && player.invertedGravity) {
+                flip = true;
             }
-            if(ComponentMappers.animation.has(e)){
+            if (ComponentMappers.animation.has(e)) {
                 AnimationComponent ac = ComponentMappers.animation.get(e);
                 TextureRegion region = ac.currentAnimation.getKeyFrame(ac.currentAnimationTime);
-                if(ac.center){
-                    xOffset = region.getRegionWidth()/2;
+                if (ac.center) {
+                    xOffset = region.getRegionWidth() / 2;
                 }
-                if(flip && !region.isFlipY()){
+                if (flip && !region.isFlipY()) {
                     region.flip(false, true);
-                } else if(!flip & region.isFlipY()){
+                } else if (!flip & region.isFlipY()) {
                     region.flip(false, false);
                 }
-                batch.draw(region, position.x-xOffset, position.y+position.z);
+                batch.draw(region, position.x - xOffset, position.y + position.z);
                 ac.currentAnimationTime += deltaTime;
             } else {
                 SpriteComponent visual = ComponentMappers.sprite.get(e);
-                if(visual.center){
-                    xOffset = visual.textureRegion.getRegionWidth()/2;
+                if (visual.center) {
+                    xOffset = visual.textureRegion.getRegionWidth() / 2;
                 }
-                if(flip && !visual.textureRegion.isFlipY()){
+                if (flip && !visual.textureRegion.isFlipY()) {
                     visual.textureRegion.flip(false, true);
-                } else if(!flip & visual.textureRegion.isFlipY()){
+                } else if (!flip & visual.textureRegion.isFlipY()) {
                     visual.textureRegion.flip(false, false);
                 }
 
-                batch.draw(visual.textureRegion, position.x-xOffset, position.y+position.z);
+                batch.draw(visual.textureRegion, position.x - xOffset, position.y + position.z);
             }
 
             NameComponent nc = ComponentMappers.name.get(e);
-            if(nc != null){
-                 font.draw(batch, nc.name, position.x-90, position.y+position.z+40, 200, Align.center, false);
+            if (nc != null) {
+                font.draw(batch, nc.name, position.x - 90, position.y + position.z + 40, 200, Align.center, false);
             }
 
         }

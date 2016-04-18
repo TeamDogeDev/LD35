@@ -4,10 +4,10 @@
   <property name="shiftCount" value="4"/>
   <property name="shiftTimeMax" value="7"/>
  </properties>
- <tileset firstgid="1" name="items" tilewidth="16" tileheight="16" tilecount="400">
+ <tileset firstgid="1" name="items" tilewidth="16" tileheight="16" tilecount="400" columns="20">
   <image source="items.png" width="320" height="320"/>
  </tileset>
- <tileset firstgid="401" name="packed" tilewidth="16" tileheight="16" tilecount="192">
+ <tileset firstgid="401" name="packed" tilewidth="16" tileheight="16" tilecount="192" columns="64">
   <image source="packed.png" width="1024" height="48"/>
   <tile id="132">
    <properties>
@@ -17,10 +17,10 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="593" name="basic_tileset" tilewidth="16" tileheight="16" tilecount="8">
+ <tileset firstgid="593" name="basic_tileset" tilewidth="16" tileheight="16" tilecount="8" columns="8">
   <image source="basic_tileset.png" width="128" height="16"/>
  </tileset>
- <tileset firstgid="601" name="blocks" tilewidth="16" tileheight="16" margin="8" tilecount="3600">
+ <tileset firstgid="601" name="blocks" tilewidth="16" tileheight="16" margin="8" tilecount="3600" columns="80">
   <image source="blocks.png" width="1296" height="728"/>
  </tileset>
  <imagelayer name="Bildebene 3">

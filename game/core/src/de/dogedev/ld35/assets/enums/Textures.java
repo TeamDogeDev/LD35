@@ -17,7 +17,8 @@ public enum Textures {
     KEY("entities/key.png"),
     BUBBLE("textures/bubble.png"),
     CHICKEN("entities/john_chicken.png"),
-    CHICKWEN_SINGLE("entities/chicken.png");
+    CHICKWEN_SINGLE("entities/chicken.png"),
+    GRAVITYBOX("entities/gravitybox.png");
 
     public String name;
 

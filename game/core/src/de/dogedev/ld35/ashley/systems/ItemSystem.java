@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.MathUtils;
 import de.dogedev.ld35.Statics;
 import de.dogedev.ld35.ashley.ComponentMappers;
+import de.dogedev.ld35.ashley.components.GravityComponent;
 import de.dogedev.ld35.ashley.components.KeyComponent;
 import de.dogedev.ld35.ashley.components.PositionComponent;
 import de.dogedev.ld35.ashley.components.SpriteComponent;
@@ -51,7 +52,7 @@ public class ItemSystem extends EntitySystem {
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
         items = engine.getEntitiesFor(
-                Family.all(PositionComponent.class, SpriteComponent.class, KeyComponent.class).get()
+                Family.all(PositionComponent.class, SpriteComponent.class).one(KeyComponent.class, GravityComponent.class).get()
         );
     }
     private float time;
@@ -89,6 +90,23 @@ public class ItemSystem extends EntitySystem {
         Statics.ashley.addEntity(e);
     }
 
+    public void spawnGravityBox(int tileX, int tileY) {
+        Entity e = Statics.ashley.createEntity();
+
+        PositionComponent pc = Statics.ashley.createComponent(PositionComponent.class);
+        SpriteComponent sc = Statics.ashley.createComponent(SpriteComponent.class);
+
+        pc.x = tileX * Statics.settings.tileSize;
+        pc.y = tileY * Statics.settings.tileSize;
+
+        sc.textureRegion = new TextureRegion(Statics.asset.getTexture(Textures.GRAVITYBOX));
+
+        e.add(pc);
+        e.add(sc);
+        e.add(Statics.ashley.createComponent(GravityComponent.class));
+        Statics.ashley.addEntity(e);
+    }
+
 
     public void setMap(TiledMap map) {
         for (MapLayer layer : map.getLayers()) {
@@ -99,6 +117,8 @@ public class ItemSystem extends EntitySystem {
                         if (l.getCell(x, y) != null && l.getCell(x, y).getTile() != null) {
                             if (l.getCell(x, y).getTile().getId() == 1) {
                                 spawnKey(l.getCell(x, y).getTile().getId(), x, y);
+                            } else if(l.getCell(x, y).getTile().getId() == 5) {
+                                spawnGravityBox(x, y);
                             }
                         }
                     }
