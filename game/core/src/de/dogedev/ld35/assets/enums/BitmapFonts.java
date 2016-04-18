@@ -9,7 +9,8 @@ package de.dogedev.ld35.assets.enums;
  */
 public enum BitmapFonts {
 
-    GAME("fonts/gamefont.fnt");
+    GAME("fonts/gamefont.fnt"),
+    GAME_BIG("fonts/gamefont_big.fnt");
 
     public String name;
 
